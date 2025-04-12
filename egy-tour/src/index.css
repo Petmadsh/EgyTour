@@ -29,7 +29,8 @@ body {
   display: flex;
   justify-content: center; /* Center content horizontally */
   align-items: flex-start; /* Align items to the top initially */
-  min-width: 320px;
+  width: 100%; /* Ensure body takes full width */
+  min-width: 100%;
   min-height: 100vh;
   background-color: #f7f7f7; /* A slightly off-white background for the body */
 }
@@ -54,7 +55,7 @@ button {
 }
 
 button:hover {
-  border-color: #007bff; /* Highlight border on hover */
+  border-color: none; /* Highlight border on hover */
   background-color: #e9ecef; /* Slightly darker background on hover */
 }
 

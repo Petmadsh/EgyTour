@@ -1,8 +1,8 @@
 import React from 'react';
-import { auth } from './firebase'; 
+import { auth } from './firebase';
 import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify'; 
+import { toast } from 'react-toastify';
 
 const Welcome = () => {
     const navigate = useNavigate();
@@ -10,11 +10,8 @@ const Welcome = () => {
     const handleLogout = async () => {
         try {
             await signOut(auth);
-            
-          
-            navigate('/login'); 
+            navigate('/login');
         } catch (error) {
-         
             toast.error('Error signing out. Please try again.', {
                 position: "top-right",
                 autoClose: 3000,
@@ -29,7 +26,7 @@ const Welcome = () => {
     };
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#f7f7f7' }}>
+        <div style={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '30px', backgroundColor: '#f7f7f7' }}>
             <div style={{ textAlign: 'center', padding: '30px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
                 <h1>Welcome to EgyTour!</h1>
                 <p>You have successfully logged in.</p>

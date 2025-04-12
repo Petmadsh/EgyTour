@@ -1,0 +1,77 @@
+.navbar {
+   
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 20px 30px; /* Adjust padding as needed */
+    background-color: #f8f8f8; /* Light background for the nav bar */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    width:100%;
+    //min-width: 100%; /* Make it take the full width */
+}
+
+/* ... rest of your CSS ... */
+
+.logoContainer {
+    /* Styles for the logo container if needed */
+}
+
+.logoLink {
+    text-decoration: none; /* Remove link underline from logo */
+}
+
+.logo {
+    height: 50px; /* Adjust logo height as needed */
+}
+
+.navLinks {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navLinks li {
+    margin-left: 20px; /* Spacing between links */
+}
+
+.navLink {
+    text-decoration: none;
+    color: #333; /* Dark text color for links */
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.navLink:hover {
+    color: #D8532A; /* Highlight color on hover */
+}
+
+.searchBar {
+    display: flex;
+    align-items: center;
+}
+
+.searchInput {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+.searchButton {
+    padding: 10px 15px;
+    background-color: #D8532A;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.searchButton:hover {
+    background-color: rgba(255, 89, 0, 0.85);
+}

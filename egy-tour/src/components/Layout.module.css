@@ -1,0 +1,11 @@
+/* Layout.module.css */
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure the layout takes at least the full viewport height */
+}
+
+.mainContent {
+    flex-grow: 1; /* Allows the main content to take up remaining vertical space */
+    /* Add any global styling for your main content area here */
+}
