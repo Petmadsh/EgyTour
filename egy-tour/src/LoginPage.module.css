@@ -1,15 +1,18 @@
 .container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* Center items horizontally within the container */
     justify-content: flex-start;
     min-height: 100vh;
-    padding: 60px 20px; /* Increase top/bottom padding */
+    padding: 60px 20px;
     background-color: #f7f7f7;
+    width: 600px; /* Set a specific larger width (adjust as needed) */
+    max-width: 100%; /* Optional: Ensure it doesn't exceed 90% of the viewport */
+    margin: 0 auto; /* Center the container horizontally */
 }
 
 .logoContainer {
-    margin-bottom: 50px; /* Increase margin */
+    margin-bottom: 10px; /* Increase margin */
 }
 
 .logo {
@@ -25,7 +28,7 @@
 
 .inputGroup {
     width: 100%;
-    max-width: 450px; /* Increase max width for input groups */
+    /* max-width: 450px; Keep this for individual input max width if desired */
     margin-bottom: 25px;
     position: relative;
 }
@@ -59,7 +62,7 @@
     font-size: 14px;
     background-color: #f7f7f7; /* Match background to visually float */
     padding: 0 5px;
-    color: #d9534f; /* Highlighted label color on focus/value */
+    color: #D8532A; /* Highlighted label color on focus/value */
 }
 
 .passwordToggle {
@@ -80,19 +83,20 @@
 }
 
 .forgotPassword a {
-    color: #007bff;
+    color: #D8532A;
     text-decoration: none;
 }
 
 .forgotPassword a:hover {
     text-decoration: underline;
+    color: rgba(255, 89, 0, 0.85);
 }
 
 .loginButton {
     width: 100%;
-    max-width: 450px; /* Increase max width for button */
+     max-width: 450px; 
     padding: 18px; /* Increase padding */
-    background-color: #d9534f;
+    background-color: #D8532A;
     color: white;
     border: none;
     border-radius: 10px;
@@ -103,16 +107,16 @@
 }
 
 .loginButton:hover {
-    background-color: #c9302c;
+    background-color:rgba(255, 89, 0, 0.85);
 }
 
 .googleButton {
     width: 100%;
-    max-width: 450px; /* Increase max width for google button */
+     max-width: 450px; 
     padding: 18px; /* Increase padding */
     background-color: black;
     color: white;
-    border: 1px solid #ccc;
+    border: none;
     border-radius: 10px;
     font-size: 20px; /* Increase font size */
     cursor: pointer;
@@ -127,9 +131,10 @@
     background-color:rgb(71, 70, 70);
 }
 
-.googleButton::before {
-    /* content: url('./google-icon.png'); Adjust path */
-    margin-right: 10px;
+.googleIcon {
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
 }
 
 .registerLink {
@@ -138,12 +143,13 @@
 }
 
 .registerText {
-    color: #007bff;
+    color: #D8532A;
     text-decoration: none;
 }
 
 .registerText:hover {
     text-decoration: underline;
+    color: rgba(255, 89, 0, 0.85);
 }
 
 .error {

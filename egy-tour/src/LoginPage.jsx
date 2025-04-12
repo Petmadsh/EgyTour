@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { auth, googleProvider, db } from "./firebase";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, fetchSignInMethodsForEmail } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./LoginPage.module.css";
 import logo from "./assets/Egyptian_Pyramids_with_Sphinx.png";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { toast } from 'react-toastify';
+import googleLogo from "./assets/Google_logo.png";
 
 const LoginPage = () => {
     const [form, setForm] = useState({ email: "", password: "" });
@@ -39,7 +40,21 @@ const LoginPage = () => {
         if (!validate()) return;
 
         try {
-            await signInWithEmailAndPassword(auth, form.email, form.password);
+            const userCredential = await signInWithEmailAndPassword(auth, form.email, form.password);
+            const user = userCredential.user;
+            if (!user.emailVerified) {
+                toast.error("Please verify your email address before logging in.", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                return;
+            }
             navigate("/welcome");
         } catch (err) {
             let errorMessage = "Login failed.";
@@ -86,7 +101,6 @@ const LoginPage = () => {
                     });
                     console.log('Google user data added to Firestore');
                 }
-
                 navigate("/welcome");
             }
         } catch (err) {
@@ -120,13 +134,13 @@ const LoginPage = () => {
             <div className={styles.logoContainer}>
                 <img src={logo} alt="Your Logo" className={styles.logo} />
             </div>
-            <h2 className={styles.loginTitle}>LOGIN</h2>
+            <h2 className={styles.loginTitle}>Login</h2>
             <div className={styles.inputGroup}>
                 <input
                     type="email"
                     name="email"
                     id="email"
-                    placeholder=" " /* Empty placeholder initially */
+                    placeholder=" " 
                     value={form.email}
                     onChange={handleChange}
                     className={styles.input}
@@ -139,7 +153,7 @@ const LoginPage = () => {
                     type={passwordVisible ? "text" : "password"}
                     name="password"
                     id="password"
-                    placeholder=" " /* Empty placeholder initially */
+                    placeholder=" " 
                     value={form.password}
                     onChange={handleChange}
                     className={styles.input}
@@ -154,10 +168,11 @@ const LoginPage = () => {
                 <Link to="/forgot-password">Forgot Password?</Link>
             </div>
             <button onClick={login} className={styles.loginButton}>
-                LOGIN
+                Login
             </button>
             <button onClick={loginWithGoogle} className={styles.googleButton}>
-                OR LOGIN WITH GOOGLE
+                Or Login With Google
+                <img src={googleLogo} alt="Google Logo" className={styles.googleIcon} />
             </button>
             <div className={styles.registerLink}>
                 Don't have an account? <Link to="/register" className={styles.registerText}>Register</Link>

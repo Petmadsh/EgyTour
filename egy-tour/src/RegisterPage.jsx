@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { auth, db } from "./firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate, Link } from "react-router-dom";
-import styles from "./RegisterPage.module.css"; // Import CSS module
+import styles from "./RegisterPage.module.css"; 
 import logo from "./assets/Egyptian_Pyramids_with_Sphinx.png";
-import { toast } from 'react-toastify'; // Import toast
+import { toast } from 'react-toastify'; 
 
 const RegisterPage = () => {
     const [form, setForm] = useState({ first: "", last: "", email: "", password: "", confirm: "" });
@@ -57,22 +57,27 @@ const RegisterPage = () => {
         const { first, last, email, password } = form;
         try {
             const res = await createUserWithEmailAndPassword(auth, email, password);
-            await setDoc(doc(db, "users", res.user.uid), {
+            const user = res.user;
+            await setDoc(doc(db, "users", user.uid), {
                 firstName: first,
                 lastName: last,
-                email
+                email,
             });
-            toast.success("Registered! You can now log in.", {
+
+            await sendEmailVerification(user);
+            toast.success("Verification email sent! Please check your inbox and verify your email address.", {
                 position: "top-right",
-                autoClose: 3000,
+                autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
                 theme: "light",
+                onClose: () => {
+                    navigate("/login");
+                }
             });
-            navigate("/login");
         } catch (err) {
             let errorMessage = "Registration failed.";
             if (err.code === 'auth/email-already-in-use') {
