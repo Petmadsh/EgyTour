@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import styles from "./LoginPage.module.css";
 import logo from "./assets/Egyptian_Pyramids_with_Sphinx.png";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { toast } from 'react-toastify'; // Import toast
 
 const LoginPage = () => {
     const [form, setForm] = useState({ email: "", password: "" });
@@ -41,7 +42,26 @@ const LoginPage = () => {
             await signInWithEmailAndPassword(auth, form.email, form.password);
             navigate("/welcome"); // Redirect to /welcome after successful login
         } catch (err) {
-            alert(err.message);
+            let errorMessage = "Login failed.";
+            if (err.code === 'auth/invalid-email') {
+                errorMessage = 'Invalid email address.';
+            } else if (err.code === 'auth/user-not-found') {
+                errorMessage = 'User not found.';
+            } else if (err.code === 'auth/wrong-password') {
+                errorMessage = 'Incorrect password.';
+            } else if (err.code === 'auth/network-request-failed') {
+                errorMessage = 'Network error. Please check your internet connection.';
+            }
+            toast.error(errorMessage, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
     };
 
@@ -55,7 +75,7 @@ const LoginPage = () => {
                 const userDocSnap = await getDoc(userDocRef);
 
                 if (!userDocSnap.exists()) {
-                    const { displayName, email, uid } = user;
+                    const { displayName, email } = user;
                     const [firstName = '', ...lastNameParts] = displayName?.split(' ') || [];
                     const lastName = lastNameParts.join(' ');
 
@@ -63,7 +83,6 @@ const LoginPage = () => {
                         firstName: firstName,
                         lastName: lastName,
                         email: email || '',
-                        
                     });
                     console.log('Google user data added to Firestore');
                 }
@@ -71,14 +90,30 @@ const LoginPage = () => {
                 navigate("/welcome");
             }
         } catch (err) {
-            alert(err.message);
+            let errorMessage = "Google login failed.";
+            if (err.code === 'auth/popup-closed-by-user') {
+                errorMessage = 'Google login popup was closed by the user.';
+            } else if (err.code === 'auth/network-request-failed') {
+                errorMessage = 'Network error. Please check your internet connection.';
+            } else if (err.code === 'auth/account-exists-with-different-credential') {
+                errorMessage = 'An account with the same email already exists with different credentials.';
+            }
+            toast.error(errorMessage, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
     };
 
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
     };
-
     return (
         <div className={styles.container}>
             <div className={styles.logoContainer}>

@@ -5,6 +5,8 @@ import { doc, setDoc } from "firebase/firestore";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./RegisterPage.module.css"; // Import CSS module
 import logo from "./assets/Egyptian_Pyramids_with_Sphinx.png";
+import { toast } from 'react-toastify'; // Import toast
+
 const RegisterPage = () => {
     const [form, setForm] = useState({ first: "", last: "", email: "", password: "", confirm: "" });
     const [errors, setErrors] = useState({ first: "", last: "", email: "", password: "", confirm: "" });
@@ -60,10 +62,38 @@ const RegisterPage = () => {
                 lastName: last,
                 email
             });
-            alert("Registered! You can now log in.");
+            toast.success("Registered! You can now log in.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
             navigate("/login");
         } catch (err) {
-            alert(err.message);
+            let errorMessage = "Registration failed.";
+            if (err.code === 'auth/email-already-in-use') {
+                errorMessage = 'Email address is already in use.';
+            } else if (err.code === 'auth/invalid-email') {
+                errorMessage = 'Invalid email address.';
+            } else if (err.code === 'auth/weak-password') {
+                errorMessage = 'Password should be at least 6 characters.';
+            } else if (err.code === 'auth/network-request-failed') {
+                errorMessage = 'Network error. Please check your internet connection.';
+            }
+            toast.error(errorMessage, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
     };
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { auth } from './firebase'; // Import auth
 import { signOut } from 'firebase/auth'; // Import signOut
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify'; // Import toast
 
 const Welcome = () => {
     const navigate = useNavigate();
@@ -9,11 +10,30 @@ const Welcome = () => {
     const handleLogout = async () => {
         try {
             await signOut(auth);
-            console.log('User signed out successfully');
+            
+            toast.success('Logged out successfully!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
             navigate('/login'); // Redirect to the login page after logout
         } catch (error) {
-            console.error('Error signing out:', error);
-            alert('Error signing out. Please try again.');
+         
+            toast.error('Error signing out. Please try again.', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
     };
 
