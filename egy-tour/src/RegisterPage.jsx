@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { auth, db } from "./firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
@@ -115,44 +115,52 @@ const RegisterPage = () => {
                 <input
                     type="text"
                     name="first"
-                    placeholder="First Name"
+                    id="first"
+                    placeholder=" "
                     value={form.first}
                     onChange={handleChange}
                     className={styles.input}
                 />
+                <label htmlFor="first" className={styles.label}>First Name</label>
                 {errors.first && <p className={styles.error}>{errors.first}</p>}
             </div>
             <div className={styles.inputGroup}>
                 <input
                     type="text"
                     name="last"
-                    placeholder="Last Name"
+                    id="last"
+                    placeholder=" "
                     value={form.last}
                     onChange={handleChange}
                     className={styles.input}
                 />
+                <label htmlFor="last" className={styles.label}>Last Name</label>
                 {errors.last && <p className={styles.error}>{errors.last}</p>}
             </div>
             <div className={styles.inputGroup}>
                 <input
                     type="email"
                     name="email"
-                    placeholder="Email"
+                    id="email"
+                    placeholder=" "
                     value={form.email}
                     onChange={handleChange}
                     className={styles.input}
                 />
+                <label htmlFor="email" className={styles.label}>Email</label>
                 {errors.email && <p className={styles.error}>{errors.email}</p>}
             </div>
             <div className={styles.inputGroup}>
                 <input
                     type={passwordVisible ? "text" : "password"}
                     name="password"
-                    placeholder="Password"
+                    id="password"
+                    placeholder=" "
                     value={form.password}
                     onChange={handleChange}
                     className={styles.input}
                 />
+                <label htmlFor="password" className={styles.label}>Password</label>
                 <span className={styles.passwordToggle} onClick={togglePasswordVisibility}>
                     {passwordVisible ? '👁️' : '👁️‍🗨️'}
                 </span>
@@ -162,11 +170,13 @@ const RegisterPage = () => {
                 <input
                     type={confirmPasswordVisible ? "text" : "password"}
                     name="confirm"
-                    placeholder="Confirm Password"
+                    id="confirm"
+                    placeholder=" "
                     value={form.confirm}
                     onChange={handleChange}
                     className={styles.input}
                 />
+                <label htmlFor="confirm" className={styles.label}>Confirm Password</label>
                 <span className={styles.passwordToggle} onClick={toggleConfirmPasswordVisibility}>
                     {confirmPasswordVisible ? '👁️' : '👁️‍🗨️'}
                 </span>

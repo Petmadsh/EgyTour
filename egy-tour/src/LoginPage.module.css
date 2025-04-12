@@ -37,6 +37,29 @@
     border-radius: 5px;
     font-size: 18px; /* Increase font size */
     box-sizing: border-box;
+    outline: none; /* Remove default focus outline */
+}
+
+.label {
+    position: absolute;
+    left: 10px;
+    top: 16px; /* Initial position overlapping the input */
+    font-size: 18px;
+    color: #777;
+    transition: all 0.2s ease-in-out;
+    pointer-events: none; /* Allow clicks to pass through to the input */
+}
+
+/* Move label on focus or when input has content */
+.input:focus + .label,
+.input:not(:placeholder-shown) + .label,
+.input:-webkit-autofill + .label { /* For Chrome autofill */
+    top: -10px; /* Move label above the input */
+    left: 5px;
+    font-size: 14px;
+    background-color: #f7f7f7; /* Match background to visually float */
+    padding: 0 5px;
+    color: #d9534f; /* Highlighted label color on focus/value */
 }
 
 .passwordToggle {

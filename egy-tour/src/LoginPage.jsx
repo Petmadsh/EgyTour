@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { auth, googleProvider, db } from "./firebase"; // Make sure 'db' is included here
+import React, { useState } from "react";
+import { auth, googleProvider, db } from "./firebase";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./LoginPage.module.css";
 import logo from "./assets/Egyptian_Pyramids_with_Sphinx.png";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { toast } from 'react-toastify'; // Import toast
+import { toast } from 'react-toastify';
 
 const LoginPage = () => {
     const [form, setForm] = useState({ email: "", password: "" });
@@ -40,7 +40,7 @@ const LoginPage = () => {
 
         try {
             await signInWithEmailAndPassword(auth, form.email, form.password);
-            navigate("/welcome"); // Redirect to /welcome after successful login
+            navigate("/welcome");
         } catch (err) {
             let errorMessage = "Login failed.";
             if (err.code === 'auth/invalid-email') {
@@ -114,6 +114,7 @@ const LoginPage = () => {
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
     };
+
     return (
         <div className={styles.container}>
             <div className={styles.logoContainer}>
@@ -124,22 +125,26 @@ const LoginPage = () => {
                 <input
                     type="email"
                     name="email"
-                    placeholder="Email"
+                    id="email"
+                    placeholder=" " /* Empty placeholder initially */
                     value={form.email}
                     onChange={handleChange}
                     className={styles.input}
                 />
+                <label htmlFor="email" className={styles.label}>Email</label>
                 {errors.email && <p className={styles.error}>{errors.email}</p>}
             </div>
             <div className={styles.inputGroup}>
                 <input
                     type={passwordVisible ? "text" : "password"}
                     name="password"
-                    placeholder="Password"
+                    id="password"
+                    placeholder=" " /* Empty placeholder initially */
                     value={form.password}
                     onChange={handleChange}
                     className={styles.input}
                 />
+                <label htmlFor="password" className={styles.label}>Password</label>
                 <span className={styles.passwordToggle} onClick={togglePasswordVisibility}>
                     {passwordVisible ? '👁️' : '👁️‍🗨️'}
                 </span>
