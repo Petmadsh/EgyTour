@@ -1,0 +1,33 @@
+import React from 'react';
+import { auth } from './firebase'; // Import auth
+import { signOut } from 'firebase/auth'; // Import signOut
+import { useNavigate } from 'react-router-dom';
+
+const Welcome = () => {
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            console.log('User signed out successfully');
+            navigate('/login'); // Redirect to the login page after logout
+        } catch (error) {
+            console.error('Error signing out:', error);
+            alert('Error signing out. Please try again.');
+        }
+    };
+
+    return (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#f7f7f7' }}>
+            <div style={{ textAlign: 'center', padding: '30px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
+                <h1>Welcome to EgyTour!</h1>
+                <p>You have successfully logged in.</p>
+                <button onClick={handleLogout} style={{ marginTop: '20px', padding: '10px 15px', backgroundColor: '#f44336', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '16px' }}>
+                    Logout
+                </button>
+            </div>
+        </div>
+    );
+};
+
+export default Welcome;

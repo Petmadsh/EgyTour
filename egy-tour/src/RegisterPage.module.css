@@ -1,0 +1,88 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 60px 20px; /* Increase top/bottom padding */
+    background-color: #f7f7f7;
+}
+
+.logoContainer {
+    margin-bottom: 50px; /* Increase margin */
+}
+
+.logo {
+    width: 200px; /* Increase logo size for web */
+    height: auto;
+}
+
+.registerTitle {
+    font-size: 32px; /* Increase title size */
+    margin-bottom: 40px;
+    color: #333;
+}
+
+.inputGroup {
+    width: 100%;
+    max-width: 450px; /* Increase max width for input groups */
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.input {
+    width: 100%;
+    padding: 16px; /* Increase padding */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px; /* Increase font size */
+    box-sizing: border-box;
+}
+
+.passwordToggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.6em; /* Adjust icon size */
+    color: #777;
+}
+
+.registerButton {
+    width: 100%;
+    max-width: 450px; /* Increase max width for button */
+    padding: 18px; /* Increase padding */
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px; /* Increase font size */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 30px;
+}
+
+.registerButton:hover {
+    background-color: #c9302c;
+}
+
+.loginLink {
+    color: #555;
+    font-size: 16px;
+}
+
+.loginText {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.loginText:hover {
+    text-decoration: underline;
+}
+
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
