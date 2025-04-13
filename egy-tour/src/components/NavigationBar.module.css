@@ -1,77 +1,185 @@
+/* NavigationBar.module.css */
+
+/* Container */
 .navbar {
-   
+    width: 100%;
+    box-sizing: border-box;
+    /* Increased padding for wider feel, adjust as needed */
+    padding: 15px 40px;
+    background-color: #f8f8f8;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding: 20px 30px; /* Adjust padding as needed */
-    background-color: #f8f8f8; /* Light background for the nav bar */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    width:100%;
-    //min-width: 100%; /* Make it take the full width */
+    position: relative;
+    /* Remove gap, spacing handled by margins/spacer */
 }
 
-/* ... rest of your CSS ... */
-
+/* Logo */
 .logoContainer {
-    /* Styles for the logo container if needed */
+    order: 1;        /* First item */
+    flex-shrink: 0;
+}
+.logoLink { text-decoration: none; display: block; margin-rigt: 20px; }
+.logo { height: 60px; width: auto; display: block; } /* Slightly larger logo */
+
+/* Spacer - Hidden on Desktop, used on Mobile */
+.spacer {
+    display: none;
+    flex-grow: 1;
 }
 
-.logoLink {
-    text-decoration: none; /* Remove link underline from logo */
+/* Desktop Nav Links Container */
+.desktopItems {
+    order: 2;            /* Second group visually */
+    display: flex;       /* Use flex for links */
+    margin-left: auto; /* CRITICAL: Pushes this and search bar to the right */
+    align-items: center; /* Align links vertically */
 }
-
-.logo {
-    height: 50px; /* Adjust logo height as needed */
-}
-
 .navLinks {
     list-style: none;
     display: flex;
-    margin: 0;
+    align-items: center;
+    margin: 20px;
     padding: 0;
+    gap: 25px; /* Space between nav links */
 }
-
-.navLinks li {
-    margin-left: 20px; /* Spacing between links */
-}
-
+.navLinks li { margin: 0; }
 .navLink {
     text-decoration: none;
-    color: #333; /* Dark text color for links */
-    font-weight: bold;
-    font-size: 16px;
-    transition: color 0.3s ease;
+    color: #555;
+    font-weight: 500;
+    font-size: 17px; /* Slightly larger font */
+    padding: 10px 15px; /* Adjust padding */
+    border-radius: 5px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    white-space: nowrap;
+    margin-left: 20px;
 }
+.navLink:hover { color: white; background-color: #D8532A; }
 
-.navLink:hover {
-    color: #D8532A; /* Highlight color on hover */
-}
-
+/* Search Bar - Default (Desktop) Styling */
 .searchBar {
+    order: 3;            /* Third group visually (after links) */
     display: flex;
     align-items: center;
+    max-width: 300px;    /* Adjust max width as desired */
+    width: 100%;         /* Allow shrinking */
+    margin-left: 30px;   /* Space between nav links and search bar */
+    flex-shrink: 0;      /* Prevent search from shrinking excessively */
 }
-
+.searchBar form { display: flex; width: 100%; }
 .searchInput {
-    padding: 10px 15px;
+    flex: 1;
+    padding: 12px 18px; /* Larger padding */
     border: 1px solid #ccc;
     border-radius: 5px 0 0 5px;
-    font-size: 16px;
+    font-size: 15px; /* Larger font */
     outline: none;
 }
-
 .searchButton {
-    padding: 10px 15px;
+    padding: 12px 18px; /* Match input padding */
     background-color: #D8532A;
     color: white;
     border: none;
     border-radius: 0 5px 5px 0;
-    font-size: 16px;
+    font-size: 15px; /* Match input font */
     cursor: pointer;
     transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+}
+.searchButton:hover { background-color: rgba(255, 89, 0, 0.85); }
+.searchButtonText { display: none; }
+
+.searchButton::before { content: ''; display: none; }
+
+
+
+.mobileIcons {
+    display: none;
+    order: 4; /* Keep order high for mobile overrides */
+    flex-shrink: 0;
+    margin-left: 15px; /* Add space before burger on mobile if needed */
+}
+.burgerMenuIcon {
+    background: none; border: none;
+    font-size: 28px; cursor: pointer; color: #333; padding: 0 5px;
 }
 
-.searchButton:hover {
-    background-color: rgba(255, 89, 0, 0.85);
+/* Mobile Menu */
+.mobileMenu { /* No changes needed from previous version */
+    display: none; list-style: none; padding: 0; margin: 0;
+    position: absolute; top: 100%; left: 0; right: 0;
+    background-color: #fff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000; border-top: 1px solid #eee;
+}
+.mobileMenu.visible { display: block; }
+.mobileMenu .navLink {
+    display: block; padding: 15px 20px; text-align: left;
+    color: #333; font-weight: 500; border-bottom: 1px solid #eee;
+    background-color: transparent;
+}
+.mobileMenu .navLink:hover { background-color: #f8f8f8; color: #D8532A; }
+.mobileMenu li:last-child .navLink { border-bottom: none; }
+
+/* --- Media Queries --- */
+
+/* Tablet view (Optional Adjustments) */
+@media (max-width: 992px) {
+    .navbar { padding: 15px 30px; } /* Adjust padding */
+    .searchBar { max-width: 250px; margin-left: 20px; }
+    .navLink { padding: 8px 12px; font-size: 16px; }
+    .searchInput, .searchButton { padding: 10px 15px; font-size: 14px; }
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px 15px; /* Mobile padding */
+        gap: 10px; /* Use gap for mobile spacing */
+    }
+    .desktopItems {
+        display: none; /* Hide desktop nav links */
+        order: initial; /* Reset order */
+        margin-left: 0; /* Reset margin */
+    }
+    .mobileIcons {
+        display: flex; /* Show burger menu icon */
+        order: 4;      /* Position it last */
+        margin-left: 0; /* Reset margin */
+    }
+    .searchBar {
+        order: 3;        /* Position search before burger */
+        flex-grow: 0;    /* Don't allow search bar to grow */
+        max-width: 180px; /* Limit width on mobile */
+        margin-left: 0;  /* Reset desktop margin */
+    }
+    .searchInput { /* Mobile input styles */
+        padding: 8px 10px; font-size: 13px; min-width: 100px;
+    }
+    .searchButton { /* Mobile button styles */
+        padding: 8px 10px; min-width: 36px; width: auto;
+    }
+    .searchButtonText { display: none; } /* Hide "Search" text */
+   
+
+    .spacer { /* Show spacer on mobile */
+        display: block;
+        order: 2;
+        flex-grow: 1;
+    }
+    .logoContainer { order: 1; } /* Ensure logo is first */
+    .logo { height: 45px; } /* Adjust logo size for mobile */
+
+    /* Mobile menu styles (no changes needed if already correct) */
+    .mobileMenu:not(.visible) { display: none; }
+}
+
+/* Optional: Very small screens */
+@media (max-width: 480px) {
+    .navbar { padding: 10px 10px; gap: 8px;}
+    .logo { height: 40px; }
+    .searchBar { max-width: 120px; }
+    .searchInput { min-width: 80px; }
+    .burgerMenuIcon { font-size: 26px; }
 }
