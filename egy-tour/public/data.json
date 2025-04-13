@@ -1,0 +1,226 @@
+{
+    "cities": [
+      
+        {
+            "name": "Cairo",
+            "description": "Cairo, the sprawling capital of Egypt, is a city steeped in history and culture.",
+            "image": "/src/images/cities/cairo.jpeg",
+            "citydata": {
+                "description": "Cairo, the capital of Egypt, is a vibrant metropolis known for its rich history and cultural heritage. Located along the Nile River, Cairo is home to numerous historic sites, including the medieval Islamic Cairo, the Egyptian Museum with its vast collection of ancient artifacts, and the bustling Khan El Khalili bazaar. The city serves as a gateway to the nearby Giza Plateau, where the iconic pyramids and the Great Sphinx are situated. Cairo's mix of ancient monuments, bustling markets, and modern urban life makes it a fascinating destination.",
+                "images": [
+                    "/images/cities/cairo/cairo0.jpg",
+                    "/images/cities/cairo/cairo1.jpg",
+                    "/images/cities/cairo/cairo2.jpg",
+                    "/images/cities/cairo/cairo0.jpg",
+                    "/images/cities/cairo/cairo4.jpg"
+                    
+                ]
+            },
+            "places": [
+                {
+                    "name": "Egyptian Museum",
+                    "category": "Pharaonic",
+                    "description": "The Egyptian Museum in Cairo, also known as the Museum of Egyptian Antiquities, is one of the world's most renowned museums, housing an extensive collection of ancient Egyptian artifacts. Established in 1902 and located in Tahrir Square, the museum boasts over 120,000 items, offering a comprehensive overview of Egypt's rich history. Key highlights include the treasures of Tutankhamun, featuring the famous gold mask and sarcophagus, as well as statues, mummies, jewellery, and everyday objects from ancient Egyptian life. ",
+                    "image": "/src/images/cities/cairo/places/The_Egyptian_Museum/The_Egyptian_Museum.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/egyptian_museum0.jpg",
+                            "/src/images/egyptian_museum1.jpg",
+                            "/src/images/egyptian_museum2.jpg",
+                            "/src/images/egyptian_museum3.jpg"
+                             ],
+                        "location": "Tahrir Square, Cairo",
+                        "openingHours": "9:00 AM - 5:00 PM daily",
+                        "placeDescription": "The Egyptian Museum is the oldest archaeological museum in the Middle East, and houses the largest collection of Pharaonic antiquities in the world. The museum displays an extensive collection spanning from the Predynastic Period to the Greco-Roman Era. The architect of the building was selected through an international competition in 1895, which was the first of its kind, and was won by the French architect, Marcel Dourgnon. The museum was inaugurated in 1902 by Khedive Abbas Helmy II, and has become a historic landmark in downtown Cairo, and home to some of the world’s most magnificent ancient masterpieces. Among the museum’s unrivaled collection are the complete burials of Yuya and Thuya, Psusennes I and the treasures of Tanis, and the Narmer Palette commemorating the unification of Upper and Lower Egypt under one king, which is also among the museum’s invaluable artifacts. The museum also houses the splendid statues of the great kings Khufu, Khafre, and Menkaure, the builders of the pyramids at the Giza plateau. An extensive collection of papyri, sarcophagi and jewelry, among other objects, completes this uniquely expansive museum.",
+                        "ticketPrices": "160 EGP (adults), 80 EGP (students)"
+                    }
+                },
+                {
+                    "name": "Saints Sergius and Bacchus Church",
+                    "category": "Coptic",
+                    "description": "Saints Sergius and Bacchus Church, also known as Abu Serga, is one of the oldest Coptic churches in Cairo, Egypt. Situated in the heart of Old Cairo, this historic church is believed to have been built in the 4th century AD over a cave where the Holy Family is said to have rested during their flight into Egypt.",
+                    "image": "/src/images/cities/cairo/places/Saints_Sergius_and_Bacchus_Church/Saints_Sergius_and_Bacchus_Church.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/abo_serga_church0.jpg",
+                            "/src/images/abo_serga_church1.jpg",
+                            "/src/images/abo_serga_church2.jpg"
+                        ],
+                        "location": "Al-Gamaleya, Cairo",
+                        "openingHours": "9:00 AM - 10:00 PM daily",
+                        "placeDescription": "The Church of Saint Sergius and Bacchus, also known as Abu Serga, is built upon an ancient Roman fort in Old Cairo. The history of the church is still being debated. Some scholars believe that it dates to the late fourth to early fifth centuries AD, while others believe that it should approximately be dated to 17th century AD. This church has acquired a special religious status among Coptic churches because it is associated with the Holy Family's journey through Egypt. It is named after renowned early fourth century AD saints, Sergius and Bacchus, both of whom were martyred at al-Resafa in Syria for their Christian beliefs. Like various other early Christian churches, the Church of Abu Serga and its underground cave are designed in the basilica layout, and thus together consist of three parts: the narthex, nave, and sanctuary (the cave being below the sanctuary). The church is characterized by its unique architectural and artistic elements that reflect the spirit of Coptic church architecture in Egypt. These include the pulpit, baptismal font, inlaid ivory and wood templon, and unique religious decoration of the saints and apostles decorating the various domes, walls and columns.",
+                        "ticketPrices": "Free entry"
+                    }
+                }
+            ]
+        },
+
+
+
+
+
+
+
+        {
+            "name": "Giza",
+            "description": "Giza, a city on the western outskirts of Cairo, is renowned worldwide for its ancient monuments.",
+            "image": "/src/images/cities/giza.jpeg",
+            "citydata": {
+                "description": "Cairo, the capital of Egypt, is a vibrant metropolis known for its rich history and cultural heritage. Located along the Nile River, Cairo is home to numerous historic sites, including the medieval Islamic Cairo, the Egyptian Museum with its vast collection of ancient artifacts, and the bustling Khan El Khalili bazaar. The city serves as a gateway to the nearby Giza Plateau, where the iconic pyramids and the Great Sphinx are situated. Cairo's mix of ancient monuments, bustling markets, and modern urban life makes it a fascinating destination.",
+                "images": [
+                    "/src/images/cities/cairo/cairo0.jpg",
+                    "/src/images/cities/cairo/cairo1.jpg",
+                    "/src/images/cities/cairo/cairo2.jpg",
+                    "/src/images/cities/cairo/cairo0.jpg",
+                    "/src/images/cities/cairo/cairo4.jpg"
+                ]
+            },
+            "places": [
+                {
+                    "name": "Egyptian Museum",
+                    "category": "Pharaonic",
+                    "description": "The Egyptian Museum in Cairo, also known as the Museum of Egyptian Antiquities, is one of the world's most renowned museums, housing an extensive collection of ancient Egyptian artifacts. Established in 1902 and located in Tahrir Square, the museum boasts over 120,000 items, offering a comprehensive overview of Egypt's rich history. Key highlights include the treasures of Tutankhamun, featuring the famous gold mask and sarcophagus, as well as statues, mummies, jewellery, and everyday objects from ancient Egyptian life. ",
+                    "image": "/src/images/cities/cairo/places/The_Egyptian_Museum/The_Egyptian_Museum.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/egyptian_museum0.jpg",
+                            "/src/images/egyptian_museum1.jpg",
+                            "/src/images/egyptian_museum2.jpg",
+                            "/src/images/egyptian_museum3.jpg"
+                        ],
+                        "location": "Tahrir Square, Cairo",
+                        "openingHours": "9:00 AM - 5:00 PM daily",
+                        "placeDescription": "The Egyptian Museum is the oldest archaeological museum in the Middle East, and houses the largest collection of Pharaonic antiquities in the world. The museum displays an extensive collection spanning from the Predynastic Period to the Greco-Roman Era. The architect of the building was selected through an international competition in 1895, which was the first of its kind, and was won by the French architect, Marcel Dourgnon. The museum was inaugurated in 1902 by Khedive Abbas Helmy II, and has become a historic landmark in downtown Cairo, and home to some of the world’s most magnificent ancient masterpieces. Among the museum’s unrivaled collection are the complete burials of Yuya and Thuya, Psusennes I and the treasures of Tanis, and the Narmer Palette commemorating the unification of Upper and Lower Egypt under one king, which is also among the museum’s invaluable artifacts. The museum also houses the splendid statues of the great kings Khufu, Khafre, and Menkaure, the builders of the pyramids at the Giza plateau. An extensive collection of papyri, sarcophagi and jewelry, among other objects, completes this uniquely expansive museum.",
+                        "ticketPrices": "160 EGP (adults), 80 EGP (students)"
+                    }
+                },
+                {
+                    "name": "Saints Sergius and Bacchus Church",
+                    "category": "Coptic",
+                    "description": "Saints Sergius and Bacchus Church, also known as Abu Serga, is one of the oldest Coptic churches in Cairo, Egypt. Situated in the heart of Old Cairo, this historic church is believed to have been built in the 4th century AD over a cave where the Holy Family is said to have rested during their flight into Egypt.",
+                    "image": "/src/images/cities/cairo/places/Saints_Sergius_and_Bacchus_Church/Saints_Sergius_and_Bacchus_Church.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/abo_serga_church0.jpg",
+                            "/src/images/abo_serga_church1.jpg",
+                            "/src/images/abo_serga_church2.jpg"
+                        ],
+                        "location": "Al-Gamaleya, Cairo",
+                        "openingHours": "9:00 AM - 10:00 PM daily",
+                        "placeDescription": "The Church of Saint Sergius and Bacchus, also known as Abu Serga, is built upon an ancient Roman fort in Old Cairo. The history of the church is still being debated. Some scholars believe that it dates to the late fourth to early fifth centuries AD, while others believe that it should approximately be dated to 17th century AD. This church has acquired a special religious status among Coptic churches because it is associated with the Holy Family's journey through Egypt. It is named after renowned early fourth century AD saints, Sergius and Bacchus, both of whom were martyred at al-Resafa in Syria for their Christian beliefs. Like various other early Christian churches, the Church of Abu Serga and its underground cave are designed in the basilica layout, and thus together consist of three parts: the narthex, nave, and sanctuary (the cave being below the sanctuary). The church is characterized by its unique architectural and artistic elements that reflect the spirit of Coptic church architecture in Egypt. These include the pulpit, baptismal font, inlaid ivory and wood templon, and unique religious decoration of the saints and apostles decorating the various domes, walls and columns.",
+                        "ticketPrices": "Free entry"
+                    }
+                }
+            ]
+        },
+
+
+
+        {
+            "name": "Luxor",
+            "description": "Luxor, often referred to as the world's greatest open-air museum,located in southern Egypt renowned for its extraordinary ancient monuments.",
+            "image": "/src/images/cities/luxor.jpeg",
+            "citydata": {
+                "description": "Cairo, the capital of Egypt, is a vibrant metropolis known for its rich history and cultural heritage. Located along the Nile River, Cairo is home to numerous historic sites, including the medieval Islamic Cairo, the Egyptian Museum with its vast collection of ancient artifacts, and the bustling Khan El Khalili bazaar. The city serves as a gateway to the nearby Giza Plateau, where the iconic pyramids and the Great Sphinx are situated. Cairo's mix of ancient monuments, bustling markets, and modern urban life makes it a fascinating destination.",
+                "images": [
+                    "/src/images/cities/cairo/cairo0.jpg",
+                    "/src/images/cities/cairo/cairo1.jpg",
+                    "/src/images/cities/cairo/cairo2.jpg",
+                    "/src/images/cities/cairo/cairo0.jpg",
+                    "/src/images/cities/cairo/cairo4.jpg"
+                ]
+            },
+            "places": [
+                {
+                    "name": "Egyptian Museum",
+                    "category": "Pharaonic",
+                    "description": "The Egyptian Museum in Cairo, also known as the Museum of Egyptian Antiquities, is one of the world's most renowned museums, housing an extensive collection of ancient Egyptian artifacts. Established in 1902 and located in Tahrir Square, the museum boasts over 120,000 items, offering a comprehensive overview of Egypt's rich history. Key highlights include the treasures of Tutankhamun, featuring the famous gold mask and sarcophagus, as well as statues, mummies, jewellery, and everyday objects from ancient Egyptian life. ",
+                    "image": "/src/images/cities/cairo/places/The_Egyptian_Museum/The_Egyptian_Museum.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/egyptian_museum0.jpg",
+                            "/src/images/egyptian_museum1.jpg",
+                            "/src/images/egyptian_museum2.jpg",
+                            "/src/images/egyptian_museum3.jpg"
+                        ],
+                        "location": "Tahrir Square, Cairo",
+                        "openingHours": "9:00 AM - 5:00 PM daily",
+                        "placeDescription": "The Egyptian Museum is the oldest archaeological museum in the Middle East, and houses the largest collection of Pharaonic antiquities in the world. The museum displays an extensive collection spanning from the Predynastic Period to the Greco-Roman Era. The architect of the building was selected through an international competition in 1895, which was the first of its kind, and was won by the French architect, Marcel Dourgnon. The museum was inaugurated in 1902 by Khedive Abbas Helmy II, and has become a historic landmark in downtown Cairo, and home to some of the world’s most magnificent ancient masterpieces. Among the museum’s unrivaled collection are the complete burials of Yuya and Thuya, Psusennes I and the treasures of Tanis, and the Narmer Palette commemorating the unification of Upper and Lower Egypt under one king, which is also among the museum’s invaluable artifacts. The museum also houses the splendid statues of the great kings Khufu, Khafre, and Menkaure, the builders of the pyramids at the Giza plateau. An extensive collection of papyri, sarcophagi and jewelry, among other objects, completes this uniquely expansive museum.",
+                        "ticketPrices": "160 EGP (adults), 80 EGP (students)"
+                    }
+                },
+                {
+                    "name": "Saints Sergius and Bacchus Church",
+                    "category": "Coptic",
+                    "description": "Saints Sergius and Bacchus Church, also known as Abu Serga, is one of the oldest Coptic churches in Cairo, Egypt. Situated in the heart of Old Cairo, this historic church is believed to have been built in the 4th century AD over a cave where the Holy Family is said to have rested during their flight into Egypt.",
+                    "image": "/src/images/cities/cairo/places/Saints_Sergius_and_Bacchus_Church/Saints_Sergius_and_Bacchus_Church.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/abo_serga_church0.jpg",
+                            "/src/images/abo_serga_church1.jpg",
+                            "/src/images/abo_serga_church2.jpg"
+                        ],
+                        "location": "Al-Gamaleya, Cairo",
+                        "openingHours": "9:00 AM - 10:00 PM daily",
+                        "placeDescription": "The Church of Saint Sergius and Bacchus, also known as Abu Serga, is built upon an ancient Roman fort in Old Cairo. The history of the church is still being debated. Some scholars believe that it dates to the late fourth to early fifth centuries AD, while others believe that it should approximately be dated to 17th century AD. This church has acquired a special religious status among Coptic churches because it is associated with the Holy Family's journey through Egypt. It is named after renowned early fourth century AD saints, Sergius and Bacchus, both of whom were martyred at al-Resafa in Syria for their Christian beliefs. Like various other early Christian churches, the Church of Abu Serga and its underground cave are designed in the basilica layout, and thus together consist of three parts: the narthex, nave, and sanctuary (the cave being below the sanctuary). The church is characterized by its unique architectural and artistic elements that reflect the spirit of Coptic church architecture in Egypt. These include the pulpit, baptismal font, inlaid ivory and wood templon, and unique religious decoration of the saints and apostles decorating the various domes, walls and columns.",
+                        "ticketPrices": "Free entry"
+                    }
+                }
+            ]
+        },
+
+        {
+            "name": "Aswan",
+            "description": "Aswan, located in southern Egypt on the Nile River, is known for its tranquil beauty and historical significance.",
+            "image": "/src/images/cities/aswan.jpeg",
+            "citydata": {
+                "description": "Cairo, the capital of Egypt, is a vibrant metropolis known for its rich history and cultural heritage. Located along the Nile River, Cairo is home to numerous historic sites, including the medieval Islamic Cairo, the Egyptian Museum with its vast collection of ancient artifacts, and the bustling Khan El Khalili bazaar. The city serves as a gateway to the nearby Giza Plateau, where the iconic pyramids and the Great Sphinx are situated. Cairo's mix of ancient monuments, bustling markets, and modern urban life makes it a fascinating destination.",
+                "images": [
+                    "/src/images/cities/cairo/cairo0.jpg",
+                    "/src/images/cities/cairo/cairo1.jpg",
+                    "/src/images/cities/cairo/cairo2.jpg",
+                    "/src/images/cities/cairo/cairo0.jpg",
+                    "/src/images/cities/cairo/cairo4.jpg"
+                ]
+            },
+            "places": [
+                {
+                    "name": "Egyptian Museum",
+                    "category": "Pharaonic",
+                    "description": "The Egyptian Museum in Cairo, also known as the Museum of Egyptian Antiquities, is one of the world's most renowned museums, housing an extensive collection of ancient Egyptian artifacts. Established in 1902 and located in Tahrir Square, the museum boasts over 120,000 items, offering a comprehensive overview of Egypt's rich history. Key highlights include the treasures of Tutankhamun, featuring the famous gold mask and sarcophagus, as well as statues, mummies, jewellery, and everyday objects from ancient Egyptian life. ",
+                    "image": "/src/images/cities/cairo/places/The_Egyptian_Museum/The_Egyptian_Museum.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/egyptian_museum0.jpg",
+                            "/src/images/egyptian_museum1.jpg",
+                            "/src/images/egyptian_museum2.jpg",
+                            "/src/images/egyptian_museum3.jpg"
+                        ],
+                        "location": "Tahrir Square, Cairo",
+                        "openingHours": "9:00 AM - 5:00 PM daily",
+                        "placeDescription": "The Egyptian Museum is the oldest archaeological museum in the Middle East, and houses the largest collection of Pharaonic antiquities in the world. The museum displays an extensive collection spanning from the Predynastic Period to the Greco-Roman Era. The architect of the building was selected through an international competition in 1895, which was the first of its kind, and was won by the French architect, Marcel Dourgnon. The museum was inaugurated in 1902 by Khedive Abbas Helmy II, and has become a historic landmark in downtown Cairo, and home to some of the world’s most magnificent ancient masterpieces. Among the museum’s unrivaled collection are the complete burials of Yuya and Thuya, Psusennes I and the treasures of Tanis, and the Narmer Palette commemorating the unification of Upper and Lower Egypt under one king, which is also among the museum’s invaluable artifacts. The museum also houses the splendid statues of the great kings Khufu, Khafre, and Menkaure, the builders of the pyramids at the Giza plateau. An extensive collection of papyri, sarcophagi and jewelry, among other objects, completes this uniquely expansive museum.",
+                        "ticketPrices": "160 EGP (adults), 80 EGP (students)"
+                    }
+                },
+                {
+                    "name": "Saints Sergius and Bacchus Church",
+                    "category": "Coptic",
+                    "description": "Saints Sergius and Bacchus Church, also known as Abu Serga, is one of the oldest Coptic churches in Cairo, Egypt. Situated in the heart of Old Cairo, this historic church is believed to have been built in the 4th century AD over a cave where the Holy Family is said to have rested during their flight into Egypt.",
+                    "image": "/src/images/cities/cairo/places/Saints_Sergius_and_Bacchus_Church/Saints_Sergius_and_Bacchus_Church.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/abo_serga_church0.jpg",
+                            "/src/images/abo_serga_church1.jpg",
+                            "/src/images/abo_serga_church2.jpg"
+                        ],
+                        "location": "Al-Gamaleya, Cairo",
+                        "openingHours": "9:00 AM - 10:00 PM daily",
+                        "placeDescription": "The Church of Saint Sergius and Bacchus, also known as Abu Serga, is built upon an ancient Roman fort in Old Cairo. The history of the church is still being debated. Some scholars believe that it dates to the late fourth to early fifth centuries AD, while others believe that it should approximately be dated to 17th century AD. This church has acquired a special religious status among Coptic churches because it is associated with the Holy Family's journey through Egypt. It is named after renowned early fourth century AD saints, Sergius and Bacchus, both of whom were martyred at al-Resafa in Syria for their Christian beliefs. Like various other early Christian churches, the Church of Abu Serga and its underground cave are designed in the basilica layout, and thus together consist of three parts: the narthex, nave, and sanctuary (the cave being below the sanctuary). The church is characterized by its unique architectural and artistic elements that reflect the spirit of Coptic church architecture in Egypt. These include the pulpit, baptismal font, inlaid ivory and wood templon, and unique religious decoration of the saints and apostles decorating the various domes, walls and columns.",
+                        "ticketPrices": "Free entry"
+                    }
+                }
+            ]
+        }
+
+    ]
+}
