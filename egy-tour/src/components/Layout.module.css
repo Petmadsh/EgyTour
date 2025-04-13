@@ -6,8 +6,9 @@
     width: 100%;
 }
 
-
 .mainContent {
     flex-grow: 1; /* Allows the main content to take up remaining vertical space */
-    /* Add any global styling for your main content area here */
+    padding-top: 80px; /* Add padding at the top, adjust the value as needed */
+    /* Alternatively, you could use margin-top: 80px; */
+    /* Add any other global styling for your main content area here */
 }

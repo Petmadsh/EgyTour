@@ -83,8 +83,8 @@ const NavigationBar = () => {
                     />
                     {/* Updated Button with Font Awesome Icon */}
                     <button type="submit" className={styles.searchButton}>
-                       <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchButtonIcon} />
-                       <span className={styles.searchButtonText}>Search</span>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchButtonIcon} />
+                        <span className={styles.searchButtonText}>Search</span>
                     </button>
                 </form>
             </div>
@@ -98,11 +98,11 @@ const NavigationBar = () => {
 
             {/* Mobile Menu */}
             <ul className={`${styles.mobileMenu} ${mobileMenuVisible ? styles.visible : ''}`}>
-                 {/* Links */}
-                 <li><Link to="/about" className={styles.navLink} onClick={closeMobileMenu}>About Egypt</Link></li>
-                 <li><Link to="/cities" className={styles.navLink} onClick={closeMobileMenu}>Cities</Link></li>
-                 <li><Link to="/categories" className={styles.navLink} onClick={closeMobileMenu}>Categories</Link></li>
-                 <li><Link to="/profile" className={styles.navLink} onClick={closeMobileMenu}>Profile</Link></li>
+                {/* Links */}
+                <li><Link to="/about" className={styles.navLink} onClick={closeMobileMenu}>About Egypt</Link></li>
+                <li><Link to="/cities" className={styles.navLink} onClick={closeMobileMenu}>Cities</Link></li>
+                <li><Link to="/categories" className={styles.navLink} onClick={closeMobileMenu}>Categories</Link></li>
+                <li><Link to="/profile" className={styles.navLink} onClick={closeMobileMenu}>Profile</Link></li>
             </ul>
         </nav>
     );

@@ -4,19 +4,21 @@
 .navbar {
     width: 100%;
     box-sizing: border-box;
-    /* Increased padding for wider feel, adjust as needed */
     padding: 15px 40px;
     background-color: #f8f8f8;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
-    position: relative;
+    position: fixed; /* Make the navbar fixed */
+    top: 0; /* Stick it to the top */
+    left: 0; /* Extend to the left edge */
+    z-index: 100; /* Ensure it's above other content */
     /* Remove gap, spacing handled by margins/spacer */
 }
 
 /* Logo */
 .logoContainer {
-    order: 1;        /* First item */
+    order: 1;         /* First item */
     flex-shrink: 0;
 }
 .logoLink { text-decoration: none; display: block; margin-rigt: 20px; }
@@ -30,8 +32,8 @@
 
 /* Desktop Nav Links Container */
 .desktopItems {
-    order: 2;            /* Second group visually */
-    display: flex;       /* Use flex for links */
+    order: 2;         /* Second group visually */
+    display: flex;     /* Use flex for links */
     margin-left: auto; /* CRITICAL: Pushes this and search bar to the right */
     align-items: center; /* Align links vertically */
 }
@@ -39,7 +41,7 @@
     list-style: none;
     display: flex;
     align-items: center;
-    margin: 20px;
+    margin: 0; /* Adjusted margin */
     padding: 0;
     gap: 25px; /* Space between nav links */
 }
@@ -59,13 +61,13 @@
 
 /* Search Bar - Default (Desktop) Styling */
 .searchBar {
-    order: 3;            /* Third group visually (after links) */
+    order: 3;         /* Third group visually (after links) */
     display: flex;
     align-items: center;
-    max-width: 300px;    /* Adjust max width as desired */
+    max-width: 300px;     /* Adjust max width as desired */
     width: 100%;         /* Allow shrinking */
     margin-left: 30px;   /* Space between nav links and search bar */
-    flex-shrink: 0;      /* Prevent search from shrinking excessively */
+    flex-shrink: 0;     /* Prevent search from shrinking excessively */
 }
 .searchBar form { display: flex; width: 100%; }
 .searchInput {
@@ -145,14 +147,14 @@
     }
     .mobileIcons {
         display: flex; /* Show burger menu icon */
-        order: 4;      /* Position it last */
+        order: 4;     /* Position it last */
         margin-left: 0; /* Reset margin */
     }
     .searchBar {
-        order: 3;        /* Position search before burger */
-        flex-grow: 0;    /* Don't allow search bar to grow */
+        order: 3;     /* Position search before burger */
+        flex-grow: 0; /* Don't allow search bar to grow */
         max-width: 180px; /* Limit width on mobile */
-        margin-left: 0;  /* Reset desktop margin */
+        margin-left: 0; /* Reset desktop margin */
     }
     .searchInput { /* Mobile input styles */
         padding: 8px 10px; font-size: 13px; min-width: 100px;
@@ -160,8 +162,8 @@
     .searchButton { /* Mobile button styles */
         padding: 8px 10px; min-width: 36px; width: auto;
     }
-    .searchButtonText { display: none; } /* Hide "Search" text */
-   
+    .searchButtonText { display: none; }
+
 
     .spacer { /* Show spacer on mobile */
         display: block;
