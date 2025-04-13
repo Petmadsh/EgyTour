@@ -10,8 +10,8 @@ const CityDetails = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isAutoScrolling, setIsAutoScrolling] = useState(true);
     const [manualInteraction, setManualInteraction] = useState(false);
-    const imageWidth = '600px'; // Increased width
-    const imageHeight = '300px'; // Decreased height
+    const imageWidth = '1000px'; // Increased width
+    const imageHeight = '600px'; // Decreased height
     const autoScrollInterval = 3000; // Time in milliseconds for auto-scroll
     const autoScrollTimeout = useRef(null); // Ref to hold the timeout
     const resumeDelay = 2000; // Reduced delay to 2 seconds
