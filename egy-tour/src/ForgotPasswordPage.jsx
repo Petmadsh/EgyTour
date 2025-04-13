@@ -6,6 +6,7 @@ import styles from "./ForgotPasswordPage.module.css";
 import logo from "./assets/Egyptian_Pyramids_with_Sphinx.png";
 import { toast } from 'react-toastify';
 
+
 const ForgotPasswordPage = () => {
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");

@@ -9,10 +9,24 @@ import CitiesPage from './CitiesPage';
 import CategoriesPage from './CategoriesPage';
 import ProfilePage from './ProfilePage';
 import Layout from './components/Layout';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
     <Router>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Routes>
         {/* Route for the initial login page */}
         <Route path="/" element={<LoginPage />} />
