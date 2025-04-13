@@ -7,6 +7,7 @@ import Welcome from './Welcome';
 import AboutEgyptPage from './AboutEgyptPage';
 import CitiesPage from './CitiesPage';
 import CityDetails from './CityDetails'; // Import the CityDetails component
+import PlaceDetails from './PlaceDetails'; // Import the PlaceDetails component
 import CategoriesPage from './CategoriesPage';
 import ProfilePage from './ProfilePage';
 import Layout from './components/Layout';
@@ -43,6 +44,8 @@ function App() {
         <Route path="/cities" element={<Layout><CitiesPage /></Layout>} />
         {/* Add the new route for CityDetails */}
         <Route path="/city/:cityName" element={<Layout><CityDetails /></Layout>} />
+        {/* Add the new route for PlaceDetails */}
+        <Route path="/city/:cityName/place/:placeName" element={<Layout><PlaceDetails /></Layout>} />
         <Route path="/categories" element={<Layout><CategoriesPage /></Layout>} />
         <Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
 
