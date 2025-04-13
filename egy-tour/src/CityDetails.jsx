@@ -200,41 +200,47 @@ const CityDetails = () => {
             <div>
                 <h3>Places to Visit in {cityDetails.name}</h3>
                 {cityDetails.places && cityDetails.places.length > 0 ? (
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
                         {cityDetails.places.map((place) => (
                             <div
                                 key={place.name}
                                 style={{
-                                    border: '1px solid #eee',
+                                    border: '1px solid #ccc',
                                     borderRadius: '8px',
-                                    padding: '10px',
-                                    width: 'clamp(200px, 30%, 250px)',
+                                    padding: '15px',
+                                    width: '250px',
+                                    cursor: 'pointer',
+                                    transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = 'scale(1.05)';
+                                    e.currentTarget.style.boxShadow = '0 8px 16px 0 rgba(0,0,0,0.2)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = 'scale(1)';
+                                    e.currentTarget.style.boxShadow = '0 4px 8px 0 rgba(0,0,0,0.1)';
                                 }}
                             >
-                                <h4>{place.name}</h4>
-                                <p style={{ fontSize: '0.9em', marginBottom: '5px' }}>Category: {place.category}</p>
-                                <img
-                                    src={place.image}
-                                    alt={place.name}
-                                    style={{
-                                        width: '100%',
-                                        height: '150px',
-                                        objectFit: 'cover',
-                                        borderRadius: '4px',
-                                        marginBottom: '8px',
-                                    }}
-                                />
-                                <p style={{ fontSize: '0.9em' }}>
-                                    {place.description.length > 100 ? `${place.description.substring(0, 100)}...` : place.description}
-                                </p>
-                                {place.details && (
-                                    <Link
-                                        to={`/city/${cityName}/place/${place.name.replace(/ /g, '-')}`}
-                                        style={{ display: 'block', marginTop: '8px', fontSize: '0.85em' }}
-                                    >
-                                        View Details
-                                    </Link>
-                                )}
+                                <Link
+                                    to={`/city/${cityName}/place/${place.name.replace(/ /g, '-')}`}
+                                    style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+                                >
+                                    <h4>{place.name}</h4>
+                                    <img
+                                        src={place.image}
+                                        alt={place.name}
+                                        style={{
+                                            width: '100%',
+                                            height: '180px',
+                                            objectFit: 'cover',
+                                            borderRadius: '4px',
+                                            marginBottom: '10px',
+                                        }}
+                                    />
+                                    <p style={{ fontSize: '0.9em' }}>
+                                        {place.description.length > 100 ? `${place.description.substring(0, 100)}...` : place.description}
+                                    </p>
+                                </Link>
                             </div>
                         ))}
                     </div>
