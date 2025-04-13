@@ -43,8 +43,8 @@ const CitiesPage = () => {
                         style={{
                             border: '1px solid #ccc',
                             borderRadius: '8px',
-                            padding: '15px',
-                            width: '250px', // Decreased card width
+                            padding: '25px',
+                            width: '310px', // Decreased card width
                             cursor: 'pointer',
                             transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
                         }}
