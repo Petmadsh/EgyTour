@@ -7,6 +7,8 @@ const CityDetails = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const imageSize = '150px'; // Define a fixed size for images
+
     useEffect(() => {
         const fetchCityData = async () => {
             try {
@@ -15,7 +17,6 @@ const CityDetails = () => {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
-                // Find the details for the specific city
                 const selectedCity = data.cities.find((city) => city.name === cityName);
 
                 if (selectedCity) {
@@ -47,11 +48,11 @@ const CityDetails = () => {
     }
 
     return (
-        <div>
+        <div style={{ padding: '20px' }}>
             <h2>{cityDetails.name} Details</h2>
 
             {/* City Data Section */}
-            <div>
+            <div style={{ marginBottom: '30px' }}>
                 <h3>About {cityDetails.name}</h3>
                 {cityDetails.citydata && (
                     <>
@@ -63,7 +64,12 @@ const CityDetails = () => {
                                         key={index}
                                         src={imagePath}
                                         alt={`${cityDetails.name} ${index}`}
-                                        style={{ width: '200px', height: 'auto', borderRadius: '4px' }}
+                                        style={{
+                                            width: imageSize,
+                                            height: imageSize,
+                                            objectFit: 'cover', // Maintain aspect ratio and cover the container
+                                            borderRadius: '8px',
+                                        }}
                                     />
                                 ))}
                             </div>
@@ -76,19 +82,38 @@ const CityDetails = () => {
             <div>
                 <h3>Places to Visit in {cityDetails.name}</h3>
                 {cityDetails.places && cityDetails.places.length > 0 ? (
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px' }}>
                         {cityDetails.places.map((place) => (
-                            <div key={place.name} style={{ border: '1px solid #eee', borderRadius: '8px', padding: '15px', width: '300px' }}>
+                            <div
+                                key={place.name}
+                                style={{
+                                    border: '1px solid #eee',
+                                    borderRadius: '8px',
+                                    padding: '10px',
+                                    width: 'clamp(200px, 30%, 250px)', // Smaller card width
+                                }}
+                            >
                                 <h4>{place.name}</h4>
-                                <p>Category: {place.category}</p>
+                                <p style={{ fontSize: '0.9em', marginBottom: '5px' }}>Category: {place.category}</p>
                                 <img
                                     src={place.image}
                                     alt={place.name}
-                                    style={{ width: '100%', height: 'auto', borderRadius: '4px', marginBottom: '10px' }}
+                                    style={{
+                                        width: '100%',
+                                        height: '150px', // Fixed height for place images
+                                        objectFit: 'cover',
+                                        borderRadius: '4px',
+                                        marginBottom: '8px',
+                                    }}
                                 />
-                                <p>{place.description}</p>
+                                <p style={{ fontSize: '0.9em' }}>
+                                    {place.description.length > 100 ? `${place.description.substring(0, 100)}...` : place.description}
+                                </p>
                                 {place.details && (
-                                    <Link to={`/city/${cityName}/place/${place.name.replace(/ /g, '-')}`}>
+                                    <Link
+                                        to={`/city/${cityName}/place/${place.name.replace(/ /g, '-')}`}
+                                        style={{ display: 'block', marginTop: '8px', fontSize: '0.85em' }}
+                                    >
                                         View Details
                                     </Link>
                                 )}
@@ -100,7 +125,9 @@ const CityDetails = () => {
                 )}
             </div>
 
-            <Link to="/cities">Back to Cities</Link>
+            <Link to="/cities" style={{ display: 'block', marginTop: '20px' }}>
+                Back to Cities
+            </Link>
         </div>
     );
 };
