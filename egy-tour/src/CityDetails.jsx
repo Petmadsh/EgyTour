@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; // Import arrow icons
 
 const CityDetails = () => {
     const { cityName } = useParams();
     const [cityDetails, setCityDetails] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    const imageSize = '150px'; // Define a fixed size for images
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+    const imageSize = '300px'; // Increased size for better visibility
 
     useEffect(() => {
         const fetchCityData = async () => {
@@ -35,6 +37,33 @@ const CityDetails = () => {
         fetchCityData();
     }, [cityName]);
 
+    useEffect(() => {
+        if (cityDetails?.citydata?.images && isAutoScrolling) {
+            const intervalId = setInterval(() => {
+                setCurrentImageIndex((prevIndex) =>
+                    (prevIndex + 1) % cityDetails.citydata.images.length
+                );
+            }, 3000); // Change image every 3 seconds
+            return () => clearInterval(intervalId); // Cleanup on unmount
+        }
+    }, [cityDetails?.citydata?.images, isAutoScrolling]);
+
+    const goToPreviousImage = () => {
+        setIsAutoScrolling(false); // Stop auto-scrolling on manual interaction
+        if (cityDetails?.citydata?.images) {
+            setCurrentImageIndex((prevIndex) =>
+                prevIndex === 0 ? cityDetails.citydata.images.length - 1 : prevIndex - 1
+            );
+        }
+    };
+
+    const goToNextImage = () => {
+        setIsAutoScrolling(false); // Stop auto-scrolling on manual interaction
+        if (cityDetails?.citydata?.images) {
+            setCurrentImageIndex((prevIndex) => (prevIndex + 1) % cityDetails.citydata.images.length);
+        }
+    };
+
     if (loading) {
         return <div>Loading city details...</div>;
     }
@@ -51,27 +80,103 @@ const CityDetails = () => {
         <div style={{ padding: '20px' }}>
             <h2>{cityDetails.name} Details</h2>
 
-            {/* City Data Section */}
+            {/* City Data Section with Image Carousel */}
             <div style={{ marginBottom: '30px' }}>
                 <h3>About {cityDetails.name}</h3>
                 {cityDetails.citydata && (
                     <>
                         <p>{cityDetails.citydata.description}</p>
                         {cityDetails.citydata.images && (
-                            <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', marginBottom: '20px' }}>
-                                {cityDetails.citydata.images.map((imagePath, index) => (
-                                    <img
-                                        key={index}
-                                        src={imagePath}
-                                        alt={`${cityDetails.name} ${index}`}
-                                        style={{
-                                            width: imageSize,
-                                            height: imageSize,
-                                            objectFit: 'cover', // Maintain aspect ratio and cover the container
-                                            borderRadius: '8px',
-                                        }}
-                                    />
-                                ))}
+                            <div style={{ position: 'relative' }}>
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        overflowX: 'hidden',
+                                        width: imageSize,
+                                        height: imageSize,
+                                        borderRadius: '8px',
+                                        margin: '10px auto',
+                                    }}
+                                >
+                                    {cityDetails.citydata.images.map((imagePath, index) => (
+                                        <img
+                                            key={index}
+                                            src={imagePath}
+                                            alt={`${cityDetails.name} ${index}`}
+                                            style={{
+                                                width: '100%',
+                                                height: '100%',
+                                                objectFit: 'cover',
+                                                flexShrink: 0,
+                                                transform: `translateX(-${currentImageIndex * 100}%)`,
+                                                transition: 'transform 0.5s ease-in-out',
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+                                {cityDetails.citydata.images.length > 1 && (
+                                    <>
+                                        <button
+                                            style={{
+                                                position: 'absolute',
+                                                left: '10px',
+                                                top: '50%',
+                                                transform: 'translateY(-50%)',
+                                                background: 'none',
+                                                border: 'none',
+                                                fontSize: '1.5em',
+                                                cursor: 'pointer',
+                                                opacity: 0.7,
+                                            }}
+                                            onClick={goToPreviousImage}
+                                        >
+                                            <FaChevronLeft />
+                                        </button>
+                                        <button
+                                            style={{
+                                                position: 'absolute',
+                                                right: '10px',
+                                                top: '50%',
+                                                transform: 'translateY(-50%)',
+                                                background: 'none',
+                                                border: 'none',
+                                                fontSize: '1.5em',
+                                                cursor: 'pointer',
+                                                opacity: 0.7,
+                                            }}
+                                            onClick={goToNextImage}
+                                        >
+                                            <FaChevronRight />
+                                        </button>
+                                        <div
+                                            style={{
+                                                position: 'absolute',
+                                                bottom: '10px',
+                                                left: '50%',
+                                                transform: 'translateX(-50%)',
+                                                display: 'flex',
+                                                gap: '5px',
+                                            }}
+                                        >
+                                            {cityDetails.citydata.images.map((_, index) => (
+                                                <div
+                                                    key={index}
+                                                    style={{
+                                                        width: '8px',
+                                                        height: '8px',
+                                                        borderRadius: '50%',
+                                                        backgroundColor: index === currentImageIndex ? '#333' : '#ccc',
+                                                        cursor: 'pointer',
+                                                    }}
+                                                    onClick={() => {
+                                                        setIsAutoScrolling(false);
+                                                        setCurrentImageIndex(index);
+                                                    }}
+                                                />
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         )}
                     </>
@@ -90,7 +195,7 @@ const CityDetails = () => {
                                     border: '1px solid #eee',
                                     borderRadius: '8px',
                                     padding: '10px',
-                                    width: 'clamp(200px, 30%, 250px)', // Smaller card width
+                                    width: 'clamp(200px, 30%, 250px)',
                                 }}
                             >
                                 <h4>{place.name}</h4>
@@ -100,7 +205,7 @@ const CityDetails = () => {
                                     alt={place.name}
                                     style={{
                                         width: '100%',
-                                        height: '150px', // Fixed height for place images
+                                        height: '150px',
                                         objectFit: 'cover',
                                         borderRadius: '4px',
                                         marginBottom: '8px',
