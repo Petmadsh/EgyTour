@@ -11,7 +11,7 @@
                     "/src/images/cities/cairo/cairo0.jpg",
                     "/src/images/cities/cairo/cairo1.jpg",
                     "/src/images/cities/cairo/cairo2.jpg",
-                    "/src/images/cities/cairo/cairo0.jpg",
+                    "/src/images/cities/cairo/cairo3.jpeg",
                     "/src/images/cities/cairo/cairo4.jpg"
                     
                 ]
@@ -51,7 +51,82 @@
                         "placeDescription": "The Church of Saint Sergius and Bacchus, also known as Abu Serga, is built upon an ancient Roman fort in Old Cairo. The history of the church is still being debated. Some scholars believe that it dates to the late fourth to early fifth centuries AD, while others believe that it should approximately be dated to 17th century AD. This church has acquired a special religious status among Coptic churches because it is associated with the Holy Family's journey through Egypt. It is named after renowned early fourth century AD saints, Sergius and Bacchus, both of whom were martyred at al-Resafa in Syria for their Christian beliefs. Like various other early Christian churches, the Church of Abu Serga and its underground cave are designed in the basilica layout, and thus together consist of three parts: the narthex, nave, and sanctuary (the cave being below the sanctuary). The church is characterized by its unique architectural and artistic elements that reflect the spirit of Coptic church architecture in Egypt. These include the pulpit, baptismal font, inlaid ivory and wood templon, and unique religious decoration of the saints and apostles decorating the various domes, walls and columns.",
                         "ticketPrices": "Free entry"
                     }
+                },
+
+                {
+                    "name": "The Hanging Church",
+                    "category": "Coptic",
+                    "description": "The Hanging Church, also known as Saint Virgin Mary's Coptic Orthodox Church, is one of the oldest and most famous churches in Cairo, Egypt. Located in the heart of Old Cairo, it is called the 'Hanging' Church because it was built above a gatehouse of the ancient Roman fortress of Babylon, with its nave suspended over a passageway.",
+                    "image": "/src/images/cities/cairo/places/The_Hanging_Church/The_Hanging_Church.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/abo_serga_church0.jpg",
+                            "/src/images/abo_serga_church1.jpg",
+                            "/src/images/abo_serga_church2.jpg"
+                        ],
+                        "location": "Al-Gamaleya, Cairo",
+                        "openingHours": "9:00 AM - 10:00 PM daily",
+                        "placeDescription": "The Church of Saint Sergius and Bacchus, also known as Abu Serga, is built upon an ancient Roman fort in Old Cairo. The history of the church is still being debated. Some scholars believe that it dates to the late fourth to early fifth centuries AD, while others believe that it should approximately be dated to 17th century AD. This church has acquired a special religious status among Coptic churches because it is associated with the Holy Family's journey through Egypt. It is named after renowned early fourth century AD saints, Sergius and Bacchus, both of whom were martyred at al-Resafa in Syria for their Christian beliefs. Like various other early Christian churches, the Church of Abu Serga and its underground cave are designed in the basilica layout, and thus together consist of three parts: the narthex, nave, and sanctuary (the cave being below the sanctuary). The church is characterized by its unique architectural and artistic elements that reflect the spirit of Coptic church architecture in Egypt. These include the pulpit, baptismal font, inlaid ivory and wood templon, and unique religious decoration of the saints and apostles decorating the various domes, walls and columns.",
+                        "ticketPrices": "Free entry"
+                    }
+                },
+
+                {
+                    "name": "Amr ibn al As Mosque",
+                    "category": "Islamic",
+                    "description": "The Amr ibn al-As Mosque, located in Cairo, Egypt, holds the distinction of being the first mosque ever built on the African continent. Established in 641–642 AD by the commander Amr ibn al-As after his conquest of Egypt, it originally served as the center of the new city of Fustat, which eventually became part of Cairo.",
+                    "image": "/src/images/cities/cairo/places/Amr_ibn_al-As_Mosque/Amr_ibn_alAs_Mosque.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/abo_serga_church0.jpg",
+                            "/src/images/abo_serga_church1.jpg",
+                            "/src/images/abo_serga_church2.jpg"
+                        ],
+                        "location": "Al-Gamaleya, Cairo",
+                        "openingHours": "9:00 AM - 10:00 PM daily",
+                        "placeDescription": "The Church of Saint Sergius and Bacchus, also known as Abu Serga, is built upon an ancient Roman fort in Old Cairo. The history of the church is still being debated. Some scholars believe that it dates to the late fourth to early fifth centuries AD, while others believe that it should approximately be dated to 17th century AD. This church has acquired a special religious status among Coptic churches because it is associated with the Holy Family's journey through Egypt. It is named after renowned early fourth century AD saints, Sergius and Bacchus, both of whom were martyred at al-Resafa in Syria for their Christian beliefs. Like various other early Christian churches, the Church of Abu Serga and its underground cave are designed in the basilica layout, and thus together consist of three parts: the narthex, nave, and sanctuary (the cave being below the sanctuary). The church is characterized by its unique architectural and artistic elements that reflect the spirit of Coptic church architecture in Egypt. These include the pulpit, baptismal font, inlaid ivory and wood templon, and unique religious decoration of the saints and apostles decorating the various domes, walls and columns.",
+                        "ticketPrices": "Free entry"
+                    }
+                },
+
+                {
+                    "name": "Coptic Museum",
+                    "category": "Coptic",
+                    "description": "The Coptic Museum, located in Old Cairo, Egypt, is a premier institution dedicated to preserving and showcasing Coptic Christian heritage. Established in 1908, the museum is situated within the walls of the Babylon Fortress, an ancient Roman structure.",
+                    "image": "/src/images/cities/cairo/places/Coptic_Museum/Coptic_Museum.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/abo_serga_church0.jpg",
+                            "/src/images/abo_serga_church1.jpg",
+                            "/src/images/abo_serga_church2.jpg"
+                        ],
+                        "location": "Al-Gamaleya, Cairo",
+                        "openingHours": "9:00 AM - 10:00 PM daily",
+                        "placeDescription": "The Church of Saint Sergius and Bacchus, also known as Abu Serga, is built upon an ancient Roman fort in Old Cairo. The history of the church is still being debated. Some scholars believe that it dates to the late fourth to early fifth centuries AD, while others believe that it should approximately be dated to 17th century AD. This church has acquired a special religious status among Coptic churches because it is associated with the Holy Family's journey through Egypt. It is named after renowned early fourth century AD saints, Sergius and Bacchus, both of whom were martyred at al-Resafa in Syria for their Christian beliefs. Like various other early Christian churches, the Church of Abu Serga and its underground cave are designed in the basilica layout, and thus together consist of three parts: the narthex, nave, and sanctuary (the cave being below the sanctuary). The church is characterized by its unique architectural and artistic elements that reflect the spirit of Coptic church architecture in Egypt. These include the pulpit, baptismal font, inlaid ivory and wood templon, and unique religious decoration of the saints and apostles decorating the various domes, walls and columns.",
+                        "ticketPrices": "Free entry"
+                    }
+                },
+
+                {
+                    "name": "Museum Of Islamic Art",
+                    "category": "Islamic",
+                    "description": "The Museum of Islamic Art in Cairo, located in the Bab El Khalq area, is one of the foremost institutions dedicated to the preservation and presentation of Islamic heritage. Established in 1903, the museum houses an extensive and diverse collection of artifacts from various Islamic periods, encompassing a wide geographical area from Spain to India.",
+                    "image": "/src/images/cities/cairo/places/Museum_Of_Islamic_Art/Museum_Of_Islamic_Art.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/abo_serga_church0.jpg",
+                            "/src/images/abo_serga_church1.jpg",
+                            "/src/images/abo_serga_church2.jpg"
+                        ],
+                        "location": "Al-Gamaleya, Cairo",
+                        "openingHours": "9:00 AM - 10:00 PM daily",
+                        "placeDescription": "The Church of Saint Sergius and Bacchus, also known as Abu Serga, is built upon an ancient Roman fort in Old Cairo. The history of the church is still being debated. Some scholars believe that it dates to the late fourth to early fifth centuries AD, while others believe that it should approximately be dated to 17th century AD. This church has acquired a special religious status among Coptic churches because it is associated with the Holy Family's journey through Egypt. It is named after renowned early fourth century AD saints, Sergius and Bacchus, both of whom were martyred at al-Resafa in Syria for their Christian beliefs. Like various other early Christian churches, the Church of Abu Serga and its underground cave are designed in the basilica layout, and thus together consist of three parts: the narthex, nave, and sanctuary (the cave being below the sanctuary). The church is characterized by its unique architectural and artistic elements that reflect the spirit of Coptic church architecture in Egypt. These include the pulpit, baptismal font, inlaid ivory and wood templon, and unique religious decoration of the saints and apostles decorating the various domes, walls and columns.",
+                        "ticketPrices": "Free entry"
+                    }
                 }
+
+
+
             ]
         },
 
@@ -66,21 +141,21 @@
             "description": "Giza, a city on the western outskirts of Cairo, is renowned worldwide for its ancient monuments.",
             "image": "/src/images/cities/giza.jpeg",
             "citydata": {
-                "description": "Cairo, the capital of Egypt, is a vibrant metropolis known for its rich history and cultural heritage. Located along the Nile River, Cairo is home to numerous historic sites, including the medieval Islamic Cairo, the Egyptian Museum with its vast collection of ancient artifacts, and the bustling Khan El Khalili bazaar. The city serves as a gateway to the nearby Giza Plateau, where the iconic pyramids and the Great Sphinx are situated. Cairo's mix of ancient monuments, bustling markets, and modern urban life makes it a fascinating destination.",
+                "description": "Giza, is famous for its ancient monuments, including the Great Pyramid, the Pyramid of Khafre, the Pyramid of Menkaure, and the Great Sphinx. Located on the west bank of the Nile River near Cairo, Giza's pyramids are among the most iconic and enduring symbols of ancient Egyptian civilization, attracting tourists from around the world. The site is part of the larger Giza Plateau, which features other archaeological remains, including temples and cemeteries.",
                 "images": [
-                    "/src/images/cities/cairo/cairo0.jpg",
-                    "/src/images/cities/cairo/cairo1.jpg",
-                    "/src/images/cities/cairo/cairo2.jpg",
-                    "/src/images/cities/cairo/cairo0.jpg",
-                    "/src/images/cities/cairo/cairo4.jpg"
+                    "/src/images/cities/giza/giza0.jpg",
+                    "/src/images/cities/giza/giza1.jpg",
+                    "/src/images/cities/giza/giza2.jpg",
+                    "/src/images/cities/giza/giza3.jpg",
+                    "/src/images/cities/giza/giza4.jpg"
                 ]
             },
             "places": [
                 {
-                    "name": "Egyptian Museum",
+                    "name": "Giza Pyramids",
                     "category": "Pharaonic",
-                    "description": "The Egyptian Museum in Cairo, also known as the Museum of Egyptian Antiquities, is one of the world's most renowned museums, housing an extensive collection of ancient Egyptian artifacts. Established in 1902 and located in Tahrir Square, the museum boasts over 120,000 items, offering a comprehensive overview of Egypt's rich history. Key highlights include the treasures of Tutankhamun, featuring the famous gold mask and sarcophagus, as well as statues, mummies, jewellery, and everyday objects from ancient Egyptian life. ",
-                    "image": "/src/images/cities/cairo/places/The_Egyptian_Museum/The_Egyptian_Museum.jpg",
+                    "description": "The Giza Pyramids, located on the Giza Plateau near Cairo, Egypt, are among the most iconic monuments of ancient Egypt. The complex includes three major pyramids, built as royal tombs during the Fourth Dynasty (circa 2600-2500 BCE).",
+                    "image": "/src/images/cities/giza/places/pyramids/Pyramids_of_the_Giza.jpg",
                     "details": {
                         "images": [
                             "/src/images/egyptian_museum0.jpg",
@@ -95,10 +170,28 @@
                     }
                 },
                 {
-                    "name": "Saints Sergius and Bacchus Church",
-                    "category": "Coptic",
-                    "description": "Saints Sergius and Bacchus Church, also known as Abu Serga, is one of the oldest Coptic churches in Cairo, Egypt. Situated in the heart of Old Cairo, this historic church is believed to have been built in the 4th century AD over a cave where the Holy Family is said to have rested during their flight into Egypt.",
-                    "image": "/src/images/cities/cairo/places/Saints_Sergius_and_Bacchus_Church/Saints_Sergius_and_Bacchus_Church.jpg",
+                    "name": "Imhotep Museum",
+                    "category": "Pharaonic",
+                    "description": "The museum was built at Saqqara area in memory of Imhotep - the architect of the pyramidal tomb of King Djoser, and the first to use stone on a large scale for building an integrated hierarchical group.",
+                    "image": "/src/images/cities/giza/places/Imhotep_Museum/Imhotep_Museum.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/abo_serga_church0.jpg",
+                            "/src/images/abo_serga_church1.jpg",
+                            "/src/images/abo_serga_church2.jpg"
+                        ],
+                        "location": "Al-Gamaleya, Cairo",
+                        "openingHours": "9:00 AM - 10:00 PM daily",
+                        "placeDescription": "The Church of Saint Sergius and Bacchus, also known as Abu Serga, is built upon an ancient Roman fort in Old Cairo. The history of the church is still being debated. Some scholars believe that it dates to the late fourth to early fifth centuries AD, while others believe that it should approximately be dated to 17th century AD. This church has acquired a special religious status among Coptic churches because it is associated with the Holy Family's journey through Egypt. It is named after renowned early fourth century AD saints, Sergius and Bacchus, both of whom were martyred at al-Resafa in Syria for their Christian beliefs. Like various other early Christian churches, the Church of Abu Serga and its underground cave are designed in the basilica layout, and thus together consist of three parts: the narthex, nave, and sanctuary (the cave being below the sanctuary). The church is characterized by its unique architectural and artistic elements that reflect the spirit of Coptic church architecture in Egypt. These include the pulpit, baptismal font, inlaid ivory and wood templon, and unique religious decoration of the saints and apostles decorating the various domes, walls and columns.",
+                        "ticketPrices": "Free entry"
+                    }
+                },
+
+                {
+                    "name": "Saqqara",
+                    "category": "Pharaonic",
+                    "description": "Saqqara, located about 30 kilometers south of Cairo, Egypt, is a vast ancient burial ground serving as the necropolis for the city of Memphis. It is famous for its numerous pyramids, including the notable Step Pyramid of Djoser.",
+                    "image": "/src/images/cities/giza/places/saqqara/saqqara.jpg",
                     "details": {
                         "images": [
                             "/src/images/abo_serga_church0.jpg",
@@ -121,21 +214,22 @@
             "description": "Luxor, often referred to as the world's greatest open-air museum,located in southern Egypt renowned for its extraordinary ancient monuments.",
             "image": "/src/images/cities/luxor.jpeg",
             "citydata": {
-                "description": "Cairo, the capital of Egypt, is a vibrant metropolis known for its rich history and cultural heritage. Located along the Nile River, Cairo is home to numerous historic sites, including the medieval Islamic Cairo, the Egyptian Museum with its vast collection of ancient artifacts, and the bustling Khan El Khalili bazaar. The city serves as a gateway to the nearby Giza Plateau, where the iconic pyramids and the Great Sphinx are situated. Cairo's mix of ancient monuments, bustling markets, and modern urban life makes it a fascinating destination.",
+                "description": "Luxor, is often referred to as the world's greatest open-air museum due to its extraordinary concentration of ancient monuments. Located on the east bank of the Nile River, Luxor is home to the majestic Karnak Temple and Luxor Temple. Across the river lies the Valley of the Kings, where the tomb of Tutankhamun was discovered, along with the Valley of the Queens. The city also features the impressive mortuary temple of Hatshepsut and the Colossi of Memnon. Luxor's rich archaeological heritage and well-preserved ruins make it a major attraction for history enthusiasts.",
                 "images": [
-                    "/src/images/cities/cairo/cairo0.jpg",
-                    "/src/images/cities/cairo/cairo1.jpg",
-                    "/src/images/cities/cairo/cairo2.jpg",
-                    "/src/images/cities/cairo/cairo0.jpg",
-                    "/src/images/cities/cairo/cairo4.jpg"
+                    "/src/images/cities/luxor/luxor0.jpg",
+                    "/src/images/cities/luxor/luxor1.jpg",
+                    "/src/images/cities/luxor/luxor2.jpg",
+                    "/src/images/cities/luxor/luxor3.jpg",
+                    "/src/images/cities/luxor/luxor4.jpg"
+                  
                 ]
             },
             "places": [
                 {
-                    "name": "Egyptian Museum",
+                    "name": "Mummification Museum",
                     "category": "Pharaonic",
-                    "description": "The Egyptian Museum in Cairo, also known as the Museum of Egyptian Antiquities, is one of the world's most renowned museums, housing an extensive collection of ancient Egyptian artifacts. Established in 1902 and located in Tahrir Square, the museum boasts over 120,000 items, offering a comprehensive overview of Egypt's rich history. Key highlights include the treasures of Tutankhamun, featuring the famous gold mask and sarcophagus, as well as statues, mummies, jewellery, and everyday objects from ancient Egyptian life. ",
-                    "image": "/src/images/cities/cairo/places/The_Egyptian_Museum/The_Egyptian_Museum.jpg",
+                    "description": "Mummification museum in Luxor (ancient Thebes), intended to provide an understanding of the process to preserve the body. The ancient Egyptians not only applied embalming to dead humans but also to many animals (Cats, dogs, crocodiles…. etc.). God Anubis(the Jackal) was the god of embalming and mummification.",
+                    "image": "/src/images/cities/luxor/places/Mummification_Museum/Mummification_Museum.jpg",
                     "details": {
                         "images": [
                             "/src/images/egyptian_museum0.jpg",
@@ -150,10 +244,64 @@
                     }
                 },
                 {
-                    "name": "Saints Sergius and Bacchus Church",
-                    "category": "Coptic",
-                    "description": "Saints Sergius and Bacchus Church, also known as Abu Serga, is one of the oldest Coptic churches in Cairo, Egypt. Situated in the heart of Old Cairo, this historic church is believed to have been built in the 4th century AD over a cave where the Holy Family is said to have rested during their flight into Egypt.",
-                    "image": "/src/images/cities/cairo/places/Saints_Sergius_and_Bacchus_Church/Saints_Sergius_and_Bacchus_Church.jpg",
+                    "name": "Hatshepsut Temple",
+                    "category": "Pharaonic",
+                    "description": "Hatshepsut (c.1473–1458 BC), the queen who became pharaoh, built a magnificent temple at Deir al-Bahari, on the west back of Luxor. It lies directly across the Nile from Karnak Temple, the main sanctuary of the god Amun. Hatshepsut’s temple, Djeser-djeseru “the Holy of Holies” was designed by the chief steward of Amun, Senenmut.",
+                    "image": "/src/images/cities/luxor/places/Hatshepsut_Temple/Hatshepsut_Temple.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/abo_serga_church0.jpg",
+                            "/src/images/abo_serga_church1.jpg",
+                            "/src/images/abo_serga_church2.jpg"
+                        ],
+                        "location": "Al-Gamaleya, Cairo",
+                        "openingHours": "9:00 AM - 10:00 PM daily",
+                        "placeDescription": "The Church of Saint Sergius and Bacchus, also known as Abu Serga, is built upon an ancient Roman fort in Old Cairo. The history of the church is still being debated. Some scholars believe that it dates to the late fourth to early fifth centuries AD, while others believe that it should approximately be dated to 17th century AD. This church has acquired a special religious status among Coptic churches because it is associated with the Holy Family's journey through Egypt. It is named after renowned early fourth century AD saints, Sergius and Bacchus, both of whom were martyred at al-Resafa in Syria for their Christian beliefs. Like various other early Christian churches, the Church of Abu Serga and its underground cave are designed in the basilica layout, and thus together consist of three parts: the narthex, nave, and sanctuary (the cave being below the sanctuary). The church is characterized by its unique architectural and artistic elements that reflect the spirit of Coptic church architecture in Egypt. These include the pulpit, baptismal font, inlaid ivory and wood templon, and unique religious decoration of the saints and apostles decorating the various domes, walls and columns.",
+                        "ticketPrices": "Free entry"
+                    }
+                },
+
+                {
+                    "name": "Tomb of Ramesses VI",
+                    "category": "Pharaonic",
+                    "description": "The Tomb of Ramesses VI, designated as KV9, is one of the most remarkable tombs in the Valley of the Kings near Luxor, Egypt. Built for the 20th Dynasty pharaoh Ramesses VI, who ruled from approximately 1145 to 1137 BC, the tomb is renowned for its stunning and well-preserved wall decorations.",
+                    "image": "/src/images/cities/luxor/places/Tomb_of_Ramesses_VI/Tomb_of_Ramesses_VI.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/abo_serga_church0.jpg",
+                            "/src/images/abo_serga_church1.jpg",
+                            "/src/images/abo_serga_church2.jpg"
+                        ],
+                        "location": "Al-Gamaleya, Cairo",
+                        "openingHours": "9:00 AM - 10:00 PM daily",
+                        "placeDescription": "The Church of Saint Sergius and Bacchus, also known as Abu Serga, is built upon an ancient Roman fort in Old Cairo. The history of the church is still being debated. Some scholars believe that it dates to the late fourth to early fifth centuries AD, while others believe that it should approximately be dated to 17th century AD. This church has acquired a special religious status among Coptic churches because it is associated with the Holy Family's journey through Egypt. It is named after renowned early fourth century AD saints, Sergius and Bacchus, both of whom were martyred at al-Resafa in Syria for their Christian beliefs. Like various other early Christian churches, the Church of Abu Serga and its underground cave are designed in the basilica layout, and thus together consist of three parts: the narthex, nave, and sanctuary (the cave being below the sanctuary). The church is characterized by its unique architectural and artistic elements that reflect the spirit of Coptic church architecture in Egypt. These include the pulpit, baptismal font, inlaid ivory and wood templon, and unique religious decoration of the saints and apostles decorating the various domes, walls and columns.",
+                        "ticketPrices": "Free entry"
+                    }
+                },
+
+                {
+                    "name": "Tomb of Tutankhamun",
+                    "category": "Pharaonic",
+                    "description": "The Tomb of Tutankhamun, designated as KV62, is perhaps the most famous and significant archaeological discovery of the 20th century. Located in the Valley of the Kings near Luxor, Egypt, the tomb was unearthed in 1922 by Howard Carter, revealing an astonishing collection of artifacts from the reign of the young pharaoh Tutankhamun, who ruled Egypt during the 18th Dynasty (approximately 1332–1323 BC).",
+                    "image": "/src/images/cities/luxor/places/Tomb_of_Tutankhamun/Tomb_of_Tutankhamun.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/abo_serga_church0.jpg",
+                            "/src/images/abo_serga_church1.jpg",
+                            "/src/images/abo_serga_church2.jpg"
+                        ],
+                        "location": "Al-Gamaleya, Cairo",
+                        "openingHours": "9:00 AM - 10:00 PM daily",
+                        "placeDescription": "The Church of Saint Sergius and Bacchus, also known as Abu Serga, is built upon an ancient Roman fort in Old Cairo. The history of the church is still being debated. Some scholars believe that it dates to the late fourth to early fifth centuries AD, while others believe that it should approximately be dated to 17th century AD. This church has acquired a special religious status among Coptic churches because it is associated with the Holy Family's journey through Egypt. It is named after renowned early fourth century AD saints, Sergius and Bacchus, both of whom were martyred at al-Resafa in Syria for their Christian beliefs. Like various other early Christian churches, the Church of Abu Serga and its underground cave are designed in the basilica layout, and thus together consist of three parts: the narthex, nave, and sanctuary (the cave being below the sanctuary). The church is characterized by its unique architectural and artistic elements that reflect the spirit of Coptic church architecture in Egypt. These include the pulpit, baptismal font, inlaid ivory and wood templon, and unique religious decoration of the saints and apostles decorating the various domes, walls and columns.",
+                        "ticketPrices": "Free entry"
+                    }
+                },
+
+                {
+                    "name": "Tomb of Sety I",
+                    "category": "Pharaonic",
+                    "description": "The Tomb of Sety I, known as KV17, is one of the most celebrated and elaborate tombs in the Valley of the Kings near Luxor, Egypt. Sety I, the second pharaoh of the 19th Dynasty, ruled Egypt from around 1290 to 1279 BC. His tomb is renowned for its exceptional decoration, intricate hieroglyphs, and detailed reliefs, making it one of the finest examples of ancient Egyptian funerary art.",
+                    "image": "/src/images/cities/luxor/places/Tomb_of_Sety_I/Tomb_of_Sety_I.jpg",
                     "details": {
                         "images": [
                             "/src/images/abo_serga_church0.jpg",
@@ -166,6 +314,8 @@
                         "ticketPrices": "Free entry"
                     }
                 }
+
+
             ]
         },
 
@@ -174,21 +324,21 @@
             "description": "Aswan, located in southern Egypt on the Nile River, is known for its tranquil beauty and historical significance.",
             "image": "/src/images/cities/aswan.jpeg",
             "citydata": {
-                "description": "Cairo, the capital of Egypt, is a vibrant metropolis known for its rich history and cultural heritage. Located along the Nile River, Cairo is home to numerous historic sites, including the medieval Islamic Cairo, the Egyptian Museum with its vast collection of ancient artifacts, and the bustling Khan El Khalili bazaar. The city serves as a gateway to the nearby Giza Plateau, where the iconic pyramids and the Great Sphinx are situated. Cairo's mix of ancient monuments, bustling markets, and modern urban life makes it a fascinating destination.",
+                "description": "Aswan, is a picturesque city located on the Nile River in the southern part of the country. Known for its beautiful landscapes, it is a gateway to the ancient Nubian region. Aswan is home to significant historical sites such as the Philae Temple, the Aswan High Dam, and the Unfinished Obelisk. The city is also famous for its vibrant souks, scenic river views, and proximity to the stunning temples of Abu Simbel. Aswan's blend of natural beauty and ancient history makes it a popular destination for travellers.",
                 "images": [
-                    "/src/images/cities/cairo/cairo0.jpg",
-                    "/src/images/cities/cairo/cairo1.jpg",
-                    "/src/images/cities/cairo/cairo2.jpg",
-                    "/src/images/cities/cairo/cairo0.jpg",
-                    "/src/images/cities/cairo/cairo4.jpg"
+                    "/src/images/cities/aswan/aswan0.jpg",
+                    "/src/images/cities/aswan/aswan1.jpg",
+                    "/src/images/cities/aswan/aswan2.jpg",
+                    "/src/images/cities/aswan/aswan3.jpg",
+                    "/src/images/cities/aswan/aswan4.jpg"
                 ]
             },
             "places": [
                 {
-                    "name": "Egyptian Museum",
+                    "name": "Crocodile Museum",
                     "category": "Pharaonic",
-                    "description": "The Egyptian Museum in Cairo, also known as the Museum of Egyptian Antiquities, is one of the world's most renowned museums, housing an extensive collection of ancient Egyptian artifacts. Established in 1902 and located in Tahrir Square, the museum boasts over 120,000 items, offering a comprehensive overview of Egypt's rich history. Key highlights include the treasures of Tutankhamun, featuring the famous gold mask and sarcophagus, as well as statues, mummies, jewellery, and everyday objects from ancient Egyptian life. ",
-                    "image": "/src/images/cities/cairo/places/The_Egyptian_Museum/The_Egyptian_Museum.jpg",
+                    "description": "The Crocodile Museum is located next to the Kom Ombo temple, north of Aswan. This museum has highlighted the crocodile-headed god Sobek since it was opened in 2012. Its main exhibition hall displays the mummified mummies of Nile crocodiles. ",
+                    "image": "/src/images/cities/aswan/places/Crocodile_Museum/Crocodile_Museum.png",
                     "details": {
                         "images": [
                             "/src/images/egyptian_museum0.jpg",
@@ -203,10 +353,27 @@
                     }
                 },
                 {
-                    "name": "Saints Sergius and Bacchus Church",
-                    "category": "Coptic",
-                    "description": "Saints Sergius and Bacchus Church, also known as Abu Serga, is one of the oldest Coptic churches in Cairo, Egypt. Situated in the heart of Old Cairo, this historic church is believed to have been built in the 4th century AD over a cave where the Holy Family is said to have rested during their flight into Egypt.",
-                    "image": "/src/images/cities/cairo/places/Saints_Sergius_and_Bacchus_Church/Saints_Sergius_and_Bacchus_Church.jpg",
+                    "name": "Abu Simbel",
+                    "category": "Pharaonic",
+                    "description": "The Great Temple of Abu Simbel, in Nubia near Egypt’s southern border, is among the most awe-inspiring monuments of Egypt. It was cut into the living rock by King Ramesses II (the Great) of the Nineteenth Dynasty, around 1264 BC.",
+                    "image": "/src/images/cities/aswan/places/Abu_Simbel/Abu_Simbel.jpg",
+                    "details": {
+                        "images": [
+                            "/src/images/abo_serga_church0.jpg",
+                            "/src/images/abo_serga_church1.jpg",
+                            "/src/images/abo_serga_church2.jpg"
+                        ],
+                        "location": "Al-Gamaleya, Cairo",
+                        "openingHours": "9:00 AM - 10:00 PM daily",
+                        "placeDescription": "The Church of Saint Sergius and Bacchus, also known as Abu Serga, is built upon an ancient Roman fort in Old Cairo. The history of the church is still being debated. Some scholars believe that it dates to the late fourth to early fifth centuries AD, while others believe that it should approximately be dated to 17th century AD. This church has acquired a special religious status among Coptic churches because it is associated with the Holy Family's journey through Egypt. It is named after renowned early fourth century AD saints, Sergius and Bacchus, both of whom were martyred at al-Resafa in Syria for their Christian beliefs. Like various other early Christian churches, the Church of Abu Serga and its underground cave are designed in the basilica layout, and thus together consist of three parts: the narthex, nave, and sanctuary (the cave being below the sanctuary). The church is characterized by its unique architectural and artistic elements that reflect the spirit of Coptic church architecture in Egypt. These include the pulpit, baptismal font, inlaid ivory and wood templon, and unique religious decoration of the saints and apostles decorating the various domes, walls and columns.",
+                        "ticketPrices": "Free entry"
+                    }
+                },
+                {
+                    "name": "Philae",
+                    "category": "Pharaonic",
+                    "description": "The monuments of Philae include many structures dating predominantly to the Ptolemaic Period (332–30 BC). The most prominent of these is a temple begun by Ptolemy II Philadelphus (285–246 BC), which he dedicated to Isis, the mother of Horus, the god of kingship. A scene in the mammisi, or birth room, where the birth of Horus was celebrated, depicts Isis suckling her son Horus in the marshes",
+                    "image": "/src/images/cities/aswan/places/Philae/Philae.jpg",
                     "details": {
                         "images": [
                             "/src/images/abo_serga_church0.jpg",
