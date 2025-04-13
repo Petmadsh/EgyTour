@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; // Import arrow icons
 
@@ -9,7 +9,12 @@ const CityDetails = () => {
     const [error, setError] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isAutoScrolling, setIsAutoScrolling] = useState(true);
-    const imageSize = '300px'; // Increased size for better visibility
+    const [manualInteraction, setManualInteraction] = useState(false);
+    const imageWidth = '600px'; // Increased width
+    const imageHeight = '300px'; // Decreased height
+    const autoScrollInterval = 3000; // Time in milliseconds for auto-scroll
+    const autoScrollTimeout = useRef(null); // Ref to hold the timeout
+    const resumeDelay = 2000; // Reduced delay to 2 seconds
 
     useEffect(() => {
         const fetchCityData = async () => {
@@ -38,18 +43,25 @@ const CityDetails = () => {
     }, [cityName]);
 
     useEffect(() => {
-        if (cityDetails?.citydata?.images && isAutoScrolling) {
-            const intervalId = setInterval(() => {
+        let intervalId;
+        if (cityDetails?.citydata?.images && isAutoScrolling && !manualInteraction && cityDetails.citydata.images.length > 1) {
+            intervalId = setInterval(() => {
                 setCurrentImageIndex((prevIndex) =>
                     (prevIndex + 1) % cityDetails.citydata.images.length
                 );
-            }, 3000); // Change image every 3 seconds
-            return () => clearInterval(intervalId); // Cleanup on unmount
+            }, autoScrollInterval);
         }
-    }, [cityDetails?.citydata?.images, isAutoScrolling]);
+        return () => clearInterval(intervalId);
+    }, [cityDetails?.citydata?.images, isAutoScrolling, manualInteraction, autoScrollInterval]);
+
+    const handleManualNavigation = () => {
+        setManualInteraction(true);
+        clearTimeout(autoScrollTimeout.current);
+        autoScrollTimeout.current = setTimeout(() => setManualInteraction(false), resumeDelay);
+    };
 
     const goToPreviousImage = () => {
-        setIsAutoScrolling(false); // Stop auto-scrolling on manual interaction
+        handleManualNavigation();
         if (cityDetails?.citydata?.images) {
             setCurrentImageIndex((prevIndex) =>
                 prevIndex === 0 ? cityDetails.citydata.images.length - 1 : prevIndex - 1
@@ -58,10 +70,15 @@ const CityDetails = () => {
     };
 
     const goToNextImage = () => {
-        setIsAutoScrolling(false); // Stop auto-scrolling on manual interaction
+        handleManualNavigation();
         if (cityDetails?.citydata?.images) {
             setCurrentImageIndex((prevIndex) => (prevIndex + 1) % cityDetails.citydata.images.length);
         }
+    };
+
+    const handleDotClick = (index) => {
+        handleManualNavigation();
+        setCurrentImageIndex(index);
     };
 
     if (loading) {
@@ -87,15 +104,14 @@ const CityDetails = () => {
                     <>
                         <p>{cityDetails.citydata.description}</p>
                         {cityDetails.citydata.images && (
-                            <div style={{ position: 'relative' }}>
+                            <div style={{ position: 'relative', width: 'fit-content', margin: '10px auto' }}>
                                 <div
                                     style={{
                                         display: 'flex',
                                         overflowX: 'hidden',
-                                        width: imageSize,
-                                        height: imageSize,
+                                        width: imageWidth,
+                                        height: imageHeight,
                                         borderRadius: '8px',
-                                        margin: '10px auto',
                                     }}
                                 >
                                     {cityDetails.citydata.images.map((imagePath, index) => (
@@ -162,16 +178,13 @@ const CityDetails = () => {
                                                 <div
                                                     key={index}
                                                     style={{
-                                                        width: '8px',
-                                                        height: '8px',
+                                                        width: '10px',
+                                                        height: '10px',
                                                         borderRadius: '50%',
                                                         backgroundColor: index === currentImageIndex ? '#333' : '#ccc',
                                                         cursor: 'pointer',
                                                     }}
-                                                    onClick={() => {
-                                                        setIsAutoScrolling(false);
-                                                        setCurrentImageIndex(index);
-                                                    }}
+                                                    onClick={() => handleDotClick(index)}
                                                 />
                                             ))}
                                         </div>
