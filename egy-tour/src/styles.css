@@ -67,3 +67,29 @@
     height: 14px;
     background-color: #333;
 }
+
+.city-card {
+    border: 2px solid #D8532A;
+    border-radius: 8px;
+    padding: 25px;
+    width: 310px; /* Decreased card width */
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.city-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px 0 rgba(223, 99, 11, 0.86);
+}
+
+.city-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.city-card p {
+    font-size: 0.9em;
+}
