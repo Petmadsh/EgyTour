@@ -264,28 +264,47 @@ const PlaceDetails = () => {
                 </div>
             )}
 
-            <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div style={{ flex: 1, marginRight: '20px' }}>
-                    <h3>Location</h3>
-                    <div ref={mapContainer} style={{ height: '300px', width: '100%', borderRadius: '8px' }} />
+            {/* Beautified Map and Weather */}
+            <div style={{
+                marginBottom: '40px',
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '20px'
+            }}>
+                {/* Map Section */}
+                <div style={{
+                    backgroundColor: '#fff',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+                    padding: '20px'
+                }}>
+                    <h3 style={{ marginBottom: '15px', color: '#333' }}>📍 Location</h3>
+                    <div ref={mapContainer} style={{ height: '300px', width: '100%', borderRadius: '8px', overflow: 'hidden' }} />
                 </div>
-                <div style={{ flex: 1 }}>
-                    <h3>Weather</h3>
-                    <div style={{ padding: '15px', border: '1px solid #eee', borderRadius: '8px', backgroundColor: '#f9f9f9' }}>
-                        {weatherLoading && <p>Loading weather...</p>}
-                        {weatherError && <p style={{ color: 'red' }}>Error: {weatherError}</p>}
-                        {weather && (
-                            <div>
-                                <p><strong>{weather.location.name}, {weather.location.country}</strong></p>
-                                <p>{weather.current.condition.text}</p>
-                                <img src={weather.current.condition.icon} alt={weather.current.condition.text} />
-                                <p>Temperature: {weather.current.temp_c}°C</p>
-                                <p>Feels like: {weather.current.feelslike_c}°C</p>
-                                <p>Humidity: {weather.current.humidity}%</p>
-                                <p>Wind: {weather.current.wind_kph} kph</p>
-                            </div>
-                        )}
-                    </div>
+
+                {/* Weather Section */}
+                <div style={{
+                    backgroundColor: '#fff',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+                    padding: '20px'
+                }}>
+                    <h3 style={{ marginBottom: '15px', color: '#333' }}>🌤️ Weather</h3>
+                    {weatherLoading && <p>Loading weather...</p>}
+                    {weatherError && <p style={{ color: 'red' }}>Error: {weatherError}</p>}
+                    {weather && (
+                        <div>
+                            <p style={{ fontWeight: 'bold', fontSize: '1.2em' }}>
+                                {placeName.replace(/-/g, ' ')}, {cityName}
+                            </p>
+                            <p>{weather.current.condition.text}</p>
+                            <img src={weather.current.condition.icon} alt={weather.current.condition.text} />
+                            <p>🌡️ Temperature: {weather.current.temp_c}°C</p>
+                            <p>🤗 Feels like: {weather.current.feelslike_c}°C</p>
+                            <p>💧 Humidity: {weather.current.humidity}%</p>
+                            <p>🌬️ Wind: {weather.current.wind_kph} kph</p>
+                        </div>
+                    )}
                 </div>
             </div>
 
