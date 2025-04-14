@@ -7,12 +7,12 @@ import Welcome from './Welcome';
 import AboutEgyptPage from './AboutEgyptPage';
 import CitiesPage from './CitiesPage';
 import CityDetails from './CityDetails';
-import PlaceDetails from './PlaceDetails'; 
-import CategoriesPage from './CategoriesPage';
+import PlaceDetails from './PlaceDetails';
+import MyTicketsPage from './MyTicketsPage'; // Import the MyTicketsPage component
 import ProfilePage from './ProfilePage';
 import Layout from './components/Layout';
 import 'react-toastify/dist/ReactToastify.css';
-import 'mapbox-gl/dist/mapbox-gl.css'; 
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { ToastContainer } from 'react-toastify';
 import './styles.css'; // Import the global styles
 
@@ -49,7 +49,8 @@ function App() {
         <Route path="/city/:cityName" element={<Layout><CityDetails /></Layout>} />
         {/* Add the new route for PlaceDetails */}
         <Route path="/city/:cityName/place/:placeName" element={<Layout><PlaceDetails /></Layout>} />
-        <Route path="/categories" element={<Layout><CategoriesPage /></Layout>} />
+        {/* Changed the route for categories to my-tickets */}
+        <Route path="/tickets" element={<Layout><MyTicketsPage /></Layout>} />
         <Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
 
         {/* You can have other routes that don't use the layout */}

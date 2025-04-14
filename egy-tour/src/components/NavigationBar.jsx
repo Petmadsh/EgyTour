@@ -122,18 +122,18 @@ const NavigationBar = () => {
                 </Link>
             </div>
 
-            {/* Spacer */}
-            <div className={styles.spacer}></div>
-
             {/* Desktop Nav Links */}
             <div className={styles.desktopItems}>
                 <ul className={styles.navLinks}>
                     <li><Link to="/about" className={styles.navLink}>About Egypt</Link></li>
                     <li><Link to="/cities" className={styles.navLink}>Cities</Link></li>
-                    <li><Link to="/categories" className={styles.navLink}>Categories</Link></li>
+                    <li><Link to="/tickets" className={styles.navLink}>My Tickets</Link></li> {/* Changed "Categories" to "My Tickets" */}
                     <li><Link to="/profile" className={styles.navLink}>Profile</Link></li>
                 </ul>
             </div>
+
+            {/* Spacer */}
+            <div className={styles.spacer}></div>
 
             {/* Search Bar */}
             <div className={styles.searchBar} ref={searchInputRef}>
@@ -178,7 +178,7 @@ const NavigationBar = () => {
                 {/* Links */}
                 <li><Link to="/about" className={styles.navLink} onClick={closeMobileMenu}>About Egypt</Link></li>
                 <li><Link to="/cities" className={styles.navLink} onClick={closeMobileMenu}>Cities</Link></li>
-                <li><Link to="/categories" className={styles.navLink} onClick={closeMobileMenu}>Categories</Link></li>
+                <li><Link to="/tickets" className={styles.navLink} onClick={closeMobileMenu}>My Tickets</Link></li> {/* Changed "Categories" to "My Tickets" */}
                 <li><Link to="/profile" className={styles.navLink} onClick={closeMobileMenu}>Profile</Link></li>
             </ul>
         </nav>
