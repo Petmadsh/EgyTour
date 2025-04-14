@@ -1,6 +1,6 @@
 // NavigationBar.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'; // Import NavLink and useLocation
 import logo from "../assets/Egyptian_Pyramids_with_Sphinx.png"; // Adjust path if needed
 import styles from './NavigationBar.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,6 +14,7 @@ const NavigationBar = () => {
     const navRef = useRef(null);
     const searchInputRef = useRef(null);
     const navigate = useNavigate();
+    const location = useLocation(); // Get the current location
 
     useEffect(() => {
         const fetchCityAndPlaceNames = async () => {
@@ -125,10 +126,45 @@ const NavigationBar = () => {
             {/* Desktop Nav Links */}
             <div className={styles.desktopItems}>
                 <ul className={styles.navLinks}>
-                    <li><Link to="/about" className={styles.navLink}>About Egypt</Link></li>
-                    <li><Link to="/cities" className={styles.navLink}>Cities</Link></li>
-                    <li><Link to="/tickets" className={styles.navLink}>My Tickets</Link></li> {/* Changed "Categories" to "My Tickets" */}
-                    <li><Link to="/profile" className={styles.navLink}>Profile</Link></li>
+                    <li>
+                        <NavLink
+                            to="/about"
+                            className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeNavLink}` : styles.navLink}
+                            onClick={closeMobileMenu}
+                            end // Only active when the exact path matches
+                        >
+                            About Egypt
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink
+                            to="/cities"
+                            className={({ isActive }) => isActive || location.pathname.startsWith('/city') ? `${styles.navLink} ${styles.activeNavLink}` : styles.navLink}
+                            onClick={closeMobileMenu}
+                        >
+                            Cities
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink
+                            to="/tickets"
+                            className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeNavLink}` : styles.navLink}
+                            onClick={closeMobileMenu}
+                            end // Only active when the exact path matches
+                        >
+                            My Tickets
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink
+                            to="/profile"
+                            className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeNavLink}` : styles.navLink}
+                            onClick={closeMobileMenu}
+                            end // Only active when the exact path matches
+                        >
+                            Profile
+                        </NavLink>
+                    </li>
                 </ul>
             </div>
 
@@ -176,10 +212,45 @@ const NavigationBar = () => {
             {/* Mobile Menu */}
             <ul className={`${styles.mobileMenu} ${mobileMenuVisible ? styles.visible : ''}`}>
                 {/* Links */}
-                <li><Link to="/about" className={styles.navLink} onClick={closeMobileMenu}>About Egypt</Link></li>
-                <li><Link to="/cities" className={styles.navLink} onClick={closeMobileMenu}>Cities</Link></li>
-                <li><Link to="/tickets" className={styles.navLink} onClick={closeMobileMenu}>My Tickets</Link></li> {/* Changed "Categories" to "My Tickets" */}
-                <li><Link to="/profile" className={styles.navLink} onClick={closeMobileMenu}>Profile</Link></li>
+                <li>
+                    <NavLink
+                        to="/about"
+                        className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeNavLink}` : styles.navLink}
+                        onClick={closeMobileMenu}
+                        end // Only active when the exact path matches
+                    >
+                        About Egypt
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        to="/cities"
+                        className={({ isActive }) => isActive || location.pathname.startsWith('/city') ? `${styles.navLink} ${styles.activeNavLink}` : styles.navLink}
+                        onClick={closeMobileMenu}
+                    >
+                        Cities
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        to="/tickets"
+                        className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeNavLink}` : styles.navLink}
+                        onClick={closeMobileMenu}
+                        end // Only active when the exact path matches
+                    >
+                        My Tickets
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        to="/profile"
+                        className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeNavLink}` : styles.navLink}
+                        onClick={closeMobileMenu}
+                        end // Only active when the exact path matches
+                    >
+                        Profile
+                    </NavLink>
+                </li>
             </ul>
         </nav>
     );

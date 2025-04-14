@@ -55,8 +55,17 @@
     transition: color 0.3s ease, background-color 0.3s ease;
     white-space: nowrap;
 }
-.navLink:hover { color: white; background-color: #D8532A; }
+.navLink:hover, .navLink.activeNavLink { /* Apply hover style also to active link */
+    color: white;
+    background-color: #D8532A;
+    text-decoration: none;
+}
 
+/* Active Nav Link Style */
+.navLink.activeNavLink {
+    color: white;
+    background-color: #D8532A;
+}
 /* Search Bar - Default (Desktop) Styling */
 .searchBar {
     order: 3;
