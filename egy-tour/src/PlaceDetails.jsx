@@ -4,7 +4,7 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA';
+mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA'; // replace with yours
 
 const PlaceDetails = () => {
     const { cityName, placeName } = useParams();
@@ -18,8 +18,6 @@ const PlaceDetails = () => {
     const [weatherLoading, setWeatherLoading] = useState(true);
     const [weatherError, setWeatherError] = useState(null);
 
-    const imageWidth = '1000px';
-    const imageHeight = '600px';
     const autoScrollInterval = 3000;
     const autoScrollTimeout = useRef(null);
     const resumeDelay = 2000;
@@ -112,11 +110,7 @@ const PlaceDetails = () => {
 
                 new mapboxgl.Marker()
                     .setLngLat([latLng[1], latLng[0]])
-                    .setPopup(
-                        new mapboxgl.Popup({ offset: 25 }).setText(
-                            placeName.replace(/-/g, ' ')
-                        )
-                    )
+                    .setPopup(new mapboxgl.Popup({ offset: 25 }).setText(placeName.replace(/-/g, ' ')))
                     .addTo(map.current);
 
                 return () => {
@@ -132,7 +126,6 @@ const PlaceDetails = () => {
     useEffect(() => {
         const fetchWeather = async () => {
             if (!placeDetails?.location) return;
-
             const [lat, lng] = getLatLng(placeDetails.location);
             if (!lat || !lng) return;
 
@@ -161,20 +154,33 @@ const PlaceDetails = () => {
     if (!placeDetails) return <div>No details found for {placeName.replace(/-/g, ' ')} in {cityName}.</div>;
 
     return (
-        <div style={{ padding: '20px' }}>
-            <h2>{placeName.replace(/-/g, ' ')} Details in {cityName}</h2>
+        <div style={{ padding: '30px' }}>
+            <h2 style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '30px' }}>
+                {placeName.replace(/-/g, ' ')} in {cityName}
+            </h2>
 
+            {/* Images Section */}
             {placeDetails.images && placeDetails.images.length > 0 && (
-                <div style={{ marginBottom: '20px' }}>
-                    <h3>Images</h3>
-                    <div style={{ position: 'relative', width: 'fit-content', margin: '10px auto' }}>
+                <div style={{ marginBottom: '40px' }}>
+                    <h3 style={{ textAlign: 'center', fontSize: '1.5rem', marginBottom: '15px' }}>
+                        📸 Explore {placeName.replace(/-/g, ' ')} in Pictures
+                    </h3>
+                    <div style={{
+                        position: 'relative',
+                        width: '100%',
+                        maxWidth: '1000px',
+                        height: '600px',
+                        margin: '0 auto',
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15)'
+                    }}>
                         <div
                             style={{
                                 display: 'flex',
-                                overflowX: 'hidden',
-                                width: imageWidth,
-                                height: imageHeight,
-                                borderRadius: '8px',
+                                transform: `translateX(-${currentImageIndex * 100}%)`,
+                                transition: 'transform 0.6s ease-in-out',
+                                height: '100%',
                             }}
                         >
                             {placeDetails.images.map((image, index) => (
@@ -187,67 +193,73 @@ const PlaceDetails = () => {
                                         height: '100%',
                                         objectFit: 'cover',
                                         flexShrink: 0,
-                                        transform: `translateX(-${currentImageIndex * 100}%)`,
-                                        transition: 'transform 0.5s ease-in-out',
                                     }}
                                 />
                             ))}
                         </div>
+
                         {placeDetails.images.length > 1 && (
                             <>
                                 <button
+                                    onClick={goToPreviousImage}
                                     style={{
                                         position: 'absolute',
-                                        left: '10px',
                                         top: '50%',
+                                        left: '15px',
                                         transform: 'translateY(-50%)',
-                                        background: 'none',
+                                        backgroundColor: 'rgba(255,255,255,0.7)',
                                         border: 'none',
-                                        fontSize: '1.5em',
+                                        borderRadius: '50%',
+                                        padding: '10px',
+                                        fontSize: '1.5rem',
                                         cursor: 'pointer',
-                                        opacity: 0.7,
+                                        boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
                                     }}
-                                    onClick={goToPreviousImage}
                                 >
                                     <FaChevronLeft />
                                 </button>
+
                                 <button
+                                    onClick={goToNextImage}
                                     style={{
                                         position: 'absolute',
-                                        right: '10px',
                                         top: '50%',
+                                        right: '15px',
                                         transform: 'translateY(-50%)',
-                                        background: 'none',
+                                        backgroundColor: 'rgba(255,255,255,0.7)',
                                         border: 'none',
-                                        fontSize: '1.5em',
+                                        borderRadius: '50%',
+                                        padding: '10px',
+                                        fontSize: '1.5rem',
                                         cursor: 'pointer',
-                                        opacity: 0.7,
+                                        boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
                                     }}
-                                    onClick={goToNextImage}
                                 >
                                     <FaChevronRight />
                                 </button>
+
                                 <div
                                     style={{
                                         position: 'absolute',
-                                        bottom: '10px',
-                                        left: '50%',
-                                        transform: 'translateX(-50%)',
+                                        bottom: '15px',
+                                        width: '100%',
                                         display: 'flex',
-                                        gap: '5px',
+                                        justifyContent: 'center',
+                                        gap: '8px'
                                     }}
                                 >
                                     {placeDetails.images.map((_, index) => (
                                         <div
                                             key={index}
-                                            style={{
-                                                width: '10px',
-                                                height: '10px',
-                                                borderRadius: '50%',
-                                                backgroundColor: index === currentImageIndex ? '#333' : '#ccc',
-                                                cursor: 'pointer',
-                                            }}
                                             onClick={() => handleDotClick(index)}
+                                            style={{
+                                                width: currentImageIndex === index ? '14px' : '10px',
+                                                height: currentImageIndex === index ? '14px' : '10px',
+                                                borderRadius: '50%',
+                                                backgroundColor: currentImageIndex === index ? '#333' : '#bbb',
+                                                transition: 'all 0.3s ease',
+                                                cursor: 'pointer'
+                                            }}
                                         />
                                     ))}
                                 </div>
@@ -257,6 +269,7 @@ const PlaceDetails = () => {
                 </div>
             )}
 
+            {/* Description */}
             {placeDetails.placeDescription && (
                 <div style={{ marginBottom: '20px' }}>
                     <h3>Description</h3>
@@ -264,66 +277,74 @@ const PlaceDetails = () => {
                 </div>
             )}
 
-            {/* Beautified Map and Weather */}
+            {/* Location & Weather */}
             <div style={{
                 marginBottom: '40px',
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '20px'
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '30px',
+                justifyContent: 'space-between',
             }}>
-                {/* Map Section */}
-                <div style={{
-                    backgroundColor: '#fff',
-                    borderRadius: '12px',
-                    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-                    padding: '20px'
-                }}>
-                    <h3 style={{ marginBottom: '15px', color: '#333' }}>📍 Location</h3>
-                    <div ref={mapContainer} style={{ height: '300px', width: '100%', borderRadius: '8px', overflow: 'hidden' }} />
+                <div style={{ flex: '1 1 48%' }}>
+                    <h3>📍 Location</h3>
+                    <div ref={mapContainer} style={{
+                        height: '300px',
+                        width: '100%',
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                        boxShadow: '0 5px 15px rgba(0,0,0,0.1)'
+                    }} />
                 </div>
 
-                {/* Weather Section */}
-                <div style={{
-                    backgroundColor: '#fff',
-                    borderRadius: '12px',
-                    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-                    padding: '20px'
-                }}>
-                    <h3 style={{ marginBottom: '15px', color: '#333' }}>🌤️ Weather</h3>
-                    {weatherLoading && <p>Loading weather...</p>}
-                    {weatherError && <p style={{ color: 'red' }}>Error: {weatherError}</p>}
-                    {weather && (
-                        <div>
-                            <p style={{ fontWeight: 'bold', fontSize: '1.2em' }}>
-                                {placeName.replace(/-/g, ' ')}, {cityName}
-                            </p>
-                            <p>{weather.current.condition.text}</p>
-                            <img src={weather.current.condition.icon} alt={weather.current.condition.text} />
-                            <p>🌡️ Temperature: {weather.current.temp_c}°C</p>
-                            <p>🤗 Feels like: {weather.current.feelslike_c}°C</p>
-                            <p>💧 Humidity: {weather.current.humidity}%</p>
-                            <p>🌬️ Wind: {weather.current.wind_kph} kph</p>
-                        </div>
-                    )}
+                <div style={{ flex: '1 1 48%' }}>
+                    <h3>🌤️ Weather</h3>
+                    <div style={{
+                        backgroundColor: '#fff',
+                        borderRadius: '12px',
+                        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+                        padding: '20px'
+                    }}>
+                        {weatherLoading && <p>Loading weather...</p>}
+                        {weatherError && <p style={{ color: 'red' }}>Error: {weatherError}</p>}
+                        {weather && (
+                            <div>
+                                <p style={{ fontWeight: 'bold', fontSize: '1.2em' }}>
+                                    {placeName.replace(/-/g, ' ')}, {cityName}
+                                </p>
+                                <p>{weather.current.condition.text}</p>
+                                <img src={weather.current.condition.icon} alt={weather.current.condition.text} />
+                                <p>🌡️ Temperature: {weather.current.temp_c}°C</p>
+                                <p>🤗 Feels like: {weather.current.feelslike_c}°C</p>
+                                <p>💧 Humidity: {weather.current.humidity}%</p>
+                                <p>🌬️ Wind: {weather.current.wind_kph} kph</p>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
+            {/* Other Info */}
             {placeDetails.openingHours && (
                 <div style={{ marginBottom: '20px' }}>
-                    <h3>Opening Hours</h3>
+                    <h3>🕒 Opening Hours</h3>
                     <p>{placeDetails.openingHours}</p>
                 </div>
             )}
 
             {placeDetails.ticketPrices && (
                 <div>
-                    <h3>Ticket Prices</h3>
+                    <h3>🎟️ Ticket Prices</h3>
                     <p>{placeDetails.ticketPrices}</p>
                 </div>
             )}
 
-            <Link to={`/city/${cityName}`} style={{ display: 'block', marginTop: '20px' }}>
-                Back to {cityName}
+            <Link to={`/city/${cityName}`} style={{
+                display: 'inline-block',
+                marginTop: '30px',
+                color: '#007BFF',
+                textDecoration: 'none'
+            }}>
+                ← Back to {cityName}
             </Link>
         </div>
     );
