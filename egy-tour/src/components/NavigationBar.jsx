@@ -20,6 +20,73 @@ const NavigationBar = () => {
     const profileIconRef = useRef(null);
     const navigate = useNavigate();
     const location = useLocation();
+    const activeToastId = useRef(null);
+
+    const SignOutConfirmation = ({ closeToast }) => {
+        const confirmationRef = useRef(null);
+
+        useEffect(() => {
+            const handleClickOutside = (event) => {
+                if (confirmationRef.current && !confirmationRef.current.contains(event.target)) {
+                    closeToast();
+                }
+            };
+
+            document.addEventListener('mousedown', handleClickOutside);
+
+            return () => {
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+        }, [closeToast]);
+
+        return (
+            <div className={styles.signOutConfirmation} ref={confirmationRef}>
+                <p>Are you sure you want to sign out?</p>
+                <div className={styles.signOutButtons}>
+                    <button
+                        onClick={async () => {
+                            try {
+                                await signOut(auth);
+                                navigate('/login');
+                                toast.success('Successfully signed out!', {
+                                    position: "top-right",
+                                    autoClose: 3000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    progress: undefined,
+                                    theme: "light",
+                                });
+                            } catch (error) {
+                                toast.error('Error signing out. Please try again.', {
+                                    position: "top-right",
+                                    autoClose: 3000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    progress: undefined,
+                                    theme: "light",
+                                });
+                            } finally {
+                                closeProfileMenu();
+                                closeMobileMenu();
+                                closeToast();
+                                activeToastId.current = null;
+                            }
+                        }}
+                        className={styles.signOutYesButton}
+                    >
+                        Yes, Sign Out
+                    </button>
+                    <button onClick={closeToast} className={styles.signOutNoButton}>
+                        No
+                    </button>
+                </div>
+            </div>
+        );
+    };
 
     useEffect(() => {
         const fetchCityAndPlaceNames = async () => {
@@ -115,63 +182,22 @@ const NavigationBar = () => {
     };
 
     const handleSignOut = () => {
-        toast(
-            (t) => (
-                <div className={styles.signOutConfirmation}>
-                    <p>Are you sure you want to sign out?</p>
-                    <div className={styles.signOutButtons}>
-                        <button
-                            onClick={async () => {
-                                try {
-                                    await signOut(auth);
-                                    navigate('/login');
-                                    toast.success('Successfully signed out!', {
-                                        position: "top-right",
-                                        autoClose: 3000,
-                                        hideProgressBar: false,
-                                        closeOnClick: true,
-                                        pauseOnHover: true,
-                                        draggable: true,
-                                        progress: undefined,
-                                        theme: "light",
-                                    });
-                                } catch (error) {
-                                    toast.error('Error signing out. Please try again.', {
-                                        position: "top-right",
-                                        autoClose: 3000,
-                                        hideProgressBar: false,
-                                        closeOnClick: true,
-                                        pauseOnHover: true,
-                                        draggable: true,
-                                        progress: undefined,
-                                        theme: "light",
-                                    });
-                                } finally {
-                                    closeProfileMenu();
-                                    closeMobileMenu();
-                                    toast.dismiss(t.id);
-                                }
-                            }}
-                            className={styles.signOutYesButton}
-                        >
-                            Yes, Sign Out
-                        </button>
-                        <button onClick={() => toast.dismiss(t.id)} className={styles.signOutNoButton}>
-                            No
-                        </button>
-                    </div>
-                </div>
-            ),
-            {
-                position: "top-center", // Show in the center
-                closeOnClick: false,
-                draggable: false,
-                closeButton: false,
-                autoClose: false,
-                hideProgressBar: true,
-                className: styles.signOutToast // Apply a custom class to the toast
+        if (activeToastId.current) {
+            toast.dismiss(activeToastId.current);
+        }
+
+        activeToastId.current = toast(<SignOutConfirmation closeToast={() => toast.dismiss(activeToastId.current)} />, {
+            position: "top-center",
+            closeOnClick: false, // Prevent default close on click outside
+            draggable: false,
+            closeButton: false,
+            autoClose: false,
+            hideProgressBar: true,
+            className: styles.signOutToast,
+            onClose: () => {
+                activeToastId.current = null;
             }
-        );
+        });
     };
 
     useEffect(() => {
