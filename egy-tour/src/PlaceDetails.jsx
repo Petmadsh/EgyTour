@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import mapboxgl from 'mapbox-gl'; // Import Mapbox GL JS
+import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA';
 
@@ -15,6 +14,10 @@ const PlaceDetails = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isAutoScrolling, setIsAutoScrolling] = useState(true);
     const [manualInteraction, setManualInteraction] = useState(false);
+    const [weather, setWeather] = useState(null);
+    const [weatherLoading, setWeatherLoading] = useState(true);
+    const [weatherError, setWeatherError] = useState(null);
+
     const imageWidth = '1000px';
     const imageHeight = '600px';
     const autoScrollInterval = 3000;
@@ -102,8 +105,8 @@ const PlaceDetails = () => {
             if (latLng) {
                 map.current = new mapboxgl.Map({
                     container: mapContainer.current,
-                    style: 'mapbox://styles/mapbox/streets-v11', // You can choose a different style
-                    center: [latLng[1], latLng[0]], // Mapbox uses [lng, lat]
+                    style: 'mapbox://styles/mapbox/streets-v11',
+                    center: [latLng[1], latLng[0]],
                     zoom: 15
                 });
 
@@ -116,7 +119,6 @@ const PlaceDetails = () => {
                     )
                     .addTo(map.current);
 
-                // Cleanup function to remove the map on unmount
                 return () => {
                     if (map.current) {
                         map.current.remove();
@@ -126,6 +128,33 @@ const PlaceDetails = () => {
             }
         }
     }, [placeDetails?.location, placeName]);
+
+    useEffect(() => {
+        const fetchWeather = async () => {
+            if (!placeDetails?.location) return;
+
+            const [lat, lng] = getLatLng(placeDetails.location);
+            if (!lat || !lng) return;
+
+            setWeatherLoading(true);
+            setWeatherError(null);
+
+            try {
+                const response = await fetch(
+                    `https://api.weatherapi.com/v1/current.json?key=b5d27ffd2d374fe692e172137242208&q=${lat},${lng}`
+                );
+                if (!response.ok) throw new Error('Failed to fetch weather data');
+                const data = await response.json();
+                setWeather(data);
+            } catch (err) {
+                setWeatherError(err.message);
+            } finally {
+                setWeatherLoading(false);
+            }
+        };
+
+        fetchWeather();
+    }, [placeDetails?.location]);
 
     if (loading) return <div>Loading place details...</div>;
     if (error) return <div>Error loading place details: {error.message}</div>;
@@ -243,7 +272,19 @@ const PlaceDetails = () => {
                 <div style={{ flex: 1 }}>
                     <h3>Weather</h3>
                     <div style={{ padding: '15px', border: '1px solid #eee', borderRadius: '8px', backgroundColor: '#f9f9f9' }}>
-                        <p>Weather information will be displayed here.</p>
+                        {weatherLoading && <p>Loading weather...</p>}
+                        {weatherError && <p style={{ color: 'red' }}>Error: {weatherError}</p>}
+                        {weather && (
+                            <div>
+                                <p><strong>{weather.location.name}, {weather.location.country}</strong></p>
+                                <p>{weather.current.condition.text}</p>
+                                <img src={weather.current.condition.icon} alt={weather.current.condition.text} />
+                                <p>Temperature: {weather.current.temp_c}°C</p>
+                                <p>Feels like: {weather.current.feelslike_c}°C</p>
+                                <p>Humidity: {weather.current.humidity}%</p>
+                                <p>Wind: {weather.current.wind_kph} kph</p>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
