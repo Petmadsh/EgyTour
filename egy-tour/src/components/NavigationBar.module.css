@@ -13,35 +13,34 @@
     top: 0; /* Stick it to the top */
     left: 0; /* Extend to the left edge */
     z-index: 100; /* Ensure it's above other content */
-    /* Remove gap, spacing handled by margins/spacer */
+    justify-content: space-between; /* Distribute space between logo and links/search */
 }
 
 /* Logo */
 .logoContainer {
-    order: 1;         /* First item */
+    order: 1;
     flex-shrink: 0;
 }
-.logoLink { text-decoration: none; display: block; margin-rigt: 20px; }
-.logo { height: 60px; width: auto; display: block; } /* Slightly larger logo */
+.logoLink { text-decoration: none; display: block; }
+.logo { height: 60px; width: auto; display: block; }
 
-/* Spacer - Hidden on Desktop, used on Mobile */
+/* Spacer - Hidden on Desktop */
 .spacer {
     display: none;
-    flex-grow: 1;
+    flex-grow: 1; /* Occupies available space on mobile */
 }
 
 /* Desktop Nav Links Container */
 .desktopItems {
-    order: 2;         /* Second group visually */
-    display: flex;     /* Use flex for links */
-    margin-left: auto; /* CRITICAL: Pushes this and search bar to the right */
-    align-items: center; /* Align links vertically */
+    order: 2;
+    display: flex;
+    align-items: center;
 }
 .navLinks {
     list-style: none;
     display: flex;
     align-items: center;
-    margin: 0; /* Adjusted margin */
+    margin: 0;
     padding: 0;
     gap: 25px; /* Space between nav links */
 }
@@ -50,41 +49,41 @@
     text-decoration: none;
     color: #555;
     font-weight: 500;
-    font-size: 17px; /* Slightly larger font */
-    padding: 10px 15px; /* Adjust padding */
+    font-size: 17px;
+    padding: 10px 15px;
     border-radius: 5px;
     transition: color 0.3s ease, background-color 0.3s ease;
     white-space: nowrap;
-    margin-left: 20px;
 }
 .navLink:hover { color: white; background-color: #D8532A; }
 
 /* Search Bar - Default (Desktop) Styling */
 .searchBar {
-    order: 3;         /* Third group visually (after links) */
+    order: 3;
     display: flex;
     align-items: center;
-    max-width: 300px;     /* Adjust max width as desired */
-    width: 100%;         /* Allow shrinking */
-    margin-left: 30px;   /* Space between nav links and search bar */
-    flex-shrink: 0;     /* Prevent search from shrinking excessively */
+    max-width: 300px;
+    width: 100%;
+    margin-left: 30px; /* Space between links and search bar */
+    flex-shrink: 0;
+    position: relative; /* For dropdown positioning */
 }
 .searchBar form { display: flex; width: 100%; }
 .searchInput {
     flex: 1;
-    padding: 12px 18px; /* Larger padding */
+    padding: 12px 18px;
     border: 1px solid #ccc;
     border-radius: 5px 0 0 5px;
-    font-size: 15px; /* Larger font */
+    font-size: 15px;
     outline: none;
 }
 .searchButton {
-    padding: 12px 18px; /* Match input padding */
+    padding: 12px 18px;
     background-color: #D8532A;
     color: white;
     border: none;
     border-radius: 0 5px 5px 0;
-    font-size: 15px; /* Match input font */
+    font-size: 15px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     display: inline-flex;
@@ -95,13 +94,41 @@
 
 .searchButton::before { content: ''; display: none; }
 
+/* Search Results Dropdown */
+.searchResultsDropdown {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.searchResultItem {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.searchResultItem:hover {
+    background-color: #f0f0f0;
+}
 
 
 .mobileIcons {
     display: none;
-    order: 4; /* Keep order high for mobile overrides */
+    order: 4;
     flex-shrink: 0;
-    margin-left: 15px; /* Add space before burger on mobile if needed */
+    margin-left: 15px;
 }
 .burgerMenuIcon {
     background: none; border: none;
@@ -109,7 +136,7 @@
 }
 
 /* Mobile Menu */
-.mobileMenu { /* No changes needed from previous version */
+.mobileMenu {
     display: none; list-style: none; padding: 0; margin: 0;
     position: absolute; top: 100%; left: 0; right: 0;
     background-color: #fff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -128,7 +155,7 @@
 
 /* Tablet view (Optional Adjustments) */
 @media (max-width: 992px) {
-    .navbar { padding: 15px 30px; } /* Adjust padding */
+    .navbar { padding: 15px 30px; }
     .searchBar { max-width: 250px; margin-left: 20px; }
     .navLink { padding: 8px 12px; font-size: 16px; }
     .searchInput, .searchButton { padding: 10px 15px; font-size: 14px; }
@@ -137,44 +164,40 @@
 /* Mobile View */
 @media (max-width: 768px) {
     .navbar {
-        padding: 10px 15px; /* Mobile padding */
-        gap: 10px; /* Use gap for mobile spacing */
+        padding: 10px 15px;
+        flex-direction: row; /* Ensure items are in a row */
+        justify-content: space-between; /* Distribute space */
+        align-items: center; /* Vertically align items */
+        gap: 10px;
     }
     .desktopItems {
-        display: none; /* Hide desktop nav links */
-        order: initial; /* Reset order */
-        margin-left: 0; /* Reset margin */
+        display: none;
     }
     .mobileIcons {
-        display: flex; /* Show burger menu icon */
-        order: 4;     /* Position it last */
-        margin-left: 0; /* Reset margin */
+        display: flex;
+        order: 3; /* Position burger menu */
+        margin-left: 0;
     }
     .searchBar {
-        order: 3;     /* Position search before burger */
-        flex-grow: 0; /* Don't allow search bar to grow */
-        max-width: 180px; /* Limit width on mobile */
-        margin-left: 0; /* Reset desktop margin */
+        order: 2; /* Position search bar */
+        flex-grow: 1; /* Allow it to take available space */
+        max-width: none; /* Remove max width */
+        margin-left: 10px; /* Some space from logo */
     }
-    .searchInput { /* Mobile input styles */
-        padding: 8px 10px; font-size: 13px; min-width: 100px;
+    .searchInput {
+        padding: 8px 10px; font-size: 13px; min-width: 80px;
     }
-    .searchButton { /* Mobile button styles */
+    .searchButton {
         padding: 8px 10px; min-width: 36px; width: auto;
     }
     .searchButtonText { display: none; }
-
-
-    .spacer { /* Show spacer on mobile */
-        display: block;
-        order: 2;
-        flex-grow: 1;
+    .spacer {
+        display: none; /* Hide spacer on mobile */
     }
-    .logoContainer { order: 1; } /* Ensure logo is first */
-    .logo { height: 45px; } /* Adjust logo size for mobile */
-
-    /* Mobile menu styles (no changes needed if already correct) */
-    .mobileMenu:not(.visible) { display: none; }
+    .logoContainer {
+        order: 1;
+    }
+    .logo { height: 45px; }
 }
 
 /* Optional: Very small screens */
