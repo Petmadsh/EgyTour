@@ -269,6 +269,20 @@ const PlaceDetails = () => {
                 </div>
             </div>
 
+            {/* Google Maps Directions Link */}
+            <div style={{ flex: '1 1 48%' }}>
+                <h3>➥ Directions</h3>
+                {/* Directions Link */}
+                <a
+                    href={`https://www.google.com/maps?q=${placeDetails.location}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="button-google-maps"
+                >
+                    Open in Google Maps
+                </a>
+            </div>
+
             {placeDetails.openingHours && (
                 <div style={{ marginBottom: '20px' }}>
                     <h3>🕒 Opening Hours</h3>
