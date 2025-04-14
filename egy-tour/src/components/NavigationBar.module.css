@@ -19,7 +19,7 @@
 /* Logo */
 .logoContainer {
     order: 1;
-    flex-shrink: 0;
+    flex-shrink: 0; /* Prevent logo from shrinking */
 }
 .logoLink { text-decoration: none; display: block; }
 .logo { height: 60px; width: auto; display: block; }
@@ -58,7 +58,6 @@
 .navLink:hover, .navLink.activeNavLink { /* Apply hover style also to active link */
     color: white;
     background-color: #D8532A;
-    text-decoration: none;
 }
 
 /* Active Nav Link Style */
@@ -66,6 +65,7 @@
     color: white;
     background-color: #D8532A;
 }
+
 /* Search Bar - Default (Desktop) Styling */
 .searchBar {
     order: 3;
@@ -74,7 +74,7 @@
     max-width: 300px;
     width: 100%;
     margin-left: 30px; /* Space between links and search bar */
-    flex-shrink: 0;
+    flex-shrink: 1; /* Allow search bar to shrink */
     position: relative; /* For dropdown positioning */
 }
 .searchBar form { display: flex; width: 100%; }
@@ -136,7 +136,7 @@
 .mobileIcons {
     display: none;
     order: 4;
-    flex-shrink: 0;
+    flex-shrink: 0; /* Prevent burger menu from shrinking */
     margin-left: 15px;
 }
 .burgerMenuIcon {
@@ -157,18 +157,21 @@
     color: #333; font-weight: 500; border-bottom: 1px solid #eee;
     background-color: transparent;
 }
-.mobileMenu .navLink:hover { background-color: #f8f8f8; color: #D8532A; }
+.mobileMenu .navLink:hover,
+.mobileMenu .navLink.activeNavLink { /* Apply hover style also to active link in mobile menu */
+    background-color: #D8532A;
+    color: white;
+}
+.mobileMenu .navLink.activeNavLink {
+    background-color: #D8532A;
+    color: white;
+}
 .mobileMenu li:last-child .navLink { border-bottom: none; }
 
 /* --- Media Queries --- */
 
 /* Tablet view (Optional Adjustments) */
-@media (max-width: 992px) {
-    .navbar { padding: 15px 30px; }
-    .searchBar { max-width: 250px; margin-left: 20px; }
-    .navLink { padding: 8px 12px; font-size: 16px; }
-    .searchInput, .searchButton { padding: 10px 15px; font-size: 14px; }
-}
+
 
 /* Mobile View */
 @media (max-width: 768px) {
@@ -183,9 +186,9 @@
         display: none;
     }
     .mobileIcons {
-        display: flex;
+        display: flex; /* Ensure it's visible */
         order: 3; /* Position burger menu */
-        margin-left: 0;
+        margin-left: 10px; /* Add some spacing from the search bar */
     }
     .searchBar {
         order: 2; /* Position search bar */
@@ -194,7 +197,7 @@
         margin-left: 10px; /* Some space from logo */
     }
     .searchInput {
-        padding: 8px 10px; font-size: 13px; min-width: 80px;
+        padding: 8px 10px; font-size: 13px; min-width: 60px; /* Reduced min-width */
     }
     .searchButton {
         padding: 8px 10px; min-width: 36px; width: auto;
@@ -205,6 +208,7 @@
     }
     .logoContainer {
         order: 1;
+        margin-right: 10px; /* Add some space between logo and search */
     }
     .logo { height: 45px; }
 }
@@ -212,8 +216,9 @@
 /* Optional: Very small screens */
 @media (max-width: 480px) {
     .navbar { padding: 10px 10px; gap: 8px;}
-    .logo { height: 40px; }
+    .logo { height: 40px; margin-right: 8px; }
     .searchBar { max-width: 120px; }
-    .searchInput { min-width: 80px; }
+    .searchInput { min-width: 40px; } /* Further reduced min-width */
     .burgerMenuIcon { font-size: 26px; }
+    .mobileIcons { margin-left: 8px; } /* Adjust spacing for very small screens */
 }

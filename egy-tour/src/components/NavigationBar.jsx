@@ -49,7 +49,6 @@ const NavigationBar = () => {
     const handleSearchChange = (event) => {
         const term = event.target.value;
         setSearchTerm(term);
-        setIsDropdownVisible(term.length > 0 && searchResults.length > 0);
 
         const storedNames = localStorage.getItem('allSearchableNames');
         if (storedNames) {
@@ -58,8 +57,10 @@ const NavigationBar = () => {
                 item.name.toLowerCase().includes(term.toLowerCase())
             );
             setSearchResults(results.slice(0, 5)); // Limit to top 5 results
+            setIsDropdownVisible(term.length > 0); // Show dropdown if there's a search term
         } else {
             setSearchResults([]);
+            setIsDropdownVisible(term.length > 0);
         }
     };
 
@@ -72,7 +73,7 @@ const NavigationBar = () => {
             setSearchTerm('');
             setIsDropdownVisible(false);
             closeMobileMenu();
-            // Optionally navigate to a search results page if needed
+            // Optionally navigate to a search results page with the search term
         }
     };
 
@@ -180,24 +181,28 @@ const NavigationBar = () => {
                         value={searchTerm}
                         onChange={handleSearchChange}
                         className={styles.searchInput}
-                        onFocus={() => setIsDropdownVisible(searchTerm.length > 0 && searchResults.length > 0)}
+                        onFocus={() => setIsDropdownVisible(searchTerm.length > 0)}
                     />
                     <button type="submit" className={styles.searchButton}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchButtonIcon} />
                         <span className={styles.searchButtonText}>Search</span>
                     </button>
                 </form>
-                {isDropdownVisible && searchResults.length > 0 && (
+                {isDropdownVisible && (
                     <ul className={styles.searchResultsDropdown}>
-                        {searchResults.map((result, index) => (
-                            <li
-                                key={index}
-                                onClick={() => handleSearchResultClick(result)}
-                                className={styles.searchResultItem}
-                            >
-                                {result.name}
-                            </li>
-                        ))}
+                        {searchResults.length > 0 ? (
+                            searchResults.map((result, index) => (
+                                <li
+                                    key={index}
+                                    onClick={() => handleSearchResultClick(result)}
+                                    className={styles.searchResultItem}
+                                >
+                                    {result.name}
+                                </li>
+                            ))
+                        ) : searchTerm.length > 0 ? (
+                            <li className={styles.searchResultItem}>No results found!</li>
+                        ) : null}
                     </ul>
                 )}
             </div>
