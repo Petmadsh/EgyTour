@@ -12,6 +12,7 @@ import CategoriesPage from './CategoriesPage';
 import ProfilePage from './ProfilePage';
 import Layout from './components/Layout';
 import 'react-toastify/dist/ReactToastify.css';
+import 'leaflet/dist/leaflet.css';
 import { ToastContainer } from 'react-toastify';
 
 function App() {

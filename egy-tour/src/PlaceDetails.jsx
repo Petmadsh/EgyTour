@@ -1,6 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; // Import arrow icons
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+
+// Fix marker icon issue in Leaflet with Webpack/Vite
+const customIcon = new L.Icon({
+    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [0, -41],
+    shadowSize: [41, 41],
+});
+
 
 const PlaceDetails = () => {
     const { cityName, placeName } = useParams();
@@ -10,19 +26,17 @@ const PlaceDetails = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isAutoScrolling, setIsAutoScrolling] = useState(true);
     const [manualInteraction, setManualInteraction] = useState(false);
-    const imageWidth = '1000px'; // Increased width
-    const imageHeight = '600px'; // Decreased height
-    const autoScrollInterval = 3000; // Time in milliseconds for auto-scroll
-    const autoScrollTimeout = useRef(null); // Ref to hold the timeout
-    const resumeDelay = 2000; // Reduced delay to 2 seconds
+    const imageWidth = '1000px';
+    const imageHeight = '600px';
+    const autoScrollInterval = 3000;
+    const autoScrollTimeout = useRef(null);
+    const resumeDelay = 2000;
 
     useEffect(() => {
         const fetchPlaceData = async () => {
             try {
                 const response = await fetch('/data.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const data = await response.json();
                 const selectedCity = data.cities.find((city) => city.name === cityName);
                 if (selectedCity && selectedCity.places) {
@@ -31,17 +45,15 @@ const PlaceDetails = () => {
                     );
                     if (selectedPlace && selectedPlace.details) {
                         setPlaceDetails(selectedPlace.details);
-                        setLoading(false);
                     } else {
                         setError(`Details for ${placeName.replace(/-/g, ' ')} not found in ${cityName}.`);
-                        setLoading(false);
                     }
                 } else {
                     setError(`City ${cityName} or places not found.`);
-                    setLoading(false);
                 }
             } catch (error) {
                 setError(error);
+            } finally {
                 setLoading(false);
             }
         };
@@ -53,9 +65,7 @@ const PlaceDetails = () => {
         let intervalId;
         if (placeDetails?.images && isAutoScrolling && !manualInteraction && placeDetails.images.length > 1) {
             intervalId = setInterval(() => {
-                setCurrentImageIndex((prevIndex) =>
-                    (prevIndex + 1) % placeDetails.images.length
-                );
+                setCurrentImageIndex((prevIndex) => (prevIndex + 1) % placeDetails.images.length);
             }, autoScrollInterval);
         }
         return () => clearInterval(intervalId);
@@ -88,17 +98,18 @@ const PlaceDetails = () => {
         setCurrentImageIndex(index);
     };
 
-    if (loading) {
-        return <div>Loading place details...</div>;
-    }
+    const getLatLng = (locationString) => {
+        if (!locationString) return null;
+        const [lat, lng] = locationString.split(',').map(coord => parseFloat(coord.trim()));
+        if (isNaN(lat) || isNaN(lng)) return null;
+        return [lat, lng];
+    };
 
-    if (error) {
-        return <div>Error loading place details: {error.message}</div>;
-    }
+    if (loading) return <div>Loading place details...</div>;
+    if (error) return <div>Error loading place details: {error.message}</div>;
+    if (!placeDetails) return <div>No details found for {placeName.replace(/-/g, ' ')} in {cityName}.</div>;
 
-    if (!placeDetails) {
-        return <div>No details found for {placeName.replace(/-/g, ' ')} in {cityName}.</div>;
-    }
+    const latLng = getLatLng(placeDetails.location);
 
     return (
         <div style={{ padding: '20px' }}>
@@ -207,17 +218,27 @@ const PlaceDetails = () => {
             <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1, marginRight: '20px' }}>
                     <h3>Location</h3>
-                    {/* Placeholder for Google Maps API */}
-                    <div style={{ width: '100%', height: '200px', backgroundColor: '#f0f0f0', display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '8px' }}>
-                        {placeDetails.location ? <p>Location: {placeDetails.location}</p> : <p>Map will be loaded here</p>}
-                    </div>
-                    {placeDetails.location && <p style={{ marginTop: '5px', fontSize: '0.9em', color: '#555' }}>{placeDetails.location}</p>}
+                    {latLng ? (
+                        <MapContainer center={latLng} zoom={15} style={{ height: '300px', width: '100%', borderRadius: '8px' }}>
+                            <TileLayer
+                                attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            />
+                            <Marker position={latLng} icon={customIcon}>
+                                <Popup>{placeName.replace(/-/g, ' ')}</Popup>
+                            </Marker>
+                        </MapContainer>
+
+                    ) : (
+                        <div style={{ padding: '20px', backgroundColor: '#f0f0f0', borderRadius: '8px' }}>
+                            Location data not available
+                        </div>
+                    )}
                 </div>
                 <div style={{ flex: 1 }}>
                     <h3>Weather</h3>
                     <div style={{ padding: '15px', border: '1px solid #eee', borderRadius: '8px', backgroundColor: '#f9f9f9' }}>
                         <p>Weather information will be displayed here.</p>
-                        {/* You can add more specific placeholders like temperature, conditions, etc. */}
                     </div>
                 </div>
             </div>
