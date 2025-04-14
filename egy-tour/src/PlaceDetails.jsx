@@ -1,22 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import mapboxgl from 'mapbox-gl'; // Import Mapbox GL JS
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 
-// Fix marker icon issue in Leaflet with Webpack/Vite
-const customIcon = new L.Icon({
-    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [0, -41],
-    shadowSize: [41, 41],
-});
-
+mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA';
 
 const PlaceDetails = () => {
     const { cityName, placeName } = useParams();
@@ -31,6 +20,8 @@ const PlaceDetails = () => {
     const autoScrollInterval = 3000;
     const autoScrollTimeout = useRef(null);
     const resumeDelay = 2000;
+    const mapContainer = useRef(null);
+    const map = useRef(null);
 
     useEffect(() => {
         const fetchPlaceData = async () => {
@@ -105,11 +96,40 @@ const PlaceDetails = () => {
         return [lat, lng];
     };
 
+    useEffect(() => {
+        if (placeDetails?.location && mapContainer.current && !map.current) {
+            const latLng = getLatLng(placeDetails.location);
+            if (latLng) {
+                map.current = new mapboxgl.Map({
+                    container: mapContainer.current,
+                    style: 'mapbox://styles/mapbox/streets-v11', // You can choose a different style
+                    center: [latLng[1], latLng[0]], // Mapbox uses [lng, lat]
+                    zoom: 15
+                });
+
+                new mapboxgl.Marker()
+                    .setLngLat([latLng[1], latLng[0]])
+                    .setPopup(
+                        new mapboxgl.Popup({ offset: 25 }).setText(
+                            placeName.replace(/-/g, ' ')
+                        )
+                    )
+                    .addTo(map.current);
+
+                // Cleanup function to remove the map on unmount
+                return () => {
+                    if (map.current) {
+                        map.current.remove();
+                        map.current = null;
+                    }
+                };
+            }
+        }
+    }, [placeDetails?.location, placeName]);
+
     if (loading) return <div>Loading place details...</div>;
     if (error) return <div>Error loading place details: {error.message}</div>;
     if (!placeDetails) return <div>No details found for {placeName.replace(/-/g, ' ')} in {cityName}.</div>;
-
-    const latLng = getLatLng(placeDetails.location);
 
     return (
         <div style={{ padding: '20px' }}>
@@ -218,22 +238,7 @@ const PlaceDetails = () => {
             <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1, marginRight: '20px' }}>
                     <h3>Location</h3>
-                    {latLng ? (
-                        <MapContainer center={latLng} zoom={15} style={{ height: '300px', width: '100%', borderRadius: '8px' }}>
-                            <TileLayer
-                                attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            />
-                            <Marker position={latLng} icon={customIcon}>
-                                <Popup>{placeName.replace(/-/g, ' ')}</Popup>
-                            </Marker>
-                        </MapContainer>
-
-                    ) : (
-                        <div style={{ padding: '20px', backgroundColor: '#f0f0f0', borderRadius: '8px' }}>
-                            Location data not available
-                        </div>
-                    )}
+                    <div ref={mapContainer} style={{ height: '300px', width: '100%', borderRadius: '8px' }} />
                 </div>
                 <div style={{ flex: 1 }}>
                     <h3>Weather</h3>

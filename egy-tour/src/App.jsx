@@ -6,13 +6,13 @@ import ForgotPasswordPage from './ForgotPasswordPage';
 import Welcome from './Welcome';
 import AboutEgyptPage from './AboutEgyptPage';
 import CitiesPage from './CitiesPage';
-import CityDetails from './CityDetails'; // Import the CityDetails component
-import PlaceDetails from './PlaceDetails'; // Import the PlaceDetails component
+import CityDetails from './CityDetails';
+import PlaceDetails from './PlaceDetails'; 
 import CategoriesPage from './CategoriesPage';
 import ProfilePage from './ProfilePage';
 import Layout from './components/Layout';
 import 'react-toastify/dist/ReactToastify.css';
-import 'leaflet/dist/leaflet.css';
+import 'mapbox-gl/dist/mapbox-gl.css'; 
 import { ToastContainer } from 'react-toastify';
 
 function App() {
