@@ -14,6 +14,8 @@ import Layout from './components/Layout';
 import 'react-toastify/dist/ReactToastify.css';
 import 'mapbox-gl/dist/mapbox-gl.css'; 
 import { ToastContainer } from 'react-toastify';
+import './styles.css'; // Import the global styles
+
 
 function App() {
   return (

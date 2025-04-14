@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; // Import arrow icons
+import './styles.css'; // Ensure you import the CSS file
 
 const CityDetails = () => {
     const { cityName } = useParams();
@@ -10,8 +11,6 @@ const CityDetails = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isAutoScrolling, setIsAutoScrolling] = useState(true);
     const [manualInteraction, setManualInteraction] = useState(false);
-    const imageWidth = '1000px'; // Increased width
-    const imageHeight = '600px'; // Decreased height
     const autoScrollInterval = 3000; // Time in milliseconds for auto-scroll
     const autoScrollTimeout = useRef(null); // Ref to hold the timeout
     const resumeDelay = 2000; // Reduced delay to 2 seconds
@@ -93,112 +92,72 @@ const CityDetails = () => {
         return <div>No details found for {cityName}.</div>;
     }
 
-    return (
-        <div style={{ padding: '20px' }}>
-            <h2>{cityDetails.name} Details</h2>
+    const cityNameForDisplay = cityName.replace(/-/g, ' ');
 
-            {/* City Data Section with Image Carousel */}
-            <div style={{ marginBottom: '30px' }}>
-                <h3>About {cityDetails.name}</h3>
-                {cityDetails.citydata && (
-                    <>
-                        <p>{cityDetails.citydata.description}</p>
-                        {cityDetails.citydata.images && (
-                            <div style={{ position: 'relative', width: 'fit-content', margin: '10px auto' }}>
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        overflowX: 'hidden',
-                                        width: imageWidth,
-                                        height: imageHeight,
-                                        borderRadius: '8px',
-                                    }}
+    return (
+        <div style={{ padding: '30px' }}>
+            <h2 style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '30px' }}>
+                {cityNameForDisplay}
+            </h2>
+
+            {/* Images Section */}
+            {cityDetails.citydata?.images && cityDetails.citydata.images.length > 0 && (
+                <div style={{ marginBottom: '40px' }}>
+                    <h3 style={{ textAlign: 'center', fontSize: '1.5rem', marginBottom: '15px' }}>
+                        📸 Explore {cityNameForDisplay} in Pictures
+                    </h3>
+                    <div className="carousel-container">
+                        <div className="carousel-images" style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}>
+                            {cityDetails.citydata.images.map((imagePath, index) => (
+                                <img
+                                    key={index}
+                                    src={imagePath}
+                                    alt={`${cityNameForDisplay} ${index}`}
+                                    className="carousel-image"
+                                />
+                            ))}
+                        </div>
+
+                        {cityDetails.citydata.images.length > 1 && (
+                            <>
+                                <button
+                                    className="carousel-controls carousel-controls-left"
+                                    onClick={goToPreviousImage}
                                 >
-                                    {cityDetails.citydata.images.map((imagePath, index) => (
-                                        <img
+                                    <FaChevronLeft />
+                                </button>
+                                <button
+                                    className="carousel-controls carousel-controls-right"
+                                    onClick={goToNextImage}
+                                >
+                                    <FaChevronRight />
+                                </button>
+                                <div className="carousel-dots">
+                                    {cityDetails.citydata.images.map((_, index) => (
+                                        <div
                                             key={index}
-                                            src={imagePath}
-                                            alt={`${cityDetails.name} ${index}`}
-                                            style={{
-                                                width: '100%',
-                                                height: '100%',
-                                                objectFit: 'cover',
-                                                flexShrink: 0,
-                                                transform: `translateX(-${currentImageIndex * 100}%)`,
-                                                transition: 'transform 0.5s ease-in-out',
-                                            }}
+                                            className={`carousel-dot ${index === currentImageIndex ? 'active' : ''}`}
+                                            onClick={() => handleDotClick(index)}
                                         />
                                     ))}
                                 </div>
-                                {cityDetails.citydata.images.length > 1 && (
-                                    <>
-                                        <button
-                                            style={{
-                                                position: 'absolute',
-                                                left: '10px',
-                                                top: '50%',
-                                                transform: 'translateY(-50%)',
-                                                background: 'none',
-                                                border: 'none',
-                                                fontSize: '1.5em',
-                                                cursor: 'pointer',
-                                                opacity: 0.7,
-                                            }}
-                                            onClick={goToPreviousImage}
-                                        >
-                                            <FaChevronLeft />
-                                        </button>
-                                        <button
-                                            style={{
-                                                position: 'absolute',
-                                                right: '10px',
-                                                top: '50%',
-                                                transform: 'translateY(-50%)',
-                                                background: 'none',
-                                                border: 'none',
-                                                fontSize: '1.5em',
-                                                cursor: 'pointer',
-                                                opacity: 0.7,
-                                            }}
-                                            onClick={goToNextImage}
-                                        >
-                                            <FaChevronRight />
-                                        </button>
-                                        <div
-                                            style={{
-                                                position: 'absolute',
-                                                bottom: '10px',
-                                                left: '50%',
-                                                transform: 'translateX(-50%)',
-                                                display: 'flex',
-                                                gap: '5px',
-                                            }}
-                                        >
-                                            {cityDetails.citydata.images.map((_, index) => (
-                                                <div
-                                                    key={index}
-                                                    style={{
-                                                        width: '10px',
-                                                        height: '10px',
-                                                        borderRadius: '50%',
-                                                        backgroundColor: index === currentImageIndex ? '#333' : '#ccc',
-                                                        cursor: 'pointer',
-                                                    }}
-                                                    onClick={() => handleDotClick(index)}
-                                                />
-                                            ))}
-                                        </div>
-                                    </>
-                                )}
-                            </div>
+                            </>
                         )}
-                    </>
-                )}
-            </div>
+                    </div>
+                </div>
+            )}
+
+            {/* City Data Section (Description) */}
+            {cityDetails.citydata?.description && (
+                <div style={{ marginBottom: '30px' }}>
+                    <h3 style={{ fontSize: '1.5rem', marginBottom: '15px' }}>About {cityNameForDisplay}</h3>
+                    <p>{cityDetails.citydata.description}</p>
+                </div>
+            )}
 
             {/* Places Section */}
             <div>
-                <h3>Places to Visit in {cityDetails.name}</h3>
+                <h3>Places to Visit in {cityNameForDisplay}</h3>
                 {cityDetails.places && cityDetails.places.length > 0 ? (
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
                         {cityDetails.places.map((place) => (
@@ -245,7 +204,7 @@ const CityDetails = () => {
                         ))}
                     </div>
                 ) : (
-                    <p>No places to visit listed for {cityDetails.name}.</p>
+                    <p>No places to visit listed for {cityNameForDisplay}.</p>
                 )}
             </div>
 

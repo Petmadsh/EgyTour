@@ -3,8 +3,9 @@ import { useParams, Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import './styles.css';  // Import global styles
 
-mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA'; // replace with yours
+mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA';
 
 const PlaceDetails = () => {
     const { cityName, placeName } = useParams();
@@ -153,47 +154,32 @@ const PlaceDetails = () => {
     if (error) return <div>Error loading place details: {error.message}</div>;
     if (!placeDetails) return <div>No details found for {placeName.replace(/-/g, ' ')} in {cityName}.</div>;
 
+    const displayedPlaceName = placeName.replace(/-/g, ' ');
+
     return (
         <div style={{ padding: '30px' }}>
             <h2 style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '30px' }}>
-                {placeName.replace(/-/g, ' ')} in {cityName}
+                {displayedPlaceName} in {cityName}
             </h2>
 
             {/* Images Section */}
             {placeDetails.images && placeDetails.images.length > 0 && (
                 <div style={{ marginBottom: '40px' }}>
                     <h3 style={{ textAlign: 'center', fontSize: '1.5rem', marginBottom: '15px' }}>
-                        📸 Explore {placeName.replace(/-/g, ' ')} in Pictures
+                        📸 Explore {displayedPlaceName} in Pictures
                     </h3>
-                    <div style={{
-                        position: 'relative',
-                        width: '100%',
-                        maxWidth: '1000px',
-                        height: '600px',
-                        margin: '0 auto',
-                        borderRadius: '12px',
-                        overflow: 'hidden',
-                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15)'
-                    }}>
+                    <div className="carousel-container">
                         <div
+                            className="carousel-images"
                             style={{
-                                display: 'flex',
                                 transform: `translateX(-${currentImageIndex * 100}%)`,
-                                transition: 'transform 0.6s ease-in-out',
-                                height: '100%',
                             }}
                         >
                             {placeDetails.images.map((image, index) => (
                                 <img
                                     key={index}
                                     src={image}
-                                    alt={`${placeName.replace(/-/g, ' ')} ${index}`}
-                                    style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        objectFit: 'cover',
-                                        flexShrink: 0,
-                                    }}
+                                    alt={`${displayedPlaceName} ${index}`}
                                 />
                             ))}
                         </div>
@@ -202,64 +188,24 @@ const PlaceDetails = () => {
                             <>
                                 <button
                                     onClick={goToPreviousImage}
-                                    style={{
-                                        position: 'absolute',
-                                        top: '50%',
-                                        left: '15px',
-                                        transform: 'translateY(-50%)',
-                                        backgroundColor: 'rgba(255,255,255,0.7)',
-                                        border: 'none',
-                                        borderRadius: '50%',
-                                        padding: '10px',
-                                        fontSize: '1.5rem',
-                                        cursor: 'pointer',
-                                        boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
-                                    }}
+                                    className="carousel-controls carousel-controls-left"
                                 >
                                     <FaChevronLeft />
                                 </button>
 
                                 <button
                                     onClick={goToNextImage}
-                                    style={{
-                                        position: 'absolute',
-                                        top: '50%',
-                                        right: '15px',
-                                        transform: 'translateY(-50%)',
-                                        backgroundColor: 'rgba(255,255,255,0.7)',
-                                        border: 'none',
-                                        borderRadius: '50%',
-                                        padding: '10px',
-                                        fontSize: '1.5rem',
-                                        cursor: 'pointer',
-                                        boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
-                                    }}
+                                    className="carousel-controls carousel-controls-right"
                                 >
                                     <FaChevronRight />
                                 </button>
 
-                                <div
-                                    style={{
-                                        position: 'absolute',
-                                        bottom: '15px',
-                                        width: '100%',
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        gap: '8px'
-                                    }}
-                                >
+                                <div className="carousel-dots">
                                     {placeDetails.images.map((_, index) => (
                                         <div
                                             key={index}
                                             onClick={() => handleDotClick(index)}
-                                            style={{
-                                                width: currentImageIndex === index ? '14px' : '10px',
-                                                height: currentImageIndex === index ? '14px' : '10px',
-                                                borderRadius: '50%',
-                                                backgroundColor: currentImageIndex === index ? '#333' : '#bbb',
-                                                transition: 'all 0.3s ease',
-                                                cursor: 'pointer'
-                                            }}
+                                            className={`carousel-dot ${currentImageIndex === index ? 'active' : ''}`}
                                         />
                                     ))}
                                 </div>
@@ -269,10 +215,10 @@ const PlaceDetails = () => {
                 </div>
             )}
 
-            {/* Description */}
+            {/* About Section */}
             {placeDetails.placeDescription && (
                 <div style={{ marginBottom: '20px' }}>
-                    <h3>Description</h3>
+                    <h3>About {displayedPlaceName}</h3>
                     <p>{placeDetails.placeDescription}</p>
                 </div>
             )}
@@ -309,7 +255,7 @@ const PlaceDetails = () => {
                         {weather && (
                             <div>
                                 <p style={{ fontWeight: 'bold', fontSize: '1.2em' }}>
-                                    {placeName.replace(/-/g, ' ')}, {cityName}
+                                    {displayedPlaceName}, {cityName}
                                 </p>
                                 <p>{weather.current.condition.text}</p>
                                 <img src={weather.current.condition.icon} alt={weather.current.condition.text} />
@@ -323,7 +269,6 @@ const PlaceDetails = () => {
                 </div>
             </div>
 
-            {/* Other Info */}
             {placeDetails.openingHours && (
                 <div style={{ marginBottom: '20px' }}>
                     <h3>🕒 Opening Hours</h3>
