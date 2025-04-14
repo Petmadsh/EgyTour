@@ -4,15 +4,17 @@ import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'; // I
 import logo from "../assets/Egyptian_Pyramids_with_Sphinx.png"; // Adjust path if needed
 import styles from './NavigationBar.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'; // Import the specific icon
+import { faMagnifyingGlass, faUserCircle } from '@fortawesome/free-solid-svg-icons'; // Import the specific icons
 
 const NavigationBar = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
+    const [profileMenuVisible, setProfileMenuVisible] = useState(false);
     const navRef = useRef(null);
     const searchInputRef = useRef(null);
+    const profileIconRef = useRef(null);
     const navigate = useNavigate();
     const location = useLocation(); // Get the current location
 
@@ -97,15 +99,37 @@ const NavigationBar = () => {
         setMobileMenuVisible(false);
     };
 
+    const toggleProfileMenu = () => {
+        setProfileMenuVisible((prev) => !prev);
+    };
+
+    const closeProfileMenu = () => {
+        setProfileMenuVisible(false);
+    };
+
+    const handleProfileOptionClick = (path) => {
+        closeProfileMenu();
+        navigate(path);
+    };
+
+    const handleSignOut = () => {
+        // Implement your sign-out logic here
+        console.log('Sign Out clicked');
+        closeProfileMenu();
+        navigate('/welcome'); // Or wherever you redirect after sign out
+    };
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (navRef.current && !navRef.current.contains(event.target) &&
-                (!searchInputRef.current || !searchInputRef.current.contains(event.target))) {
+                (!searchInputRef.current || !searchInputRef.current.contains(event.target)) &&
+                (!profileIconRef.current || !profileIconRef.current.contains(event.target))) {
                 closeMobileMenu();
                 setIsDropdownVisible(false);
+                closeProfileMenu();
             }
         };
-        if (mobileMenuVisible || isDropdownVisible) {
+        if (mobileMenuVisible || isDropdownVisible || profileMenuVisible) {
             document.addEventListener('mousedown', handleClickOutside);
         } else {
             document.removeEventListener('mousedown', handleClickOutside);
@@ -113,7 +137,7 @@ const NavigationBar = () => {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [mobileMenuVisible, isDropdownVisible]);
+    }, [mobileMenuVisible, isDropdownVisible, profileMenuVisible]);
 
     return (
         <nav className={styles.navbar} ref={navRef}>
@@ -154,16 +178,6 @@ const NavigationBar = () => {
                             end // Only active when the exact path matches
                         >
                             My Tickets
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink
-                            to="/profile"
-                            className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeNavLink}` : styles.navLink}
-                            onClick={closeMobileMenu}
-                            end // Only active when the exact path matches
-                        >
-                            Profile
                         </NavLink>
                     </li>
                 </ul>
@@ -207,6 +221,21 @@ const NavigationBar = () => {
                 )}
             </div>
 
+            {/* Profile Icon */}
+            <div className={styles.profileIconContainer} ref={profileIconRef}>
+                <FontAwesomeIcon
+                    icon={faUserCircle}
+                    className={styles.profileIcon}
+                    onClick={toggleProfileMenu}
+                />
+                {profileMenuVisible && (
+                    <ul className={styles.profileDropdown}>
+                        <li onClick={() => handleProfileOptionClick('/profile')}>My Profile</li>
+                        <li onClick={handleSignOut}>Sign Out</li>
+                    </ul>
+                )}
+            </div>
+
             {/* Mobile Icons */}
             <div className={styles.mobileIcons}>
                 <button onClick={toggleMobileMenu} className={styles.burgerMenuIcon}>
@@ -246,15 +275,21 @@ const NavigationBar = () => {
                         My Tickets
                     </NavLink>
                 </li>
+                {/* Profile options in mobile menu */}
                 <li>
                     <NavLink
                         to="/profile"
                         className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeNavLink}` : styles.navLink}
                         onClick={closeMobileMenu}
-                        end // Only active when the exact path matches
+                        end
                     >
                         Profile
                     </NavLink>
+                </li>
+                <li>
+                    <button onClick={() => { closeMobileMenu(); handleSignOut(); }} className={styles.navLink}>
+                        Sign Out
+                    </button>
                 </li>
             </ul>
         </nav>

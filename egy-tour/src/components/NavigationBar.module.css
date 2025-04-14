@@ -1,6 +1,3 @@
-/* NavigationBar.module.css */
-
-/* Container */
 .navbar {
     width: 100%;
     box-sizing: border-box;
@@ -132,10 +129,53 @@
     background-color: #f0f0f0;
 }
 
+/* Profile Icon */
+.profileIconContainer {
+    order: 4;
+    margin-left: 20px;
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.profileIcon {
+    font-size: 28px;
+    color: #555;
+    transition: color 0.3s ease;
+}
+.profileIcon:hover {
+    color: #D8532A;
+}
+
+/* Profile Dropdown */
+.profileDropdown {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    min-width: 120px;
+}
+.profileDropdown li {
+    padding: 10px 15px;
+    font-size: 15px;
+    cursor: pointer;
+    color: #333;
+    transition: background-color 0.3s ease;
+    text-align: left;
+}
+.profileDropdown li:hover {
+    background-color: #f0f0f0;
+}
 
 .mobileIcons {
     display: none;
-    order: 4;
+    order: 5;
     flex-shrink: 0; /* Prevent burger menu from shrinking */
     margin-left: 15px;
 }
@@ -211,6 +251,23 @@
         margin-right: 10px; /* Add some space between logo and search */
     }
     .logo { height: 45px; }
+    .profileIconContainer {
+        order: 4;
+        margin-left: 10px; /* Adjust spacing for mobile */
+    }
+    .profileIcon {
+        font-size: 24px;
+    }
+    .profileDropdown {
+        top: calc(100% + 2px);
+        right: 0;
+        min-width: 100px;
+        font-size: 14px;
+        padding: 8px 0;
+    }
+    .profileDropdown li {
+        padding: 8px 12px;
+    }
 }
 
 /* Optional: Very small screens */
@@ -221,4 +278,13 @@
     .searchInput { min-width: 40px; } /* Further reduced min-width */
     .burgerMenuIcon { font-size: 26px; }
     .mobileIcons { margin-left: 8px; } /* Adjust spacing for very small screens */
+    .profileIconContainer {
+        margin-left: 8px;
+    }
+    .profileIcon {
+        font-size: 22px;
+    }
+    .profileDropdown {
+        font-size: 13px;
+    }
 }
