@@ -1,10 +1,13 @@
 // NavigationBar.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'; // Import NavLink and useLocation
-import logo from "../assets/Egyptian_Pyramids_with_Sphinx.png"; // Adjust path if needed
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import logo from "../assets/Egyptian_Pyramids_with_Sphinx.png";
 import styles from './NavigationBar.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faUserCircle } from '@fortawesome/free-solid-svg-icons'; // Import the specific icons
+import { faMagnifyingGlass, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { auth } from '../firebase'; // Import Firebase auth
+import { signOut } from 'firebase/auth'; // Import signOut function
+import { toast } from 'react-toastify'; // Import toast for notifications
 
 const NavigationBar = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -16,7 +19,7 @@ const NavigationBar = () => {
     const searchInputRef = useRef(null);
     const profileIconRef = useRef(null);
     const navigate = useNavigate();
-    const location = useLocation(); // Get the current location
+    const location = useLocation();
 
     useEffect(() => {
         const fetchCityAndPlaceNames = async () => {
@@ -58,8 +61,8 @@ const NavigationBar = () => {
             const results = allNames.filter(item =>
                 item.name.toLowerCase().includes(term.toLowerCase())
             );
-            setSearchResults(results.slice(0, 5)); // Limit to top 5 results
-            setIsDropdownVisible(term.length > 0); // Show dropdown if there's a search term
+            setSearchResults(results.slice(0, 5));
+            setIsDropdownVisible(term.length > 0);
         } else {
             setSearchResults([]);
             setIsDropdownVisible(term.length > 0);
@@ -75,7 +78,6 @@ const NavigationBar = () => {
             setSearchTerm('');
             setIsDropdownVisible(false);
             closeMobileMenu();
-            // Optionally navigate to a search results page with the search term
         }
     };
 
@@ -112,11 +114,35 @@ const NavigationBar = () => {
         navigate(path);
     };
 
-    const handleSignOut = () => {
-        // Implement your sign-out logic here
-        console.log('Sign Out clicked');
-        closeProfileMenu();
-        navigate('/welcome'); // Or wherever you redirect after sign out
+    const handleSignOut = async () => {
+        try {
+            await signOut(auth);
+            navigate('/login'); // Redirect to login page after sign out
+            toast.success('Successfully signed out!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } catch (error) {
+            toast.error('Error signing out. Please try again.', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } finally {
+            closeProfileMenu(); // Ensure profile menu is closed after attempting sign out
+            closeMobileMenu(); // Close mobile menu if it's open
+        }
     };
 
     useEffect(() => {
@@ -156,7 +182,7 @@ const NavigationBar = () => {
                             to="/about"
                             className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeNavLink}` : styles.navLink}
                             onClick={closeMobileMenu}
-                            end // Only active when the exact path matches
+                            end
                         >
                             About Egypt
                         </NavLink>
@@ -175,7 +201,7 @@ const NavigationBar = () => {
                             to="/tickets"
                             className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeNavLink}` : styles.navLink}
                             onClick={closeMobileMenu}
-                            end // Only active when the exact path matches
+                            end
                         >
                             My Tickets
                         </NavLink>
@@ -251,7 +277,7 @@ const NavigationBar = () => {
                         to="/about"
                         className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeNavLink}` : styles.navLink}
                         onClick={closeMobileMenu}
-                        end // Only active when the exact path matches
+                        end
                     >
                         About Egypt
                     </NavLink>
@@ -270,7 +296,7 @@ const NavigationBar = () => {
                         to="/tickets"
                         className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeNavLink}` : styles.navLink}
                         onClick={closeMobileMenu}
-                        end // Only active when the exact path matches
+                        end
                     >
                         My Tickets
                     </NavLink>
@@ -287,7 +313,7 @@ const NavigationBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <button onClick={() => { closeMobileMenu(); handleSignOut(); }} className={styles.navLink}>
+                    <button onClick={handleSignOut} className={styles.navLink}>
                         Sign Out
                     </button>
                 </li>
