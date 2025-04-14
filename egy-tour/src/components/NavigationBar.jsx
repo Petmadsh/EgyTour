@@ -4,10 +4,10 @@ import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import logo from "../assets/Egyptian_Pyramids_with_Sphinx.png";
 import styles from './NavigationBar.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import { auth } from '../firebase'; // Import Firebase auth
-import { signOut } from 'firebase/auth'; // Import signOut function
-import { toast } from 'react-toastify'; // Import toast for notifications
+import { faMagnifyingGlass, faUserCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
+import { toast } from 'react-toastify';
 
 const NavigationBar = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -114,35 +114,64 @@ const NavigationBar = () => {
         navigate(path);
     };
 
-    const handleSignOut = async () => {
-        try {
-            await signOut(auth);
-            navigate('/login'); // Redirect to login page after sign out
-            toast.success('Successfully signed out!', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        } catch (error) {
-            toast.error('Error signing out. Please try again.', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        } finally {
-            closeProfileMenu(); // Ensure profile menu is closed after attempting sign out
-            closeMobileMenu(); // Close mobile menu if it's open
-        }
+    const handleSignOut = () => {
+        toast(
+            (t) => (
+                <div className={styles.signOutConfirmation}>
+                    <p>Are you sure you want to sign out?</p>
+                    <div className={styles.signOutButtons}>
+                        <button
+                            onClick={async () => {
+                                try {
+                                    await signOut(auth);
+                                    navigate('/login');
+                                    toast.success('Successfully signed out!', {
+                                        position: "top-right",
+                                        autoClose: 3000,
+                                        hideProgressBar: false,
+                                        closeOnClick: true,
+                                        pauseOnHover: true,
+                                        draggable: true,
+                                        progress: undefined,
+                                        theme: "light",
+                                    });
+                                } catch (error) {
+                                    toast.error('Error signing out. Please try again.', {
+                                        position: "top-right",
+                                        autoClose: 3000,
+                                        hideProgressBar: false,
+                                        closeOnClick: true,
+                                        pauseOnHover: true,
+                                        draggable: true,
+                                        progress: undefined,
+                                        theme: "light",
+                                    });
+                                } finally {
+                                    closeProfileMenu();
+                                    closeMobileMenu();
+                                    toast.dismiss(t.id);
+                                }
+                            }}
+                            className={styles.signOutYesButton}
+                        >
+                            Yes, Sign Out
+                        </button>
+                        <button onClick={() => toast.dismiss(t.id)} className={styles.signOutNoButton}>
+                            No
+                        </button>
+                    </div>
+                </div>
+            ),
+            {
+                position: "top-center", // Show in the center
+                closeOnClick: false,
+                draggable: false,
+                closeButton: false,
+                autoClose: false,
+                hideProgressBar: true,
+                className: styles.signOutToast // Apply a custom class to the toast
+            }
+        );
     };
 
     useEffect(() => {
@@ -257,7 +286,9 @@ const NavigationBar = () => {
                 {profileMenuVisible && (
                     <ul className={styles.profileDropdown}>
                         <li onClick={() => handleProfileOptionClick('/profile')}>My Profile</li>
-                        <li onClick={handleSignOut}>Sign Out</li>
+                        <li onClick={handleSignOut}>
+                            <FontAwesomeIcon icon={faSignOutAlt} className={styles.signOutIcon} /> Sign Out
+                        </li>
                     </ul>
                 )}
             </div>
@@ -314,7 +345,7 @@ const NavigationBar = () => {
                 </li>
                 <li>
                     <button onClick={handleSignOut} className={styles.navLink}>
-                        Sign Out
+                        <FontAwesomeIcon icon={faSignOutAlt} className={styles.signOutIcon} /> Sign Out
                     </button>
                 </li>
             </ul>
