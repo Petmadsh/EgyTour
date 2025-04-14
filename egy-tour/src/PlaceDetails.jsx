@@ -234,7 +234,7 @@ const PlaceDetails = () => {
                 <div style={{ flex: '1 1 48%' }}>
                     <h3>📍 Location</h3>
                     <div ref={mapContainer} style={{
-                        height: '300px',
+                        height: '390px',
                         width: '100%',
                         borderRadius: '12px',
                         overflow: 'hidden',
