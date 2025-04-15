@@ -9,8 +9,7 @@ import { collection, query, where, getDocs, addDoc, serverTimestamp, doc, getDoc
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
-mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA'; // Replace with your Mapbox access token
+mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN'; // Replace with your Mapbox access token
 
 const PlaceDetails = () => {
     const { cityName, placeName } = useParams();
@@ -35,6 +34,10 @@ const PlaceDetails = () => {
     const [editRating, setEditRating] = useState(0);
     const [editComment, setEditComment] = useState('');
 
+    const [isBooking, setIsBooking] = useState(false);
+    const [bookingDate, setBookingDate] = useState('');
+    const [visitorType, setVisitorType] = useState('adult'); // Default to adult
+
     const placeId = placeName;
     const autoScrollInterval = 3000;
     const autoScrollTimeout = useRef(null);
@@ -42,7 +45,7 @@ const PlaceDetails = () => {
     const mapContainer = useRef(null);
     const map = useRef(null);
 
-    const handleBookTicket = () => {
+    const handleBookTicketNavigation = () => {
         navigate(`/book/${cityName}/${placeName}`); // Construct the navigation path
     };
 
@@ -113,6 +116,8 @@ const PlaceDetails = () => {
     const handleCommentChange = (e) => setNewComment(e.target.value);
     const handleEditRatingChange = (rating) => setEditRating(rating);
     const handleEditCommentChange = (e) => setEditComment(e.target.value);
+    const handleDateChange = (e) => setBookingDate(e.target.value);
+    const handleVisitorTypeChange = (e) => setVisitorType(e.target.value);
 
     const handleReviewSubmit = async (e) => {
         e.preventDefault();
@@ -200,6 +205,55 @@ const PlaceDetails = () => {
                 console.error('Error removing review:', error);
                 toast.error('Failed to remove review.');
             }
+        }
+    };
+
+    const handleBookingSubmit = async () => {
+        if (!user) {
+            toast.error('You must be logged in to book a ticket.');
+            return;
+        }
+        if (!bookingDate) {
+            toast.warning('Please select a booking date.');
+            return;
+        }
+        if (!visitorType) {
+            toast.warning('Please select a visitor type.');
+            return;
+        }
+
+        // Check for existing booking
+        const q = query(
+            collection(db, 'bookings'),
+            where('userId', '==', user.uid),
+            where('placeName', '==', displayedPlaceName),
+            where('bookingDate', '==', bookingDate)
+        );
+
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+            toast.error('You already have a booking for this place on this date.');
+            return;
+        }
+        const newBooking = {
+            userId: user.uid,
+            userName: userName,
+            placeName: displayedPlaceName,
+            bookingDate: bookingDate,
+            visitorType: visitorType,
+            timestamp: serverTimestamp(),
+        };
+
+        try {
+            await addDoc(collection(db, 'bookings'), newBooking);
+            toast.success('Booking successful!');
+            setIsBooking(false);
+            setBookingDate('');
+            setVisitorType('adult'); // Reset visitor type
+        } catch (error) {
+            console.error('Error adding booking:', error);
+            toast.error('Failed to book ticket.');
         }
     };
 
@@ -313,7 +367,7 @@ const PlaceDetails = () => {
 
             try {
                 const response = await fetch(
-                    `https://api.weatherapi.com/v1/current.json?key=b5d27ffd2d374fe692e172137242208&q=${lat},${lng}` // Replace with your actual API key
+                    `https://api.weatherapi.com/v1/current.json?key=YOUR_WEATHERAPI_KEY&q=${lat},${lng}` // Replace with your actual API key
                 );
                 if (!response.ok) throw new Error('Failed to fetch weather data');
                 const data = await response.json();
@@ -591,17 +645,73 @@ const PlaceDetails = () => {
 
                                 />
                             </div>
-                            <button type="submit">Submit Review</button>
+                                    <button type="submit">Submit Review</button>
                         </form>
                     )}
-                </div>
             </div>
+        </div>
 
-            <div style={{ marginBottom: '20px', marginTop: '20px'}}>
+            {/* Booking Section */ }
+            <div style={{ marginBottom: '20px', marginTop: '20px' }}>
                 <h3>🎟️ Want to book a ticket?</h3>
-                <button onClick={handleBookTicket} className="button-book-ticket">
-                    Book Now
-                </button>
+                {!user ? (
+                    <p className="login-message">You must be <Link to="/login">logged in</Link> to book a ticket.</p>
+                ) : (
+                    <>
+                        {!isBooking ? (
+                            <button onClick={() => setIsBooking(true)} className="button-book-ticket">
+                                Book Now
+                            </button>
+                        ) : (
+                            <div className="booking-form">
+                                <h4>Book Your Ticket</h4>
+                                <div className="form-group">
+                                    <label htmlFor="bookingDate">Date:</label>
+                                    <input
+                                        type="date"
+                                        id="bookingDate"
+                                        value={bookingDate}
+                                        onChange={handleDateChange}
+                                        className="styled-input"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Visitor Type:</label>
+                                    <div>
+                                        <input
+                                            type="radio"
+                                            id="adult"
+                                            name="visitorType"
+                                            value="adult"
+                                            checked={visitorType === 'adult'}
+                                            onChange={handleVisitorTypeChange}
+                                        />
+                                        <label htmlFor="adult">Adult</label>
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="radio"
+                                            id="student"
+                                            name="visitorType"
+                                            value="student"
+                                            checked={visitorType === 'student'}
+                                            onChange={handleVisitorTypeChange}
+                                        />
+                                        <label htmlFor="student">Student</label>
+                                    </div>
+                                </div>
+                                <div className="form-actions">
+                                    <button type="button" onClick={handleBookingSubmit} className="submit-button">
+                                        Confirm Booking
+                                    </button>
+                                    <button type="button" onClick={() => setIsBooking(false)} className="cancel-button">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </>
+                )}
             </div>
 
             <Link to={`/city/${cityName}`} style={{
@@ -612,8 +722,9 @@ const PlaceDetails = () => {
             }}>
                 ← Back to {cityName}
             </Link>
-        </div>
+        </div >
     );
 };
 
 export default PlaceDetails;
+

@@ -10,7 +10,7 @@ import CityDetails from './CityDetails';
 import PlaceDetails from './PlaceDetails';
 import MyTicketsPage from './MyTicketsPage'; // Import the MyTicketsPage component
 import ProfilePage from './ProfilePage';
-import BookPage from './Book';
+
 import Layout from './components/Layout';
 import 'react-toastify/dist/ReactToastify.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -50,7 +50,7 @@ function App() {
         <Route path="/city/:cityName" element={<Layout><CityDetails /></Layout>} />
         {/* Add the new route for PlaceDetails */}
         <Route path="/city/:cityName/place/:placeName" element={<Layout><PlaceDetails /></Layout>} />
-        <Route path="/book/:cityName/:placeName" element={<Layout><BookPage /></Layout>} />
+        { /* <Route path="/book/:cityName/:placeName" element={<Layout><BookPage /></Layout>} />*/}
         {/* Changed the route for categories to my-tickets */}
         <Route path="/tickets" element={<Layout><MyTicketsPage /></Layout>} />
         <Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
