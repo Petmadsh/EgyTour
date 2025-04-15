@@ -249,6 +249,7 @@ const PlaceDetails = () => {
             setIsBooking(false);
             setBookingDate('');
             setVisitorType('adult'); // Reset visitor type
+            navigate('/tickets');
         } catch (error) {
             console.error('Error adding booking:', error);
             toast.error('Failed to book ticket.');
