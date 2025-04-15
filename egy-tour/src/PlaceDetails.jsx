@@ -6,6 +6,9 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import './styles.css';
 import { db, auth } from './firebase';
 import { collection, query, where, getDocs, addDoc, serverTimestamp, doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA'; // Replace with your Mapbox access token
 
@@ -109,11 +112,11 @@ const PlaceDetails = () => {
     const handleReviewSubmit = async (e) => {
         e.preventDefault();
         if (!user) {
-            alert('You must be logged in to leave a review.');
+            toast.error('You must be logged in to leave a review.');
             return;
         }
         if (newRating === 0 || newComment.trim() === '') {
-            alert('Please provide a rating and a comment.');
+            toast.warning('Please provide a rating and a comment.');
             return;
         }
 
@@ -133,10 +136,10 @@ const PlaceDetails = () => {
             setUserReview({ id: docRef.id, ...newReview });
             setNewRating(0);
             setNewComment('');
-            alert('Review submitted successfully!');
+            toast.success('Review submitted successfully!');
         } catch (err) {
             console.error('Error adding review:', err);
-            alert('Failed to submit review.');
+            toast.error('Failed to submit review.');
         }
     };
 
@@ -153,7 +156,7 @@ const PlaceDetails = () => {
     const handleSaveEdit = async () => {
         if (!userReview?.id) return;
         if (editRating === 0 || editComment.trim() === '') {
-            alert('Please provide a rating and a comment.');
+            toast.error('Please provide a rating and a comment.');
             return;
         }
         try {
@@ -171,26 +174,26 @@ const PlaceDetails = () => {
                 ).sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0))
             );
             setIsEditing(false);
-            alert('Review updated successfully!');
+            toast.success('Review updated successfully!');
         } catch (error) {
             console.error('Error updating review:', error);
-            alert('Failed to update review.');
+            toast.error('Failed to update review.');
         }
     };
 
     const handleRemoveReview = async () => {
         if (!userReview?.id) return;
-        if (window.confirm('Are you sure you want to remove your review?')) {
+        if (window.confirm('Are you sure you want to remove your review?')) { // This is the line to change
             try {
                 const reviewDocRef = doc(db, 'reviews', userReview.id);
                 await deleteDoc(reviewDocRef);
                 setReviews(prevReviews => prevReviews.filter(review => review.id !== userReview.id));
                 setUserReview(null);
                 setIsEditing(false);
-                alert('Review removed successfully!');
+                toast.success('Review removed successfully!');
             } catch (error) {
                 console.error('Error removing review:', error);
-                alert('Failed to remove review.');
+                toast.error('Failed to remove review.');
             }
         }
     };
@@ -328,6 +331,7 @@ const PlaceDetails = () => {
 
     return (
         <div style={{ padding: '30px' }}>
+            <ToastContainer position="top-center" autoClose={3000} />
             <h2 style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '30px' }}>
                 {displayedPlaceName} in {cityName}
             </h2>
