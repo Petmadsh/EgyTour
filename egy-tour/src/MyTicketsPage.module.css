@@ -1,0 +1,97 @@
+.myTicketsContainer {
+    padding: 20px;
+}
+
+.ticketsList {
+    margin-top: 20px;
+}
+
+.ticketItem {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ticketDetails {
+    flex-grow: 1;
+}
+
+.qrCodeImage {
+    max-width: 100px;
+    height: auto;
+    margin-top: 10px;
+}
+
+.deleteButton {
+    background-color: #D8532A;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+.deleteButton:hover {
+    background-color: #f44336;
+}
+
+.deleteButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.deleteConfirmation {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.deleteConfirmation p {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.deleteButtons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.deleteYesButton {
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.deleteYesButton:hover {
+    background-color:rgb(166, 0, 0);
+}
+
+.deleteYesButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.deleteNoButton {
+    background-color: #e0e0e0;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.deleteToast {
+    /* Style for the toast container if needed */
+}
