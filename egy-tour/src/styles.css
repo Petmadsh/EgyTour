@@ -153,11 +153,16 @@
 .review-rating {
     display: flex;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
+}
+
+.review-text{
+   font-size: 1.4em;
+   margin-bottom: 15px;
 }
 
 .star, .star-empty, .star-input {
-    font-size: 1.2em;
+    font-size: 1.5em;
     color: gold;
     margin-right: 3px;
     cursor: pointer; /* For star-input */
@@ -172,11 +177,23 @@
 
     /* Review Form Styles */
 .review-form {
-    display: flex;
     flex-direction: column;
     gap: 12px;
     margin-top: 20px;
 }
+
+.remove-button{
+     background-color: #e74c3c;
+    color: white;
+    margin-left: 20px;
+}
+
+.remove-button:hover{
+
+ background-color: #c0392b;
+   
+}
+
 
 .review-form input,
 .review-form select,
@@ -192,7 +209,7 @@
     padding: 10px;
     background-color: #D8532A;
     color: white;
-    font-weight: bold;
+    margin-top: 10px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -213,7 +230,7 @@
 }
 
 .star-input {
-    font-size: 1.5em;
+    font-size: 3em;
     cursor: pointer;
     color: #ccc;
     margin-right: 4px;
