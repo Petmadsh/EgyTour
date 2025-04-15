@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaEdit, FaTrash } from 'react-icons/fa';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import './styles.css'; // Import global styles
-import { db, auth } from './firebase'; // Assuming your firebase config is in '../firebase.js'
-import { collection, query, where, getDocs, addDoc, serverTimestamp, doc, getDoc } from 'firebase/firestore';
+import './styles.css';
+import { db, auth } from './firebase';
+import { collection, query, where, getDocs, addDoc, serverTimestamp, doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA';
+mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA'; // Replace with your Mapbox access token
 
 const PlaceDetails = () => {
     const { cityName, placeName } = useParams();
@@ -25,7 +25,11 @@ const PlaceDetails = () => {
     const [newRating, setNewRating] = useState(0);
     const [newComment, setNewComment] = useState('');
     const [user, setUser] = useState(null);
-    const [userName, setUserName] = useState('Anonymous'); // Default name
+    const [userName, setUserName] = useState('Anonymous');
+    const [userReview, setUserReview] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editRating, setEditRating] = useState(0);
+    const [editComment, setEditComment] = useState('');
 
     const placeId = placeName;
     const autoScrollInterval = 3000;
@@ -45,18 +49,21 @@ const PlaceDetails = () => {
                     const userData = userDocSnap.data();
                     setUserName(`${userData.firstName || ''} ${userData.lastName || ''}`.trim() || 'Anonymous');
                 } else {
-                    setUserName(authUser.displayName || 'Anonymous'); // Fallback to displayName if Firestore data is missing
+                    setUserName(authUser.displayName || 'Anonymous'); // Fallback
                 }
+                // Check if the user has an existing review
+                fetchUserReview(authUser.uid);
             } else {
                 setUser(null);
                 setUserName('Anonymous');
+                setUserReview(null);
+                setIsEditing(false);
             }
         });
 
         return () => unsubscribeAuth();
     }, []);
 
-    // Fetch reviews from Firebase
     useEffect(() => {
         const fetchReviews = async () => {
             try {
@@ -71,8 +78,33 @@ const PlaceDetails = () => {
         fetchReviews();
     }, [placeId]);
 
+    const fetchUserReview = async (userId) => {
+        if (!userId) return;
+        try {
+            const q = query(
+                collection(db, 'reviews'),
+                where('placeId', '==', placeId),
+                where('userId', '==', userId)
+            );
+            const querySnapshot = await getDocs(q);
+            if (!querySnapshot.empty) {
+                const existingReview = querySnapshot.docs[0].data();
+                setUserReview({ id: querySnapshot.docs[0].id, ...existingReview });
+                setEditRating(existingReview.rating);
+                setEditComment(existingReview.comment);
+            } else {
+                setUserReview(null);
+                setIsEditing(false);
+            }
+        } catch (error) {
+            console.error('Error fetching user review:', error);
+        }
+    };
+
     const handleRatingChange = (rating) => setNewRating(rating);
     const handleCommentChange = (e) => setNewComment(e.target.value);
+    const handleEditRatingChange = (rating) => setEditRating(rating);
+    const handleEditCommentChange = (e) => setEditComment(e.target.value);
 
     const handleReviewSubmit = async (e) => {
         e.preventDefault();
@@ -86,23 +118,80 @@ const PlaceDetails = () => {
         }
 
         const newReview = {
-            name: userName, // Use the fetched userName
+            name: userName,
             rating: newRating,
             comment: newComment,
             placeId: placeId,
+            userId: user.uid, // Add user ID to the review
             timestamp: serverTimestamp(),
             date: new Date().toLocaleDateString(),
         };
 
         try {
-            await addDoc(collection(db, 'reviews'), newReview);
-            setReviews(prev => [{ ...newReview, id: Math.random().toString(36).substring(7) }, ...prev]);
+            const docRef = await addDoc(collection(db, 'reviews'), newReview);
+            setReviews(prev => [{ ...newReview, id: docRef.id }, ...prev]);
+            setUserReview({ id: docRef.id, ...newReview });
             setNewRating(0);
             setNewComment('');
             alert('Review submitted successfully!');
         } catch (err) {
             console.error('Error adding review:', err);
             alert('Failed to submit review.');
+        }
+    };
+
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);
+        setEditRating(userReview.rating);
+        setEditComment(userReview.comment);
+    };
+
+    const handleSaveEdit = async () => {
+        if (!userReview?.id) return;
+        if (editRating === 0 || editComment.trim() === '') {
+            alert('Please provide a rating and a comment.');
+            return;
+        }
+        try {
+            const reviewDocRef = doc(db, 'reviews', userReview.id);
+            await updateDoc(reviewDocRef, {
+                rating: editRating,
+                comment: editComment,
+                timestamp: serverTimestamp(),
+                date: new Date().toLocaleDateString(),
+            });
+            setUserReview({ ...userReview, rating: editRating, comment: editComment, date: new Date().toLocaleDateString() });
+            setReviews(prevReviews =>
+                prevReviews.map(review =>
+                    review.id === userReview.id ? { ...review, rating: editRating, comment: editComment, date: new Date().toLocaleDateString() } : review
+                ).sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0))
+            );
+            setIsEditing(false);
+            alert('Review updated successfully!');
+        } catch (error) {
+            console.error('Error updating review:', error);
+            alert('Failed to update review.');
+        }
+    };
+
+    const handleRemoveReview = async () => {
+        if (!userReview?.id) return;
+        if (window.confirm('Are you sure you want to remove your review?')) {
+            try {
+                const reviewDocRef = doc(db, 'reviews', userReview.id);
+                await deleteDoc(reviewDocRef);
+                setReviews(prevReviews => prevReviews.filter(review => review.id !== userReview.id));
+                setUserReview(null);
+                setIsEditing(false);
+                alert('Review removed successfully!');
+            } catch (error) {
+                console.error('Error removing review:', error);
+                alert('Failed to remove review.');
+            }
         }
     };
 
@@ -216,7 +305,7 @@ const PlaceDetails = () => {
 
             try {
                 const response = await fetch(
-                    `https://api.weatherapi.com/v1/current.json?key=b5d27ffd2d374fe692e172137242208&q=<span class="math-inline">\{lat\},</span>{lng}` // Replace with your actual API key
+                    `https://api.weatherapi.com/v1/current.json?key=b5d27ffd2d374fe692e172137242208&q=${lat},${lng}` // Replace with your actual API key
                 );
                 if (!response.ok) throw new Error('Failed to fetch weather data');
                 const data = await response.json();
@@ -315,7 +404,7 @@ const PlaceDetails = () => {
                 <div style={{ flex: '1 1 48%' }}>
                     <h3>📍 Location</h3>
                     <div ref={mapContainer} style={{
-                        height: '400px', // Adjust height as needed
+                        height: '400px',
                         width: '100%',
                         borderRadius: '12px',
                         overflow: 'hidden',
@@ -385,8 +474,8 @@ const PlaceDetails = () => {
                 <h2>Visitors Reviews</h2>
 
                 <div className="previous-reviews">
-                    {reviews.length === 0 && <p>No reviews yet. Be the first to review!</p>}
-                    {reviews.map((review) => (
+                    {reviews.filter(review => review.userId !== user?.uid).length === 0 && !userReview && <p>No other reviews yet.</p>}
+                    {reviews.filter(review => review.userId !== user?.uid).map((review) => (
                         <div className="review-card" key={review.id}>
                             <div className="reviewer-info">
                                 <div className="reviewer-name">{review.name}</div>
@@ -406,9 +495,63 @@ const PlaceDetails = () => {
                 </div>
 
                 <div className="leave-review-section">
-                    <h3>Leave Your Review</h3>
+                    <h3>Your Review</h3>
                     {!user ? (
                         <p>You must be <Link to="/login">logged in</Link> to leave a review.</p>
+                    ) : userReview ? (
+                        <div className="user-review-card">
+                            <div className="review-rating">
+                                {[...Array(5)].map((_, i) => (
+                                    <span key={i} className={i < userReview.rating ? 'star' : 'star-empty'}>
+                                        {i < userReview.rating ? '★' : '☆'}
+                                    </span>
+                                ))}
+                                <span className="rating-value">{userReview.rating?.toFixed(1)}</span>
+                            </div>
+                            <div className="review-text">{userReview.comment}</div>
+                            <div className="review-actions">
+                                {!isEditing ? (
+                                    <>
+                                        <button type="button" onClick={handleEditClick} className="edit-button">
+                                            <FaEdit /> Edit
+                                        </button>
+                                        <button type="button" onClick={handleRemoveReview} className="remove-button">
+                                            <FaTrash /> Remove
+                                        </button>
+                                    </>
+                                ) : (
+                                    <div className="edit-form">
+                                        <div className="form-group">
+                                            <label htmlFor="edit-rating">Rating:</label>
+                                            <div className="star-rating-input">
+                                                {[1, 2, 3, 4, 5].map(star => (
+                                                    <span
+                                                        key={star}
+                                                        className={`star-input ${editRating >= star ? 'filled' : ''}`}
+                                                        onClick={() => handleEditRatingChange(star)}
+                                                    >
+                                                        {editRating >= star ? '★' : '☆'}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="edit-comment">Your Review:</label>
+                                            <textarea
+                                                id="edit-comment"
+                                                rows="5"
+                                                value={editComment}
+                                                onChange={handleEditCommentChange}
+                                            />
+                                        </div>
+                                        <div className="edit-buttons">
+                                            <button type="button" onClick={handleSaveEdit}>Save</button>
+                                            <button type="button" onClick={handleCancelEdit}>Cancel</button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     ) : (
                         <form onSubmit={handleReviewSubmit}>
                             <div className="form-group">
@@ -431,7 +574,7 @@ const PlaceDetails = () => {
                                     id="comment"
                                     name="comment"
                                     rows="5"
-                                    placeholder="Write your review here"
+                                    placeholder="Write your review here..."
                                     value={newComment}
                                     onChange={handleCommentChange}
                                 />
@@ -454,4 +597,4 @@ const PlaceDetails = () => {
     );
 };
 
-export default PlaceDetails
+export default PlaceDetails;
