@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { auth, db } from './firebase';
 import { collection, query, where, getDocs, orderBy, deleteDoc, doc } from 'firebase/firestore';
 import QRCodeGenerator from 'qrcode';
-import styles from './MyTicketsPage.module.css'; // Create a CSS module for this page
+import styles from './MyTicketsPage.module.css';
 import { toast } from 'react-toastify';
 
 const MyTicketsPage = () => {
@@ -188,19 +188,16 @@ const MyTicketsPage = () => {
         <div className={styles.myTicketsContainer}>
             <h1>My Tickets</h1>
             {userTickets.length === 0 ? (
-                <p>No tickets found.</p>
+                <p style={{ fontSize: '1.3rem' }}>You don't have any tickets yet</p>
             ) : (
                 <div className={styles.ticketsList}>
                     {userTickets.map((ticket) => (
-                        <div key={ticket.id} className={styles.ticketItem}>
+                        <div key={ticket.id} className={styles.ticketCard}>
                             <div className={styles.ticketDetails}>
-                                <p>Place: {ticket.placeName}</p>
-                                <p>Date: {ticket.bookingDate}</p>
-                                <p>Visitor Type: {ticket.visitorType}</p>
-                                {qrCodes[ticket.id] ? (
+                                <p className={`${styles.detailItem} ${styles.placeName}`}>{ticket.placeName}</p>
+                                <p className={styles.detailItem}>{ticket.bookingDate}</p>
+                                {qrCodes[ticket.id] && (
                                     <img src={qrCodes[ticket.id]} alt={`QR Code for ${ticket.placeName}`} className={styles.qrCodeImage} />
-                                ) : (
-                                    <div>Generating QR Code...</div>
                                 )}
                             </div>
                             <button
