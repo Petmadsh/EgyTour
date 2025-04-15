@@ -9,7 +9,7 @@ import { collection, query, where, getDocs, addDoc, serverTimestamp, doc, getDoc
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN'; // Replace with your Mapbox access token
+mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA'; // Replace with your Mapbox access token
 
 const PlaceDetails = () => {
     const { cityName, placeName } = useParams();
@@ -367,7 +367,7 @@ const PlaceDetails = () => {
 
             try {
                 const response = await fetch(
-                    `https://api.weatherapi.com/v1/current.json?key=YOUR_WEATHERAPI_KEY&q=${lat},${lng}` // Replace with your actual API key
+                    `https://api.weatherapi.com/v1/current.json?key=b5d27ffd2d374fe692e172137242208&q=${lat},${lng}` // Replace with your actual API key
                 );
                 if (!response.ok) throw new Error('Failed to fetch weather data');
                 const data = await response.json();
@@ -645,15 +645,15 @@ const PlaceDetails = () => {
 
                                 />
                             </div>
-                                    <button type="submit">Submit Review</button>
+                            <button type="submit">Submit Review</button>
                         </form>
                     )}
+                </div>
             </div>
-        </div>
 
-            {/* Booking Section */ }
+            {/* Booking Section */}
             <div style={{ marginBottom: '20px', marginTop: '20px' }}>
-                <h3>🎟️ Want to book a ticket?</h3>
+                <h3 className="booking-title">🎟️ Want to book a ticket?</h3>
                 {!user ? (
                     <p className="login-message">You must be <Link to="/login">logged in</Link> to book a ticket.</p>
                 ) : (
@@ -664,20 +664,20 @@ const PlaceDetails = () => {
                             </button>
                         ) : (
                             <div className="booking-form">
-                                <h4>Book Your Ticket</h4>
+                                
                                 <div className="form-group">
-                                    <label htmlFor="bookingDate">Date:</label>
+                                    <label htmlFor="bookingDate" className="booking-label">Date:</label>
                                     <input
                                         type="date"
                                         id="bookingDate"
                                         value={bookingDate}
                                         onChange={handleDateChange}
-                                        className="styled-input"
+                                        className="booking-input"
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label>Visitor Type:</label>
-                                    <div>
+                                    <label className="booking-label">Visitor Type:</label>
+                                    <div className="radio-group">
                                         <input
                                             type="radio"
                                             id="adult"
@@ -685,10 +685,11 @@ const PlaceDetails = () => {
                                             value="adult"
                                             checked={visitorType === 'adult'}
                                             onChange={handleVisitorTypeChange}
+                                            className="radio-input"
                                         />
-                                        <label htmlFor="adult">Adult</label>
+                                        <label htmlFor="adult" className="radio-label">Adult</label>
                                     </div>
-                                    <div>
+                                    <div className="radio-group">
                                         <input
                                             type="radio"
                                             id="student"
@@ -696,15 +697,16 @@ const PlaceDetails = () => {
                                             value="student"
                                             checked={visitorType === 'student'}
                                             onChange={handleVisitorTypeChange}
+                                            className="radio-input"
                                         />
-                                        <label htmlFor="student">Student</label>
+                                        <label htmlFor="student" className="radio-label">Student</label>
                                     </div>
                                 </div>
                                 <div className="form-actions">
-                                    <button type="button" onClick={handleBookingSubmit} className="submit-button">
+                                    <button type="button" onClick={handleBookingSubmit} className="submit-button booking-button">
                                         Confirm Booking
                                     </button>
-                                    <button type="button" onClick={() => setIsBooking(false)} className="cancel-button">
+                                    <button type="button" onClick={() => setIsBooking(false)} className="cancel-button booking-button">
                                         Cancel
                                     </button>
                                 </div>
@@ -722,7 +724,7 @@ const PlaceDetails = () => {
             }}>
                 ← Back to {cityName}
             </Link>
-        </div >
+        </div>
     );
 };
 
