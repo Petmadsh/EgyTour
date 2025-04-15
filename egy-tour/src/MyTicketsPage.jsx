@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db } from './firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, orderBy } from 'firebase/firestore'; // Import orderBy
 import QRCodeGenerator from 'qrcode';
 
 const MyTicketsPage = () => {
@@ -11,23 +11,26 @@ const MyTicketsPage = () => {
 
     useEffect(() => {
         const fetchUserTickets = async () => {
-            setLoading(true); // Start loading
-            setError(null);    // Clear any previous errors
+            setLoading(true);
+            setError(null);
             try {
                 if (!auth.currentUser) {
-                    // Not logged in.  Don't try to fetch, and set appropriate state.
-                    setUserTickets([]); // Clear tickets
-                    setQrCodes({});       // Clear QR codes
+                    setUserTickets([]);
+                    setQrCodes({});
                     setLoading(false);
                     return;
                 }
                 const userId = auth.currentUser.uid;
-                const q = query(collection(db, 'bookings'), where('userId', '==', userId));
+                // Add orderBy here:
+                const q = query(
+                    collection(db, 'bookings'),
+                    where('userId', '==', userId),
+                    orderBy('bookingDate', 'asc') // Sort by bookingDate in ascending order
+                );
                 const querySnapshot = await getDocs(q);
                 const tickets = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 setUserTickets(tickets);
 
-                // Generate QR codes
                 const qrCodePromises = tickets.map(ticket => {
                     return new Promise((resolve, reject) => {
                         QRCodeGenerator.toDataURL(JSON.stringify(ticket), (err, url) => {
@@ -49,52 +52,40 @@ const MyTicketsPage = () => {
                     });
                     setQrCodes(qrCodeMap);
                 } catch (qrCodeError) {
-                    // Handle errors during QR code generation.  This is important!
-                    setError("Failed to generate QR codes."); // Set an error message
-                    setQrCodes({}); // Clear any partially generated QR codes.
+                    setError("Failed to generate QR codes.");
+                    setQrCodes({});
                     console.error("QR Code Generation Error:", qrCodeError);
                 }
 
                 setLoading(false);
             } catch (err) {
                 setError(err.message);
-                setUserTickets([]); // Clear tickets on error
-                setQrCodes({});       // Clear QR codes on error
+                setUserTickets([]);
+                setQrCodes({});
                 setLoading(false);
             }
         };
 
-        // Check for currentUser *before* calling fetchUserTickets
         if (auth.currentUser) {
             fetchUserTickets();
         } else {
-            // If no user, set empty state and stop.  This prevents the
-            // component from trying to fetch with no user, which could
-            // cause a brief "no tickets" flicker.
             setUserTickets([]);
             setQrCodes({});
-            setLoading(false); // Make sure loading is false
+            setLoading(false);
         }
 
-        // Listen for auth changes.  This is CRUCIAL for re-fetching when the user
-        // logs in or out *on* this page.  Without this, if a user logs in
-        // and is already on MyTicketsPage, it won't update.
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
-                fetchUserTickets(); // Re-fetch when user logs in
+                fetchUserTickets();
             } else {
-                // Clear state when user logs out
                 setUserTickets([]);
                 setQrCodes({});
-                setLoading(false); // Ensure loading is set.
+                setLoading(false);
             }
         });
 
-        // Cleanup the listener when the component unmounts.  This is best practice.
         return () => unsubscribe();
-
-    }, []); //  Dependencies:  Empty array, so this runs *once* on mount, and
-    //  again when the auth state changes.
+    }, []);
 
     if (loading) return <div>Loading your tickets...</div>;
     if (error) return <div>Error: {error}</div>;
