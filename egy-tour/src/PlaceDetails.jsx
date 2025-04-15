@@ -5,7 +5,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './styles.css'; // Import global styles
 import { db, auth } from './firebase'; // Assuming your firebase config is in '../firebase.js'
-import { collection, query, where, getDocs, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, where, getDocs, addDoc, serverTimestamp, doc, getDoc } from 'firebase/firestore';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA';
 
@@ -25,8 +25,8 @@ const PlaceDetails = () => {
     const [newRating, setNewRating] = useState(0);
     const [newComment, setNewComment] = useState('');
     const [user, setUser] = useState(null);
+    const [userName, setUserName] = useState('Anonymous'); // Default name
 
-    // Use the URL-friendly placeName as the unique identifier
     const placeId = placeName;
     const autoScrollInterval = 3000;
     const autoScrollTimeout = useRef(null);
@@ -35,15 +35,25 @@ const PlaceDetails = () => {
     const map = useRef(null);
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+        const unsubscribeAuth = auth.onAuthStateChanged(async (authUser) => {
             if (authUser) {
                 setUser(authUser);
+                // Fetch user data from Firestore to get the name
+                const userDocRef = doc(db, 'users', authUser.uid);
+                const userDocSnap = await getDoc(userDocRef);
+                if (userDocSnap.exists()) {
+                    const userData = userDocSnap.data();
+                    setUserName(`${userData.firstName || ''} ${userData.lastName || ''}`.trim() || 'Anonymous');
+                } else {
+                    setUserName(authUser.displayName || 'Anonymous'); // Fallback to displayName if Firestore data is missing
+                }
             } else {
                 setUser(null);
+                setUserName('Anonymous');
             }
         });
 
-        return () => unsubscribe();
+        return () => unsubscribeAuth();
     }, []);
 
     // Fetch reviews from Firebase
@@ -76,17 +86,17 @@ const PlaceDetails = () => {
         }
 
         const newReview = {
-            name: user.displayName || 'Anonymous', // Use displayName if available
+            name: userName, // Use the fetched userName
             rating: newRating,
             comment: newComment,
-            placeId: placeId, // Use the URL-friendly placeName as placeId
+            placeId: placeId,
             timestamp: serverTimestamp(),
             date: new Date().toLocaleDateString(),
         };
 
         try {
             await addDoc(collection(db, 'reviews'), newReview);
-            setReviews(prev => [{ ...newReview, id: Math.random().toString(36).substring(7) }, ...prev]); // Optimistic update with a temporary ID
+            setReviews(prev => [{ ...newReview, id: Math.random().toString(36).substring(7) }, ...prev]);
             setNewRating(0);
             setNewComment('');
             alert('Review submitted successfully!');
@@ -206,7 +216,7 @@ const PlaceDetails = () => {
 
             try {
                 const response = await fetch(
-                    `https://api.weatherapi.com/v1/current.json?key=b5d27ffd2d374fe692e172137242208&q=<span class="math-inline">\{lat\},</span>{lng}`
+                    `https://api.weatherapi.com/v1/current.json?key=b5d27ffd2d374fe692e172137242208&q=<span class="math-inline">\{lat\},</span>{lng}` // Replace with your actual API key
                 );
                 if (!response.ok) throw new Error('Failed to fetch weather data');
                 const data = await response.json();
@@ -421,7 +431,7 @@ const PlaceDetails = () => {
                                     id="comment"
                                     name="comment"
                                     rows="5"
-                                    placeholder="Write your review here..."
+                                    placeholder="Write your review here"
                                     value={newComment}
                                     onChange={handleCommentChange}
                                 />
