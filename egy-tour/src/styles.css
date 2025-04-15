@@ -223,3 +223,30 @@
 .star-input.filled {
     color: gold;
 }
+
+.styled-textarea {
+  padding: 12px;
+  font-size: 1.1em;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  resize: vertical;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.6;
+}
+
+.styled-textarea:focus {
+  outline: none;
+  border-color: #D8532A;
+  box-shadow: 0 4px 12px rgba(216, 83, 42, 0.2);
+}
+
+.styled-textarea::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+

@@ -470,11 +470,11 @@ const PlaceDetails = () => {
             )}
 
             {/* Review Section */}
-            <div className="reviews-section" style={{ marginTop: '40px', borderTop: '1px solid #eee', paddingTop: '20px' }}>
-                <h2>Visitors Reviews</h2>
+            <div className="reviews-section" style={{ marginTop: '40px' }}>
+                <h2 className="review-section-title">Visitors Reviews</h2>
 
                 <div className="previous-reviews">
-                    {reviews.filter(review => review.userId !== user?.uid).length === 0 && !userReview && <p>No other reviews yet.</p>}
+                    {reviews.filter(review => review.userId !== user?.uid).length === 0 && !userReview && <p className="no-reviews-message">No other reviews yet.</p>}
                     {reviews.filter(review => review.userId !== user?.uid).map((review) => (
                         <div className="review-card" key={review.id}>
                             <div className="reviewer-info">
@@ -495,9 +495,9 @@ const PlaceDetails = () => {
                 </div>
 
                 <div className="leave-review-section">
-                    <h3>Your Review</h3>
+                    <h3 className="review-form-title">Your Review</h3>
                     {!user ? (
-                        <p>You must be <Link to="/login">logged in</Link> to leave a review.</p>
+                        <p className="login-message">You must be <Link to="/login">logged in</Link> to leave a review.</p>
                     ) : userReview ? (
                         <div className="user-review-card">
                             <div className="review-rating">
@@ -542,6 +542,7 @@ const PlaceDetails = () => {
                                                 rows="5"
                                                 value={editComment}
                                                 onChange={handleEditCommentChange}
+                                                className="styled-textarea" // Apply the new class
                                             />
                                         </div>
                                         <div className="edit-buttons">
@@ -553,7 +554,7 @@ const PlaceDetails = () => {
                             </div>
                         </div>
                     ) : (
-                        <form onSubmit={handleReviewSubmit}>
+                        <form onSubmit={handleReviewSubmit} className="review-form">
                             <div className="form-group">
                                 <label htmlFor="rating">Rating:</label>
                                 <div className="star-rating-input">
@@ -577,6 +578,8 @@ const PlaceDetails = () => {
                                     placeholder="Write your review here..."
                                     value={newComment}
                                     onChange={handleCommentChange}
+                                    className="styled-textarea" // Apply the new class
+
                                 />
                             </div>
                             <button type="submit">Submit Review</button>
