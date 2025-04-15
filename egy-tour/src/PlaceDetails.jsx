@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import './styles.css';  // Import global styles
+import './styles.css'; // Import global styles
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA';
 
@@ -270,17 +270,19 @@ const PlaceDetails = () => {
             </div>
 
             {/* Google Maps Directions Link */}
-            <div style={{ flex: '1 1 48%' }}>
+            <div style={{ marginBottom: '20px' }}>
                 <h3>➥ Directions</h3>
-                {/* Directions Link */}
-                <a
-                    href={`https://www.google.com/maps?q=${placeDetails.location}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="button-google-maps"
-                >
-                    Open in Google Maps
-                </a>
+                {placeDetails.location && (
+                    <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(placeDetails.location)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="button-google-maps"
+                    >
+                        Open in Google Maps
+                    </a>
+                )}
+                {!placeDetails.location && <p>Location details not available.</p>}
             </div>
 
             {placeDetails.openingHours && (
@@ -291,11 +293,80 @@ const PlaceDetails = () => {
             )}
 
             {placeDetails.ticketPrices && (
-                <div>
+                <div style={{ marginBottom: '20px' }}>
                     <h3>🎟️ Ticket Prices</h3>
                     <p>{placeDetails.ticketPrices}</p>
                 </div>
             )}
+
+            {/* Review Section - Integrated here */}
+            <div className="reviews-section" style={{ marginTop: '40px', borderTop: '1px solid #eee', paddingTop: '20px' }}>
+                <h2>Visitors Reviews</h2>
+
+                <div className="previous-reviews">
+                    <div className="review-card">
+                        <div className="reviewer-info">
+                            <div className="reviewer-name">John Doe</div>
+                            <div className="review-date">March 10, 2025</div>
+                        </div>
+                        <div className="review-rating">
+                            <span className="star">★</span>
+                            <span className="star">★</span>
+                            <span className="star">★</span>
+                            <span className="star">★</span>
+                            <span className="star-empty">☆</span>
+                            <span className="rating-value">4.0</span>
+                        </div>
+                        <div className="review-text">
+                            Excellent stay! The room was clean and comfortable, and the staff were very friendly. I would definitely recommend this place.
+                        </div>
+                    </div>
+
+                    <div className="review-card">
+                        <div className="reviewer-info">
+                            <div className="reviewer-name">Jane Smith</div>
+                            <div className="review-date">February 25, 2025</div>
+                        </div>
+                        <div className="review-rating">
+                            <span className="star">★</span>
+                            <span className="star">★</span>
+                            <span className="star">★</span>
+                            <span className="star">☆</span>
+                            <span className="star">☆</span>
+                            <span className="rating-value">3.0</span>
+                        </div>
+                        <div className="review-text">
+                            The location was great, but the breakfast could have been better. Overall, a decent experience.
+                        </div>
+                    </div>
+
+                    <div className="load-more-reviews">
+                        <button>Show More Reviews</button>
+                    </div>
+                </div>
+
+                <div className="leave-review-section">
+                    <h3>Leave Your Review</h3>
+                    <form id="review-form">
+                        <div className="form-group">
+                            <label htmlFor="rating">Rating:</label>
+                            <div className="star-rating-input">
+                                <span className="star-input" data-rating="1">☆</span>
+                                <span className="star-input" data-rating="2">☆</span>
+                                <span className="star-input" data-rating="3">☆</span>
+                                <span className="star-input" data-rating="4">☆</span>
+                                <span className="star-input" data-rating="5">☆</span>
+                                <input type="hidden" id="rating" name="rating" value="0" />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="comment">Your Review:</label>
+                            <textarea id="comment" name="comment" rows="5" placeholder="Write your review here..."></textarea>
+                        </div>
+                        <button type="submit">Submit Review</button>
+                    </form>
+                </div>
+            </div>
 
             <Link to={`/city/${cityName}`} style={{
                 display: 'inline-block',
