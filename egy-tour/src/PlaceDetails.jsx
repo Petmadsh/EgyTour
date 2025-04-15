@@ -4,7 +4,7 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './styles.css'; // Import global styles
-import { db } from './firebase'; // Assuming your firebase config is in '../firebase.js'
+import { db, auth } from './firebase'; // Assuming your firebase config is in '../firebase.js'
 import { collection, query, where, getDocs, addDoc, serverTimestamp } from 'firebase/firestore';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA';
@@ -24,13 +24,26 @@ const PlaceDetails = () => {
     const [reviews, setReviews] = useState([]);
     const [newRating, setNewRating] = useState(0);
     const [newComment, setNewComment] = useState('');
+    const [user, setUser] = useState(null);
 
-    const placeKey = `${cityName}_${placeName}`;
+    const placeKey = `<span class="math-inline">\{cityName\}\_</span>{placeName}`;
     const autoScrollInterval = 3000;
     const autoScrollTimeout = useRef(null);
     const resumeDelay = 2000;
     const mapContainer = useRef(null);
     const map = useRef(null);
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            if (authUser) {
+                setUser(authUser);
+            } else {
+                setUser(null);
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     // Fetch reviews from Firebase
     useEffect(() => {
@@ -52,13 +65,17 @@ const PlaceDetails = () => {
 
     const handleReviewSubmit = async (e) => {
         e.preventDefault();
+        if (!user) {
+            alert('You must be logged in to leave a review.');
+            return;
+        }
         if (newRating === 0 || newComment.trim() === '') {
             alert('Please provide a rating and a comment.');
             return;
         }
 
         const newReview = {
-            name: 'Anonymous', // You might want to implement user authentication to get the actual name
+            name: user.displayName || 'Anonymous', // Use displayName if available
             rating: newRating,
             comment: newComment,
             placeId: placeKey,
@@ -188,7 +205,7 @@ const PlaceDetails = () => {
 
             try {
                 const response = await fetch(
-                    `https://api.weatherapi.com/v1/current.json?key=b5d27ffd2d374fe692e172137242208&q=${lat},${lng}`
+                    `https://api.weatherapi.com/v1/current.json?key=b5d27ffd2d374fe692e172137242208&q=<span class="math-inline">\{lat\},</span>{lng}`
                 );
                 if (!response.ok) throw new Error('Failed to fetch weather data');
                 const data = await response.json();
@@ -327,7 +344,7 @@ const PlaceDetails = () => {
                 <h3>➥ Directions</h3>
                 {placeDetails.location && (
                     <a
-                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(placeDetails.location)}`}
+                        href={`http://google.com/maps?q=${encodeURIComponent(placeDetails.location)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="button-google-maps"
@@ -379,34 +396,38 @@ const PlaceDetails = () => {
 
                 <div className="leave-review-section">
                     <h3>Leave Your Review</h3>
-                    <form onSubmit={handleReviewSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="rating">Rating:</label>
-                            <div className="star-rating-input">
-                                {[1, 2, 3, 4, 5].map(star => (
-                                    <span
-                                        key={star}
-                                        className={`star-input ${newRating >= star ? 'filled' : ''}`}
-                                        onClick={() => handleRatingChange(star)}
-                                    >
-                                        {newRating >= star ? '★' : '☆'}
-                                    </span>
-                                ))}
+                    {!user ? (
+                        <p>You must be <Link to="/login">logged in</Link> to leave a review.</p>
+                    ) : (
+                        <form onSubmit={handleReviewSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="rating">Rating:</label>
+                                <div className="star-rating-input">
+                                    {[1, 2, 3, 4, 5].map(star => (
+                                        <span
+                                            key={star}
+                                            className={`star-input ${newRating >= star ? 'filled' : ''}`}
+                                            onClick={() => handleRatingChange(star)}
+                                        >
+                                            {newRating >= star ? '★' : '☆'}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="comment">Your Review:</label>
-                            <textarea
-                                id="comment"
-                                name="comment"
-                                rows="5"
-                                placeholder="Write your review here..."
-                                value={newComment}
-                                onChange={handleCommentChange}
-                            />
-                        </div>
-                        <button type="submit">Submit Review</button>
-                    </form>
+                            <div className="form-group">
+                                <label htmlFor="comment">Your Review:</label>
+                                <textarea
+                                    id="comment"
+                                    name="comment"
+                                    rows="5"
+                                    placeholder="Write your review here..."
+                                    value={newComment}
+                                    onChange={handleCommentChange}
+                                />
+                            </div>
+                            <button type="submit">Submit Review</button>
+                        </form>
+                    )}
                 </div>
             </div>
 
@@ -422,4 +443,4 @@ const PlaceDetails = () => {
     );
 };
 
-export default PlaceDetails;
+export default PlaceDetails
