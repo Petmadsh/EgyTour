@@ -4,6 +4,8 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './styles.css'; // Import global styles
+import { db } from './firebase'; // Assuming your firebase config is in '../firebase.js'
+import { collection, query, where, getDocs, addDoc, serverTimestamp } from 'firebase/firestore';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA';
 
@@ -19,11 +21,62 @@ const PlaceDetails = () => {
     const [weatherLoading, setWeatherLoading] = useState(true);
     const [weatherError, setWeatherError] = useState(null);
 
+    const [reviews, setReviews] = useState([]);
+    const [newRating, setNewRating] = useState(0);
+    const [newComment, setNewComment] = useState('');
+
+    const placeKey = `${cityName}_${placeName}`;
     const autoScrollInterval = 3000;
     const autoScrollTimeout = useRef(null);
     const resumeDelay = 2000;
     const mapContainer = useRef(null);
     const map = useRef(null);
+
+    // Fetch reviews from Firebase
+    useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const q = query(collection(db, 'reviews'), where('placeId', '==', placeKey));
+                const querySnapshot = await getDocs(q);
+                const fetchedReviews = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setReviews(fetchedReviews.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0)));
+            } catch (err) {
+                console.error('Error fetching reviews:', err);
+            }
+        };
+        fetchReviews();
+    }, [placeKey]);
+
+    const handleRatingChange = (rating) => setNewRating(rating);
+    const handleCommentChange = (e) => setNewComment(e.target.value);
+
+    const handleReviewSubmit = async (e) => {
+        e.preventDefault();
+        if (newRating === 0 || newComment.trim() === '') {
+            alert('Please provide a rating and a comment.');
+            return;
+        }
+
+        const newReview = {
+            name: 'Anonymous', // You might want to implement user authentication to get the actual name
+            rating: newRating,
+            comment: newComment,
+            placeId: placeKey,
+            timestamp: serverTimestamp(),
+            date: new Date().toLocaleDateString(),
+        };
+
+        try {
+            await addDoc(collection(db, 'reviews'), newReview);
+            setReviews(prev => [{ ...newReview, id: Math.random().toString(36).substring(7) }, ...prev]); // Optimistic update with a temporary ID
+            setNewRating(0);
+            setNewComment('');
+            alert('Review submitted successfully!');
+        } catch (err) {
+            console.error('Error adding review:', err);
+            alert('Failed to submit review.');
+        }
+    };
 
     useEffect(() => {
         const fetchPlaceData = async () => {
@@ -234,7 +287,7 @@ const PlaceDetails = () => {
                 <div style={{ flex: '1 1 48%' }}>
                     <h3>📍 Location</h3>
                     <div ref={mapContainer} style={{
-                        height: '390px',
+                        height: '400px', // Adjust height as needed
                         width: '100%',
                         borderRadius: '12px',
                         overflow: 'hidden',
@@ -299,69 +352,58 @@ const PlaceDetails = () => {
                 </div>
             )}
 
-            {/* Review Section - Integrated here */}
+            {/* Review Section */}
             <div className="reviews-section" style={{ marginTop: '40px', borderTop: '1px solid #eee', paddingTop: '20px' }}>
                 <h2>Visitors Reviews</h2>
 
                 <div className="previous-reviews">
-                    <div className="review-card">
-                        <div className="reviewer-info">
-                            <div className="reviewer-name">John Doe</div>
-                            <div className="review-date">March 10, 2025</div>
+                    {reviews.length === 0 && <p>No reviews yet. Be the first to review!</p>}
+                    {reviews.map((review) => (
+                        <div className="review-card" key={review.id}>
+                            <div className="reviewer-info">
+                                <div className="reviewer-name">{review.name}</div>
+                                <div className="review-date">{review.date}</div>
+                            </div>
+                            <div className="review-rating">
+                                {[...Array(5)].map((_, i) => (
+                                    <span key={i} className={i < review.rating ? 'star' : 'star-empty'}>
+                                        {i < review.rating ? '★' : '☆'}
+                                    </span>
+                                ))}
+                                <span className="rating-value">{review.rating?.toFixed(1)}</span>
+                            </div>
+                            <div className="review-text">{review.comment}</div>
                         </div>
-                        <div className="review-rating">
-                            <span className="star">★</span>
-                            <span className="star">★</span>
-                            <span className="star">★</span>
-                            <span className="star">★</span>
-                            <span className="star-empty">☆</span>
-                            <span className="rating-value">4.0</span>
-                        </div>
-                        <div className="review-text">
-                            Excellent stay! The room was clean and comfortable, and the staff were very friendly. I would definitely recommend this place.
-                        </div>
-                    </div>
-
-                    <div className="review-card">
-                        <div className="reviewer-info">
-                            <div className="reviewer-name">Jane Smith</div>
-                            <div className="review-date">February 25, 2025</div>
-                        </div>
-                        <div className="review-rating">
-                            <span className="star">★</span>
-                            <span className="star">★</span>
-                            <span className="star">★</span>
-                            <span className="star">☆</span>
-                            <span className="star">☆</span>
-                            <span className="rating-value">3.0</span>
-                        </div>
-                        <div className="review-text">
-                            The location was great, but the breakfast could have been better. Overall, a decent experience.
-                        </div>
-                    </div>
-
-                    <div className="load-more-reviews">
-                        <button>Show More Reviews</button>
-                    </div>
+                    ))}
                 </div>
 
                 <div className="leave-review-section">
                     <h3>Leave Your Review</h3>
-                    <form id="review-form">
+                    <form onSubmit={handleReviewSubmit}>
                         <div className="form-group">
                             <label htmlFor="rating">Rating:</label>
                             <div className="star-rating-input">
-                                <span className="star-input" data-rating="1">☆</span>
-                                <span className="star-input" data-rating="2">☆</span>
-                                <span className="star-input" data-rating="3">☆</span>
-                                <span className="star-input" data-rating="4">☆</span>
-                                <span className="star-input" data-rating="5">☆</span>
-                                <input type="hidden" id="rating" name="rating" value="0" />
+                                {[1, 2, 3, 4, 5].map(star => (
+                                    <span
+                                        key={star}
+                                        className={`star-input ${newRating >= star ? 'filled' : ''}`}
+                                        onClick={() => handleRatingChange(star)}
+                                    >
+                                        {newRating >= star ? '★' : '☆'}
+                                    </span>
+                                ))}
                             </div>
                         </div>
                         <div className="form-group">
                             <label htmlFor="comment">Your Review:</label>
-                            <textarea id="comment" name="comment" rows="5" placeholder="Write your review here..."></textarea>
+                            <textarea
+                                id="comment"
+                                name="comment"
+                                rows="5"
+                                placeholder="Write your review here..."
+                                value={newComment}
+                                onChange={handleCommentChange}
+                            />
                         </div>
                         <button type="submit">Submit Review</button>
                     </form>
