@@ -26,7 +26,8 @@ const PlaceDetails = () => {
     const [newComment, setNewComment] = useState('');
     const [user, setUser] = useState(null);
 
-    const placeKey = `<span class="math-inline">\{cityName\}\_</span>{placeName}`;
+    // Use the URL-friendly placeName as the unique identifier
+    const placeId = placeName;
     const autoScrollInterval = 3000;
     const autoScrollTimeout = useRef(null);
     const resumeDelay = 2000;
@@ -49,7 +50,7 @@ const PlaceDetails = () => {
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const q = query(collection(db, 'reviews'), where('placeId', '==', placeKey));
+                const q = query(collection(db, 'reviews'), where('placeId', '==', placeId));
                 const querySnapshot = await getDocs(q);
                 const fetchedReviews = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 setReviews(fetchedReviews.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0)));
@@ -58,7 +59,7 @@ const PlaceDetails = () => {
             }
         };
         fetchReviews();
-    }, [placeKey]);
+    }, [placeId]);
 
     const handleRatingChange = (rating) => setNewRating(rating);
     const handleCommentChange = (e) => setNewComment(e.target.value);
@@ -78,7 +79,7 @@ const PlaceDetails = () => {
             name: user.displayName || 'Anonymous', // Use displayName if available
             rating: newRating,
             comment: newComment,
-            placeId: placeKey,
+            placeId: placeId, // Use the URL-friendly placeName as placeId
             timestamp: serverTimestamp(),
             date: new Date().toLocaleDateString(),
         };
