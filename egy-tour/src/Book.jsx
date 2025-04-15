@@ -18,12 +18,15 @@ const BookPage = () => {
     const [error, setError] = useState(null);
     const visitorTypes = ['Adult', 'Child', 'Senior']; // Example options
     const visitorCategories = ['Local', 'Foreigner', 'Student']; // Example options
+    const [placeId, setPlaceId] = useState(null); // To store the place ID
 
     useEffect(() => {
-        // You might want to fetch minimal place details if needed,
-        // but since we came from PlaceDetails, you might already have the name.
-        // If you need the place ID, you might need to adjust how you pass it.
-        // For now, we'll rely on placeName from the URL.
+        // You might want to fetch the place ID based on cityName and placeName
+        // For now, we'll assume you have a way to get it or pass it down.
+        // If you were on a PlaceDetails page, you might have it in the state or URL.
+        // For this example, I'll set a placeholder. **You need to replace this**
+        const fetchedPlaceId = "WHkrK7PjKQ4ZXM3z82Ur";
+        setPlaceId(fetchedPlaceId);
         setLoading(false);
     }, [cityName, placeName]);
 
@@ -43,7 +46,7 @@ const BookPage = () => {
         const user = auth.currentUser;
         if (!user) {
             toast.error('You must be logged in to book a ticket.');
-            return false;
+            return true; // Treat as existing to prevent booking
         }
 
         const formattedDateStart = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 0, 0, 0);
@@ -52,7 +55,7 @@ const BookPage = () => {
         const q = query(
             collection(db, 'bookings'),
             where('email', '==', user.email),
-            where('placeName', '==', placeName),
+            where('placeId', '==', placeId),
             where('date', '>=', formattedDateStart),
             where('date', '<=', formattedDateEnd)
         );
@@ -79,25 +82,37 @@ const BookPage = () => {
             return;
         }
 
+        // 3. Check if placeId is available
+        if (!placeId) {
+            console.error('Place ID is not available.');
+            toast.error('Could not proceed with booking. Place information missing.');
+            return;
+        }
 
+        // 4. Check for Existing Booking
+        const existingBooking = await checkExistingBooking();
+        if (existingBooking) {
+            toast.error('You already have a booking for this place on this date.');
+            return;
+        }
 
-        // 4. Creating Booking Data Object
+        // 5. Creating Booking Data Object
         const bookingData = {
+            date: Timestamp.fromDate(selectedDate), // Stored as Firebase Timestamp
             email: user.email,
-            placeName: placeName,
-            date: Timestamp.fromDate(selectedDate), // Store as Firebase Timestamp
-            visitorType: visitorType,
+            placeId: placeId,
             visitorCategory: visitorCategory,
+            visitorType: visitorType,
             timestamp: serverTimestamp(), // Use serverTimestamp for consistency
-            userId: user.uid, // Add user ID, similar to reviews
-            bookingDate: new Date().toLocaleDateString(), // Add a readable booking date
-            cityName: cityName, // Consider adding cityName as well
-            // You might want to include other relevant information here
+            userId: user.uid, // Add user ID
+            bookingDate: new Date().toLocaleDateString(), // Readable booking date
+            placeName: placeName, // Keep placeName if needed for display
+            cityName: cityName, // Keep cityName if needed for display
         };
 
         console.log('Booking data to be added:', bookingData); // Debug log
 
-        // 5. Adding to Firestore with Error Handling
+        // 6. Adding to Firestore with Error Handling
         try {
             console.log('Attempting to add booking to the "bookings" collection...'); // Debug log
             const docRef = await addDoc(collection(db, 'bookings'), bookingData);
