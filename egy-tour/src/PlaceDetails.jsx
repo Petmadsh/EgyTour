@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight, FaEdit, FaTrash } from 'react-icons/fa';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -14,6 +14,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zN
 
 const PlaceDetails = () => {
     const { cityName, placeName } = useParams();
+    const navigate = useNavigate();
     const [placeDetails, setPlaceDetails] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -40,6 +41,10 @@ const PlaceDetails = () => {
     const resumeDelay = 2000;
     const mapContainer = useRef(null);
     const map = useRef(null);
+
+    const handleBookTicket = () => {
+        navigate(`/book/${cityName}/${placeName}`); // Construct the navigation path
+    };
 
     useEffect(() => {
         const unsubscribeAuth = auth.onAuthStateChanged(async (authUser) => {
@@ -590,6 +595,13 @@ const PlaceDetails = () => {
                         </form>
                     )}
                 </div>
+            </div>
+
+            <div style={{ marginBottom: '20px', marginTop: '20px'}}>
+                <h3>🎟️ Want to book a ticket?</h3>
+                <button onClick={handleBookTicket} className="button-book-ticket">
+                    Book Now
+                </button>
             </div>
 
             <Link to={`/city/${cityName}`} style={{

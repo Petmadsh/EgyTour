@@ -250,3 +250,25 @@
   font-style: italic;
 }
 
+
+.button-book-ticket {
+
+   display: inline-block;
+    padding: 12px 20px;
+    background-color: #D8532A;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.button-book-ticket:hover {
+    background-color:rgba(255, 89, 0, 0.85);
+    color: white;
+    text-decoration: none;
+
+    
+}
