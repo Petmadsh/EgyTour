@@ -45,9 +45,7 @@ const PlaceDetails = () => {
     const mapContainer = useRef(null);
     const map = useRef(null);
 
-    const handleBookTicketNavigation = () => {
-        navigate(`/book/${cityName}/${placeName}`); // Construct the navigation path
-    };
+ 
 
     useEffect(() => {
         const unsubscribeAuth = auth.onAuthStateChanged(async (authUser) => {
