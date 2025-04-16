@@ -35,7 +35,7 @@ const CitiesPage = () => {
 
     return (
         <div>
-            <h1>Cities</h1>
+            <h2 style={{ marginTop: '30px' }}>Discover vibrant cities and plan your next escape</h2>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
                 {cities.map((city) => (
                     <div key={city.name} className="city-card">

@@ -96,7 +96,7 @@ const CityDetails = () => {
 
             {/* City Data Section with Image Carousel */}
             <div style={{ marginBottom: '30px' }}> {/* Keep for spacing */}
-                <h3>About {cityDetails.name}</h3>
+                <h3>Discover {cityDetails.name}</h3>
                 {cityDetails.citydata && (
                     <>
                         <p>{cityDetails.citydata.description}</p>
@@ -139,7 +139,7 @@ const CityDetails = () => {
 
             {/* Places Section */}
             <div>
-                <h3>Places to Visit in {cityDetails.name}</h3>
+                <h3>Must-See Spots in {cityDetails.name}</h3>
                 {cityDetails.places && cityDetails.places.length > 0 ? (
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}> {/* Basic flex layout */}
                         {cityDetails.places.map((place) => (
@@ -162,12 +162,12 @@ const CityDetails = () => {
                         ))}
                     </div>
                 ) : (
-                    <p>No places to visit listed for {cityDetails.name}.</p>
+                    <p>No amazing spots listed for {cityDetails.name} yet!</p>
                 )}
             </div>
 
             <Link to="/cities" style={{ display: 'block', marginTop: '20px' }}>
-                ← Back to Cities
+                ← Explore Other Cities
             </Link>
         </div>
     );
