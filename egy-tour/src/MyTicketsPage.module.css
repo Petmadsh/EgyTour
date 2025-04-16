@@ -114,3 +114,17 @@
 .deleteToast {
     /* Style for the toast container if needed */
 }
+
+.loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px; /* Add margin top as requested */
+}
+
+.loadingText {
+    margin-top: 15px;
+    font-size: 1.1rem;
+    color: #555;
+}
