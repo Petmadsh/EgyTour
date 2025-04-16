@@ -1,0 +1,51 @@
+.about-page {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.fun-facts {
+    margin-top: 40px;
+}
+
+.fun-facts h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.facts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.fact-box {
+    padding: 20px;
+    border-radius: 8px;
+    color: #000;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.fact-box .icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+/* Color themes to match the screenshot style */
+.bg-1 {
+    background-color: #fef1d1;
+}
+
+.bg-2 {
+    background-color: #deeafb;
+}
+
+.bg-3 {
+    background-color: #fbeaea;
+}
+
+.bg-4 {
+    background-color: #d9f3f4;
+}
