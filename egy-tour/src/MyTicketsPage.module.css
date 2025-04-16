@@ -1,3 +1,5 @@
+/* MyTicketsPage.module.css */
+
 .myTicketsContainer {
     padding: 20px;
 }
@@ -5,8 +7,8 @@
 .ticketsList {
     margin-top: 20px;
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Creates exactly two columns */
     gap: 20px; /* Adjust gap as needed */
+    /* grid-template-columns will be set dynamically in the component */
 }
 
 .ticketCard {
@@ -37,8 +39,9 @@
 }
 
 .qrCodeImage {
-    width: 350px; /* Adjust QR code size as needed */
-    height: 350px; /* Adjust QR code size as needed */
+    width: 100%; /* Make QR code responsive within its container */
+    max-width: 350px; /* Set a maximum width if needed */
+    height: auto;
     align-self: center;
     margin-top: 10px;
 }

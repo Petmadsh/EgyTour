@@ -13,6 +13,29 @@ const MyTicketsPage = () => {
     const [qrCodes, setQrCodes] = useState({});
     const [isDeleting, setIsDeleting] = useState(false);
     const activeToastId = useRef(null);
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setScreenWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    const getGridColumns = () => {
+        if (screenWidth >= 1200) {
+            return 'repeat(3, 1fr)'; // 3 columns for large screens
+        } else if (screenWidth >= 768) {
+            return 'repeat(2, 1fr)'; // 2 columns for medium screens
+        } else {
+            return 'repeat(1, 1fr)'; // 1 column for small screens
+        }
+    };
 
     const DeleteConfirmation = ({ ticketId, closeToast }) => {
         const confirmationRef = useRef(null);
@@ -202,7 +225,7 @@ const MyTicketsPage = () => {
             {userTickets.length === 0 ? (
                 <p style={{ fontSize: '1.3rem' }}>You don't have any tickets yet</p>
             ) : (
-                <div className={styles.ticketsList}>
+                <div className={styles.ticketsList} style={{ gridTemplateColumns: getGridColumns() }}> {/* Apply dynamic grid columns */}
                     {userTickets.map((ticket) => (
                         <div key={ticket.id} className={styles.ticketCard}>
                             <div className={styles.ticketDetails}>
