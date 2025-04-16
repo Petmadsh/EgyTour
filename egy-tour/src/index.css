@@ -15,12 +15,12 @@
 
 a {
   font-weight: 500;
-  color: #007bff; /* Use a more standard link color for light mode */
+  color: #D8532A; /* Use a more standard link color for light mode */
   text-decoration: none; /* Remove default underline */
 }
 
 a:hover {
-  color: #0056b3; /* Darker shade on hover */
+  color:rgba(255, 89, 0, 0.85); /* Darker shade on hover */
   text-decoration: underline; /* Add underline on hover for better feedback */
 }
 

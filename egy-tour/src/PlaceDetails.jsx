@@ -715,12 +715,7 @@ const PlaceDetails = () => {
                 )}
             </div>
 
-            <Link to={`/city/${cityName}`} style={{
-                display: 'inline-block',
-                marginTop: '30px',
-                color: '#007BFF',
-                textDecoration: 'none'
-            }}>
+            <Link to={`/city/${cityName}`} >
                 ← Back to {cityName}
             </Link>
         </div>

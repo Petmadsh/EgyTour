@@ -170,7 +170,7 @@ const CityDetails = () => {
             </div>
 
             <Link to="/cities" style={{ display: 'block', marginTop: '20px' }}>
-                Back to Cities
+                 ← Back to Cities
             </Link>
         </div>
     );
