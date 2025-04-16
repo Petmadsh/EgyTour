@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; // Import arrow icons
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import './styles.css'; // Import your CSS file
 
 const CityDetails = () => {
     const { cityName } = useParams();
@@ -10,8 +11,6 @@ const CityDetails = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isAutoScrolling, setIsAutoScrolling] = useState(true);
     const [manualInteraction, setManualInteraction] = useState(false);
-    const imageWidth = '1000px';
-    const imageHeight = '600px';
     const autoScrollInterval = 3000;
     const autoScrollTimeout = useRef(null);
     const resumeDelay = 2000;
@@ -92,11 +91,11 @@ const CityDetails = () => {
     }
 
     return (
-        <div style={{ padding: '20px' }}>
+        <div style={{ padding: '20px' }}> {/* Keep basic page padding if needed */}
             <h2>{cityDetails.name} Details</h2>
 
             {/* City Data Section with Image Carousel */}
-            <div style={{ marginBottom: '30px' }}>
+            <div style={{ marginBottom: '30px' }}> {/* Keep for spacing */}
                 <h3>About {cityDetails.name}</h3>
                 {cityDetails.citydata && (
                     <>
@@ -107,7 +106,6 @@ const CityDetails = () => {
                                     className="carousel-images"
                                     style={{
                                         transform: `translateX(-${currentImageIndex * 100}%)`,
-                                        transition: 'transform 0.5s ease', // Optional: Add a smooth transition
                                     }}
                                 >
                                     {cityDetails.citydata.images.map((imagePath, index) => (
@@ -115,7 +113,6 @@ const CityDetails = () => {
                                             key={index}
                                             src={imagePath}
                                             alt={`${cityDetails.name} ${index}`}
-                                            style={{ width: imageWidth, height: imageHeight, objectFit: 'cover' }}
                                         />
                                     ))}
                                 </div>
@@ -144,7 +141,7 @@ const CityDetails = () => {
             <div>
                 <h3>Places to Visit in {cityDetails.name}</h3>
                 {cityDetails.places && cityDetails.places.length > 0 ? (
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}> {/* Basic flex layout */}
                         {cityDetails.places.map((place) => (
                             <div
                                 key={place.name}
@@ -170,7 +167,7 @@ const CityDetails = () => {
             </div>
 
             <Link to="/cities" style={{ display: 'block', marginTop: '20px' }}>
-                 ← Back to Cities
+                ← Back to Cities
             </Link>
         </div>
     );
