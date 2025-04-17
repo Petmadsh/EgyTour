@@ -4,7 +4,6 @@ import { collection, query, where, getDocs, orderBy, deleteDoc, doc } from 'fire
 import QRCodeGenerator from 'qrcode';
 import styles from './MyTicketsPage.module.css';
 import { toast } from 'react-toastify';
-import { RotatingLines } from 'react-loader-spinner'; // Import a loader component
 
 const MyTicketsPage = () => {
     const [userTickets, setUserTickets] = useState([]);
@@ -207,13 +206,6 @@ const MyTicketsPage = () => {
 
     if (loading) return (
         <div className={styles.loadingContainer}>
-            <RotatingLines
-                strokeColor="#D8532A" // Customize loader color
-                strokeWidth="5"
-                animationDuration="0.75"
-                width="96"
-                visible={loading}
-            />
             <p className={styles.loadingText}>Loading your tickets...</p>
         </div>
     );
