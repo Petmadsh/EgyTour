@@ -9,7 +9,7 @@ import { collection, query, where, getDocs, addDoc, serverTimestamp, doc, getDoc
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoicGV0bWFkc2g5OSIsImEiOiJjbTlnd2ZvMnUyNzE1Mm5zNHFkZzVxcHpzIn0.R08JPy3hFupbWo2pT68YQA'; // Replace with your Mapbox access token
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 const PlaceDetails = () => {
     const { cityName, placeName } = useParams();
@@ -369,8 +369,9 @@ const PlaceDetails = () => {
 
             try {
                 const response = await fetch(
-                    `https://api.weatherapi.com/v1/current.json?key=b5d27ffd2d374fe692e172137242208&q=${lat},${lng}` // Replace with your actual API key
+                    `https://api.weatherapi.com/v1/current.json?key=${import.meta.env.VITE_WEATHER_API_KEY}&q=${lat},${lng}`
                 );
+
                 if (!response.ok) throw new Error('Failed to fetch weather data');
                 const data = await response.json();
                 setWeather(data);
