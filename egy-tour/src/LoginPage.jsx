@@ -6,7 +6,7 @@ import styles from "./LoginPage.module.css";
 import logo from "./assets/Egyptian_Pyramids_with_Sphinx.png";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { toast } from 'react-toastify';
-import googleLogo from './assets/Google_logo.png';
+//import googleLogo from './assets/Google_logo.png';
 
 
 const LoginPage = () => {
@@ -173,7 +173,7 @@ const LoginPage = () => {
             </button>
             <button onClick={loginWithGoogle} className={styles.googleButton}>
                 Or Login With Google
-                <img src={googleLogo} alt="Google Logo" className={styles.googleIcon} />
+                
             </button>
             <div className={styles.registerLink}>
                 Don't have an account? <Link to="/register" className={styles.registerText}>Register</Link>
