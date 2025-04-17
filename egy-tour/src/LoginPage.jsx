@@ -6,7 +6,8 @@ import styles from "./LoginPage.module.css";
 import logo from "./assets/Egyptian_Pyramids_with_Sphinx.png";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { toast } from 'react-toastify';
-import googleLogo from "./assets/Google_logo.png";
+import googleLogo from './assets/Google_logo.png';
+
 
 const LoginPage = () => {
     const [form, setForm] = useState({ email: "", password: "" });
