@@ -4,7 +4,7 @@
         {
             "name": "Cairo",
             "description": "Cairo, the sprawling capital of Egypt, is a city steeped in history and culture.",
-            "image": "/images/cities/cairo.jpeg",
+            "image": "/src/images/cities/cairo.jpeg",
             "citydata": {
                 "description": "Cairo, the capital of Egypt, is a vibrant metropolis known for its rich history and cultural heritage. Located along the Nile River, Cairo is home to numerous historic sites, including the medieval Islamic Cairo, the Egyptian Museum with its vast collection of ancient artifacts, and the bustling Khan El Khalili bazaar. The city serves as a gateway to the nearby Giza Plateau, where the iconic pyramids and the Great Sphinx are situated. Cairo's mix of ancient monuments, bustling markets, and modern urban life makes it a fascinating destination.",
                 "images": [
