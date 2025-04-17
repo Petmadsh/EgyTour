@@ -244,12 +244,15 @@ const PlaceDetails = () => {
         };
 
         try {
+            const toastPromise = toast.success('Booking successful! You will be redirected to your tickets page');
             await addDoc(collection(db, 'bookings'), newBooking);
-            toast.success('Booking successful!');
+            await toastPromise; // Wait for the toast to resolve
             setIsBooking(false);
             setBookingDate('');
             setVisitorType('adult'); // Reset visitor type
-            navigate('/tickets');
+            setTimeout(() => {
+                navigate('/tickets');
+            }, 3000);
         } catch (error) {
             console.error('Error adding booking:', error);
             toast.error('Failed to book ticket.');
