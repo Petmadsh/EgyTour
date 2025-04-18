@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { auth, db } from './firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { sendEmailVerification, updateEmail, updatePassword } from 'firebase/auth';
+import { sendEmailVerification, updateEmail, updatePassword, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import styles from './ProfilePage.module.css';
@@ -28,9 +28,7 @@ const ProfilePage = () => {
                     closeToast();
                 }
             };
-
             document.addEventListener('mousedown', handleClickOutside);
-
             return () => {
                 document.removeEventListener('mousedown', handleClickOutside);
             };
@@ -52,10 +50,9 @@ const ProfilePage = () => {
     };
 
     useEffect(() => {
-        const fetchProfileData = async () => {
-            setLoading(true);
-            if (user) {
-                const userDocRef = doc(db, 'users', user.uid);
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+            if (firebaseUser) {
+                const userDocRef = doc(db, 'users', firebaseUser.uid);
                 try {
                     const docSnap = await getDoc(userDocRef);
                     if (docSnap.exists()) {
@@ -70,16 +67,14 @@ const ProfilePage = () => {
                     setLoading(false);
                 }
             } else {
-                navigate('/login'); // Redirect if no user is logged in
+                navigate('/login');
             }
-        };
+        });
 
-        fetchProfileData();
-    }, [navigate, user]);
+        return () => unsubscribe();
+    }, [navigate]);
 
-    const handleEditClick = () => {
-        setIsEditing(true);
-    };
+    const handleEditClick = () => setIsEditing(true);
 
     const handleInputChange = (e) => {
         setEditForm({ ...editForm, [e.target.name]: e.target.value });
@@ -94,17 +89,11 @@ const ProfilePage = () => {
         const userDocRef = doc(db, 'users', user.uid);
         const updates = {};
 
-        if (editForm.firstName !== userData.firstName) {
-            updates.firstName = editForm.firstName;
-        }
-        if (editForm.lastName !== userData.lastName) {
-            updates.lastName = editForm.lastName;
-        }
+        if (editForm.firstName !== userData.firstName) updates.firstName = editForm.firstName;
+        if (editForm.lastName !== userData.lastName) updates.lastName = editForm.lastName;
 
         if (editForm.email !== userData.email) {
-            if (activeToastId.current) {
-                toast.dismiss(activeToastId.current);
-            }
+            if (activeToastId.current) toast.dismiss(activeToastId.current);
 
             activeToastId.current = toast(
                 <ConfirmationToast
@@ -143,12 +132,10 @@ const ProfilePage = () => {
                     autoClose: false,
                     hideProgressBar: true,
                     className: styles.confirmationToastContainer,
-                    onClose: () => {
-                        activeToastId.current = null;
-                    }
+                    onClose: () => { activeToastId.current = null; }
                 }
             );
-            return; // Stop the rest of the submit function
+            return;
         }
 
         if (Object.keys(updates).length > 0) {
@@ -162,13 +149,11 @@ const ProfilePage = () => {
                 toast.error('Failed to update profile.', { position: 'top-right' });
             }
         } else {
-            setIsEditing(false); // If no changes, just exit edit mode
+            setIsEditing(false);
         }
     };
 
-    const handlePasswordChangeClick = () => {
-        setIsChangingPassword(true);
-    };
+    const handlePasswordChangeClick = () => setIsChangingPassword(true);
 
     const handlePasswordInputChange = (e) => {
         setPasswordForm({ ...passwordForm, [e.target.name]: e.target.value });
@@ -198,11 +183,7 @@ const ProfilePage = () => {
         return isValid;
     };
 
-    const handlePasswordSubmit = async () => {
-        if (!validatePasswordChange()) {
-            return;
-        }
-
+    const performPasswordUpdate = async () => {
         if (!user) {
             toast.error('No user logged in.', { position: 'top-right' });
             return;
@@ -210,7 +191,13 @@ const ProfilePage = () => {
 
         try {
             await updatePassword(user, passwordForm.newPassword);
-            toast.success('Password updated successfully!', { position: 'top-right' });
+            toast.success(
+                'Password updated! Please log in again.',
+                {
+                    position: 'top-right',
+                    onClose: () => navigate('/login')
+                }
+            );
             setIsChangingPassword(false);
             setPasswordForm({ newPassword: '', confirmNewPassword: '' });
             setPasswordErrors({ newPassword: '', confirmNewPassword: '' });
@@ -227,9 +214,32 @@ const ProfilePage = () => {
         }
     };
 
-    if (loading) {
-        return <div className={styles.loading}>Loading profile data...</div>;
-    }
+
+    const handlePasswordSubmit = () => {
+        if (!validatePasswordChange()) return;
+
+        if (activeToastId.current) toast.dismiss(activeToastId.current);
+
+        activeToastId.current = toast(
+            <ConfirmationToast
+                message="Are you sure you want to change your password?"
+                onConfirm={performPasswordUpdate}
+                closeToast={() => toast.dismiss(activeToastId.current)}
+            />,
+            {
+                position: 'top-center',
+                closeOnClick: false,
+                draggable: false,
+                closeButton: false,
+                autoClose: false,
+                hideProgressBar: true,
+                className: styles.confirmationToastContainer,
+                onClose: () => { activeToastId.current = null; }
+            }
+        );
+    };
+
+    if (loading) return <div className={styles.loading}>Loading profile data...</div>;
 
     return (
         <div className={styles.container}>
@@ -238,36 +248,15 @@ const ProfilePage = () => {
                 <div className={styles.formContainer}>
                     <div className={styles.inputGroup}>
                         <label htmlFor="firstName" className={styles.label}>First Name:</label>
-                        <input
-                            type="text"
-                            id="firstName"
-                            name="firstName"
-                            value={editForm.firstName}
-                            onChange={handleInputChange}
-                            className={styles.input}
-                        />
+                        <input type="text" id="firstName" name="firstName" value={editForm.firstName} onChange={handleInputChange} className={styles.input} />
                     </div>
                     <div className={styles.inputGroup}>
                         <label htmlFor="lastName" className={styles.label}>Last Name:</label>
-                        <input
-                            type="text"
-                            id="lastName"
-                            name="lastName"
-                            value={editForm.lastName}
-                            onChange={handleInputChange}
-                            className={styles.input}
-                        />
+                        <input type="text" id="lastName" name="lastName" value={editForm.lastName} onChange={handleInputChange} className={styles.input} />
                     </div>
                     <div className={styles.inputGroup}>
                         <label htmlFor="email" className={styles.label}>Email:</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={editForm.email}
-                            onChange={handleInputChange}
-                            className={styles.input}
-                        />
+                        <input type="email" id="email" name="email" value={editForm.email} onChange={handleInputChange} className={styles.input} />
                     </div>
                     <div className={styles.buttonGroup}>
                         <button onClick={handleSubmit} className={styles.submitButton}>Save Changes</button>
@@ -278,26 +267,12 @@ const ProfilePage = () => {
                 <div className={styles.formContainer}>
                     <div className={styles.inputGroup}>
                         <label htmlFor="newPassword" className={styles.label}>New Password:</label>
-                        <input
-                            type="password"
-                            id="newPassword"
-                            name="newPassword"
-                            value={passwordForm.newPassword}
-                            onChange={handlePasswordInputChange}
-                            className={styles.input}
-                        />
+                        <input type="password" id="newPassword" name="newPassword" value={passwordForm.newPassword} onChange={handlePasswordInputChange} className={styles.input} />
                         {passwordErrors.newPassword && <p className={styles.error}>{passwordErrors.newPassword}</p>}
                     </div>
                     <div className={styles.inputGroup}>
                         <label htmlFor="confirmNewPassword" className={styles.label}>Confirm New Password:</label>
-                        <input
-                            type="password"
-                            id="confirmNewPassword"
-                            name="confirmNewPassword"
-                            value={passwordForm.confirmNewPassword}
-                            onChange={handlePasswordInputChange}
-                            className={styles.input}
-                        />
+                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" value={passwordForm.confirmNewPassword} onChange={handlePasswordInputChange} className={styles.input} />
                         {passwordErrors.confirmNewPassword && <p className={styles.error}>{passwordErrors.confirmNewPassword}</p>}
                     </div>
                     <div className={styles.buttonGroup}>
