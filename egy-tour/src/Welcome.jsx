@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Welcome.module.css';
-import pyramidsSphinxImage from './images/pyramids_sphinx.jpg';
-import khanElKhaliliImage from './images/Khan-El-Khalili-Bazaar.jpg';
-import mosqueMuhammadAliImage from './images/mosque_muhammad_ali.webp';
-import nileFeluccaImage from './images/nile_felucca.jpg';
+import pyramidsSphinxImage from '/images/pyramids_sphinx.jpg';
+import khanElKhaliliImage from '/images/Khan-El-Khalili-Bazaar.jpg';
+import mosqueMuhammadAliImage from '/images/mosque_muhammad_ali.webp';
+import nileFeluccaImage from '/images/nile_felucca.jpg';
 
 const Welcome = () => {
     return (
