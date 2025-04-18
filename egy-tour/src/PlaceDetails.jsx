@@ -813,19 +813,24 @@ const PlaceDetails = () => {
                         ) : (
                             <div className="booking-form">
                                 
-                                <div className="form-group">
-                                    <label htmlFor="bookingDate" className="booking-label">Date:</label>
-                                            <DatePicker
-                                                id="bookingDate"
-                                                selected={bookingDate ? new Date(bookingDate) : null}
-                                                onChange={(date) => setBookingDate(date ? date.toISOString().split('T')[0] : '')}
-                                                dateFormat="yyyy-MM-dd"
-                                                placeholderText="Please select a date"
-                                                minDate={new Date()}
-                                                className="booking-input"
-                                            />
+                                        <div className="booking-date-wrapper">
+                                            <label htmlFor="bookingDate" className="booking-label">Date:</label>
 
-                                </div>
+                                            <div className="datepicker-with-icon">
+                                                <DatePicker
+                                                    id="bookingDate"
+                                                    selected={bookingDate ? new Date(bookingDate) : null}
+                                                    onChange={(date) => setBookingDate(date ? date.toISOString().split('T')[0] : '')}
+                                                    dateFormat="yyyy-MM-dd"
+                                                    placeholderText="Please select a date"
+                                                    minDate={new Date()}
+                                                    className="booking-input no-caret"
+                                                    onKeyDown={(e) => e.preventDefault()}
+                                                />
+                                                <span className="calendar-icon">📅</span> {/* You can replace with a better icon later */}
+                                            </div>
+                                        </div>
+
                                 <div className="form-group">
                                     <label className="booking-label">Visitor Type:</label>
                                     <div className="radio-group">

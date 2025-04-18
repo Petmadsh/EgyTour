@@ -68,11 +68,12 @@
     background-color: #333;
 }
 
+/* City Card Styles */
 .city-card {
     border: 2px solid #D8532A;
     border-radius: 8px;
     padding: 25px;
-    width: 310px; /* Decreased card width */
+    width: 310px;
     cursor: pointer;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
@@ -108,14 +109,12 @@
 }
 
 .button-google-maps:hover {
-    background-color:rgba(255, 89, 0, 0.85);
+    background-color: rgba(255, 89, 0, 0.85);
     color: white;
     text-decoration: none;
-
-    
 }
 
-/* styles.css */
+/* Reviews Section */
 .reviews-section {
     margin-top: 30px;
     padding: 20px;
@@ -156,16 +155,16 @@
     margin-bottom: 5px;
 }
 
-.review-text{
-   font-size: 1.2em;
-   margin-bottom: 15px;
+.review-text {
+    font-size: 1.2em;
+    margin-bottom: 15px;
 }
 
 .star, .star-empty, .star-input {
     font-size: 1.5em;
     color: gold;
     margin-right: 3px;
-    cursor: pointer; /* For star-input */
+    cursor: pointer;
 }
 
 .star-empty {
@@ -173,27 +172,25 @@
 }
 
 .rating-value {
-    margin-left: 5px;}
+    margin-left: 5px;
+}
 
-    /* Review Form Styles */
+/* Review Form Styles */
 .review-form {
     flex-direction: column;
     gap: 12px;
     margin-top: 20px;
 }
 
-.remove-button{
-     background-color: #e74c3c;
+.remove-button {
+    background-color: #e74c3c;
     color: white;
     margin-left: 20px;
 }
 
-.remove-button:hover{
-
- background-color: #c0392b;
-   
+.remove-button:hover {
+    background-color: #c0392b;
 }
-
 
 .review-form input,
 .review-form select,
@@ -220,7 +217,7 @@
     background-color: rgba(255, 89, 0, 0.85);
 }
 
-/* Section titles */
+/* Section Titles */
 .review-title {
     margin-top: 30px;
     margin-bottom: 10px;
@@ -229,6 +226,7 @@
     color: #333;
 }
 
+/* Star Input for Reviews */
 .star-input {
     font-size: 3em;
     cursor: pointer;
@@ -241,36 +239,36 @@
     color: gold;
 }
 
+/* Styled Textarea */
 .styled-textarea {
-  padding: 12px;
-  font-size: 1.1em;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  resize: vertical;
-  width: 100%;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  font-family: 'Arial', sans-serif;
-  background-color: #f9f9f9;
-  color: #333;
-  line-height: 1.6;
+    padding: 12px;
+    font-size: 1.1em;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    resize: vertical;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
 }
 
 .styled-textarea:focus {
-  outline: none;
-  border-color: #D8532A;
-  box-shadow: 0 4px 12px rgba(216, 83, 42, 0.2);
+    outline: none;
+    border-color: #D8532A;
+    box-shadow: 0 4px 12px rgba(216, 83, 42, 0.2);
 }
 
 .styled-textarea::placeholder {
-  color: #aaa;
-  font-style: italic;
+    color: #aaa;
+    font-style: italic;
 }
 
-
+/* Booking Section */
 .button-book-ticket {
-
-   display: inline-block;
+    display: inline-block;
     padding: 12px 20px;
     background-color: #D8532A;
     color: #fff;
@@ -283,19 +281,14 @@
 }
 
 .button-book-ticket:hover {
-    background-color:rgba(255, 89, 0, 0.85);
+    background-color: rgba(255, 89, 0, 0.85);
     color: white;
     text-decoration: none;
-
-    
 }
 
-
-/* Booking Section Styles */
 .booking-title {
     font-size: 20px;
     margin-bottom: 15px;
-    
 }
 
 .booking-form {
@@ -306,8 +299,6 @@
     margin-top: 20px;
 }
 
-
-
 .booking-label {
     display: block;
     margin-bottom: 8px;
@@ -316,13 +307,31 @@
     font-size: 1em;
 }
 
+/* Booking input with calendar icon */
+.datepicker-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
 .booking-input {
-    padding: 10px;
+    flex: 1;
+    padding-left: 40px;
+    padding-right: 12px;
+    height: 40px;
     border: 1px solid #ddd;
     border-radius: 5px;
-   
-    margin-bottom: 15px;
     font-size: 1em;
+}
+
+.calendar-icon {
+    position: absolute;
+    left: 12px;
+    font-size: 1.2rem;
+    pointer-events: none;
+    padding-bottom: 4px;
+    
 }
 
 .radio-group {
