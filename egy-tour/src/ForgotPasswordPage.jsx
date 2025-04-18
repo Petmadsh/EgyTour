@@ -3,17 +3,30 @@ import { auth } from "./firebase";
 import { sendPasswordResetEmail, fetchSignInMethodsForEmail } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./ForgotPasswordPage.module.css";
-import modalStyles from "./ModalStyles.module.css"; // Import modal styles
+import modalStyles from "./ModalStyles.module.css";
 import logo from "./assets/Egyptian_Pyramids_with_Sphinx.png";
 import Modal from 'react-modal';
 
-Modal.setAppElement('#root'); // Bind modal to the root element
+Modal.setAppElement('#root');
 
 const ForgotPasswordPage = () => {
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const [modal, setModal] = useState({ show: false, message: "", title: "", type: "", onClose: null });
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     const handleChange = (e) => {
         setEmail(e.target.value);
@@ -72,7 +85,7 @@ const ForgotPasswordPage = () => {
     };
 
     return (
-        <div className={styles.container}>
+        <div className={`${styles.container} ${isMobile ? styles.mobileContainer : ''}`}>
             <div className={styles.logoContainer}>
                 <img src={logo} alt="Your Logo" className={styles.logo} />
             </div>
@@ -116,14 +129,10 @@ const ForgotPasswordPage = () => {
                         {modal.title}
                     </h2>
                 )}
-                {modal.type === "warning" && (
-                    <h2 className={`${modalStyles.modalTitle} ${modalStyles.warningTitle}`}>
-                        {modal.title}
-                    </h2>
-                )}
+                
                 {modal.type !== "success" &&
                     modal.type !== "error" &&
-                    modal.type !== "warning" && (
+                     (
                         <h2 className={modalStyles.modalTitle}>{modal.title}</h2>
                     )}
 
@@ -146,17 +155,10 @@ const ForgotPasswordPage = () => {
                             Okay
                         </button>
                     )}
-                    {modal.type === "warning" && (
-                        <button
-                            className={`${modalStyles.warningButton} ${modalStyles.confirmButton}`}
-                            onClick={closeModal}
-                        >
-                            Okay
-                        </button>
-                    )}
+                    
                     {modal.type !== "success" &&
                         modal.type !== "error" &&
-                        modal.type !== "warning" && (
+                        (
                             <>
                                 <button
                                     className={`${modalStyles.confirmButton}`}
