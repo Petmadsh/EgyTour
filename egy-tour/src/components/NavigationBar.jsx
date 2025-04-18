@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import logo from "../assets/Egyptian_Pyramids_with_Sphinx.png";
 import styles from './NavigationBar.module.css';
+import modalStyles from '/src/ModalStyles.module.css'; // Import modal styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faUserCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { auth } from '../firebase';
@@ -328,24 +329,17 @@ const NavigationBar = () => {
             <Modal
                 isOpen={showSignOutConfirmationModal}
                 onRequestClose={closeSignOutConfirmationModal}
-                style={{
-                    overlay: { backgroundColor: 'rgba(0, 0, 0, 0.6)' },
-                    content: {
-                        top: '50%', left: '50%', right: 'auto', bottom: 'auto',
-                        marginRight: '-50%', transform: 'translate(-50%, -50%)',
-                        padding: '20px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
-                        maxWidth: '400px', width: '90%', textAlign: 'center',
-                    }
-                }}
+                className={modalStyles.modalContent}
+                overlayClassName={modalStyles.modalOverlay}
                 contentLabel="Sign Out Confirmation"
             >
-                <h2>Confirm Sign Out</h2>
-                <p>Are you sure you want to sign out?</p>
-                <div className={styles.modalButtons}>
-                    <button onClick={handleActualSignOut} className={styles.signOutYesButton}>
+                <h2 className={modalStyles.modalTitle}>Confirm Sign Out</h2>
+                <p className={modalStyles.modalMessage}>Are you sure you want to sign out?</p>
+                <div className={modalStyles.modalButtons}>
+                    <button onClick={handleActualSignOut} className={modalStyles.cancelButton}>
                         Yes, Sign Out
                     </button>
-                    <button onClick={closeSignOutConfirmationModal} className={styles.signOutNoButton}>
+                    <button onClick={closeSignOutConfirmationModal} className={modalStyles.confirmButton}>
                         No
                     </button>
                 </div>
@@ -355,20 +349,13 @@ const NavigationBar = () => {
             <Modal
                 isOpen={showSignOutSuccessModal}
                 onRequestClose={closeSignOutSuccessModal}
-                style={{
-                    overlay: { backgroundColor: 'rgba(0, 0, 0, 0.6)' },
-                    content: {
-                        top: '50%', left: '50%', right: 'auto', bottom: 'auto',
-                        marginRight: '-50%', transform: 'translate(-50%, -50%)',
-                        padding: '20px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
-                        maxWidth: '400px', width: '90%', textAlign: 'center',
-                    }
-                }}
+                className={modalStyles.modalContent}
+                overlayClassName={modalStyles.modalOverlay}
                 contentLabel="Sign Out Successful"
             >
-                <h2>Signed Out</h2>
-                <p>You have been successfully signed out.</p>
-                <button onClick={closeSignOutSuccessModal} className={styles.confirmButton}>
+                <h2 className={`${modalStyles.modalTitle} ${modalStyles.successTitle}`}>Signed Out</h2>
+                <p className={modalStyles.modalMessage}>You have been successfully signed out.</p>
+                <button onClick={closeSignOutSuccessModal} className={`${modalStyles.confirmButton} ${modalStyles.successButton}`}>
                     Okay
                 </button>
             </Modal>

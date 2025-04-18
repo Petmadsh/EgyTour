@@ -1,0 +1,123 @@
+/* ModalStyles.module.css */
+
+.modalOverlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top */
+}
+
+.modalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+.modalTitle {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.modalMessage {
+    margin-bottom: 20px;
+    font-size: 1em;
+    color: #555;
+}
+
+.modalButtons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.confirmButton, /* For success and confirmation (yes) */
+.cancelButton,  /* For confirmation (no) */
+.errorButton,   /* For error messages */
+.warningButton  /* For warning messages */
+{
+    padding: 12px 24px;
+    border-radius: 7px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.2s ease;
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Confirmation Specific Styles */
+.confirmButton {
+    background-color: #4CAF50; /* Green for positive action */
+    color: white;
+}
+
+.confirmButton:hover {
+    background-color: #45a049;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.cancelButton {
+    background-color: #f44336; /* Red for negative action */
+    color: white;
+}
+
+.cancelButton:hover {
+    background-color: #d32f2f;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Success Specific Style */
+.successTitle {
+    color: #4CAF50;
+}
+
+.successButton {
+    background-color: #007bff; /* Blue for okay/dismiss */
+    color: white;
+}
+
+.successButton:hover {
+    background-color: #0056b3;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Error Specific Style */
+.errorTitle {
+    color: #f44336;
+}
+
+.errorButton {
+    background-color: #f44336;
+    color: white;
+}
+
+.errorButton:hover {
+    background-color: #d32f2f;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Warning Specific Style */
+.warningTitle {
+    color: #ff9800; /* Orange for warning */
+}
+
+.warningButton {
+    background-color: #ff9800;
+    color: white;
+}
+
+.warningButton:hover {
+    background-color: #f57c00;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}

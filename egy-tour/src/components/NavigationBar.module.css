@@ -1,3 +1,5 @@
+/* NavigationBar.module.css */
+
 .navbar {
     width: 100%;
     box-sizing: border-box;
@@ -67,61 +69,6 @@
     margin-right: 8px; /* Add some space between the icon and text */
 }
 
-.signOutToast {
-    /* Style the toast container */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    background-color: white;
-    color: #333;
-    text-align: center;
-}
-
-.signOutConfirmation {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.signOutConfirmation p {
-    margin-bottom: 15px;
-    font-size: 1.1em;
-}
-
-.signOutButtons {
-    display: flex;
-    gap: 10px;
-}
-
-.signOutYesButton,
-.signOutNoButton {
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.signOutYesButton {
-    background-color: #f44336;
-    color: white;
-    border: none;
-}
-
-.signOutYesButton:hover {
-    background-color: #d32f2f;
-}
-
-.signOutNoButton {
-    background-color: #ccc;
-    color: #333;
-    border: none;
-}
-
-.signOutNoButton:hover {
-    background-color: #b3b3b3;
-}
-
 /* Search Bar - Default (Desktop) Styling */
 .searchBar {
     order: 3;
@@ -168,7 +115,7 @@
     background-color: white;
     border: 1px solid #ccc;
     border-top: none;
-    border-radius: 0 0 5px 5px;
+    border-radius: 0 0 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     z-index: 10;
     list-style: none;

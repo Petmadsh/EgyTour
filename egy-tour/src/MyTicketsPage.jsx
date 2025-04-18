@@ -3,6 +3,7 @@ import { auth, db } from './firebase';
 import { collection, query, where, getDocs, orderBy, deleteDoc, doc } from 'firebase/firestore';
 import QRCodeGenerator from 'qrcode';
 import styles from './MyTicketsPage.module.css';
+import modalStyles from './ModalStyles.module.css'; // Import modal styles
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
@@ -168,24 +169,17 @@ const MyTicketsPage = () => {
             <Modal
                 isOpen={showConfirmationModal}
                 onRequestClose={closeConfirmationModal}
-                style={{
-                    overlay: { backgroundColor: 'rgba(0, 0, 0, 0.6)' },
-                    content: {
-                        top: '50%', left: '50%', right: 'auto', bottom: 'auto',
-                        marginRight: '-50%', transform: 'translate(-50%, -50%)',
-                        padding: '20px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
-                        maxWidth: '400px', width: '90%',
-                    }
-                }}
+                className={modalStyles.modalContent}
+                overlayClassName={modalStyles.modalOverlay}
                 contentLabel="Confirm Delete Ticket"
             >
-                <h2>Confirm Delete</h2>
-                <p>Are you sure you want to delete this ticket?</p>
-                <div className={styles.modalButtons}>
-                    <button onClick={confirmDeleteTicket} disabled={isDeleting} className={styles.confirmButton}>
+                <h2 className={`${modalStyles.modalTitle} ${modalStyles.modalTitle}`}>Confirm Delete</h2>
+                <p className={modalStyles.modalMessage}>Are you sure you want to delete this ticket?</p>
+                <div className={modalStyles.modalButtons}>
+                    <button onClick={confirmDeleteTicket} disabled={isDeleting} className={modalStyles.cancelButton}>
                         Yes, Delete
                     </button>
-                    <button onClick={closeConfirmationModal} className={styles.cancelButton}>
+                    <button onClick={closeConfirmationModal} className={modalStyles.confirmButton}>
                         Cancel
                     </button>
                 </div>
@@ -195,21 +189,13 @@ const MyTicketsPage = () => {
             <Modal
                 isOpen={showSuccessModal}
                 onRequestClose={closeSuccessModal}
-                style={{
-                    overlay: { backgroundColor: 'rgba(0, 0, 0, 0.6)' },
-                    content: {
-                        top: '50%', left: '50%', right: 'auto', bottom: 'auto',
-                        marginRight: '-50%', transform: 'translate(-50%, -50%)',
-                        padding: '20px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
-                        maxWidth: '400px', width: '90%',
-                        textAlign: 'center',
-                    }
-                }}
+                className={modalStyles.modalContent}
+                overlayClassName={modalStyles.modalOverlay}
                 contentLabel="Ticket Deleted Successfully"
             >
-                <h2>Success!</h2>
-                <p>The ticket has been deleted successfully.</p>
-                <button onClick={closeSuccessModal} className={styles.confirmButton}>
+                <h2 className={`${modalStyles.modalTitle} ${modalStyles.successTitle}`}>Success!</h2>
+                <p className={modalStyles.modalMessage}>The ticket has been deleted successfully.</p>
+                <button onClick={closeSuccessModal} className={`${modalStyles.confirmButton} ${modalStyles.successButton}`}>
                     Okay
                 </button>
             </Modal>

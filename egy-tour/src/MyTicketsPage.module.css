@@ -87,14 +87,20 @@
     gap: 10px;
 }
 
-.confirmButton {
-    background-color: #c62828;
-    color: white;
+.confirmButton { /* Style for the 'Okay' button in the success modal */
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
     border: none;
-
+    background-color: #007bff; /* Example success color */
+    color: white;
 }
 
-.confirmButton:hover {background-color:rgb(187, 8, 8);}
+.confirmButton:hover {
+    background-color: #0056b3;
+}
 
 .deleteYesButton:disabled {
     opacity: 0.6;
@@ -128,3 +134,5 @@
     font-size: 1.1rem;
     color: #555;
 }
+
+/* Removed modal button styles from here as they are now in ModalStyles.module.css */
