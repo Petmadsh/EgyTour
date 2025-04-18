@@ -1,3 +1,5 @@
+/* LoginPage.module.css */
+
 .container {
     display: flex;
     flex-direction: column;
@@ -94,7 +96,7 @@
 
 .loginButton {
     width: 100%;
-     max-width: 450px; 
+     max-width: 450px;
     padding: 18px; /* Increase padding */
     background-color: #D8532A;
     color: white;
@@ -112,7 +114,7 @@
 
 .googleButton {
     width: 100%;
-     max-width: 450px; 
+     max-width: 450px;
     padding: 18px; /* Increase padding */
     background-color: black;
     color: white;
@@ -132,8 +134,8 @@
 }
 
 .googleIcon {
-    width: 50px;
-    height: 50px;
+    width: 30px; /* Adjust icon size for mobile */
+    height: auto;
     margin-left: 10px;
 }
 
@@ -156,4 +158,70 @@
     color: red;
     font-size: 0.9em;
     margin-top: 5px;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    .container {
+        width: 95%; /* Make container take up more width on smaller screens */
+        padding: 30px 15px; /* Adjust padding for smaller screens */
+    }
+
+    .logo {
+        width: 150px; /* Smaller logo for mobile */
+    }
+
+    .loginTitle {
+        font-size: 28px; /* Smaller title for mobile */
+        margin-bottom: 30px;
+    }
+
+    .input {
+        padding: 14px; /* Adjust input padding for mobile */
+        font-size: 16px;
+    }
+
+    .label {
+        font-size: 16px;
+        top: 14px;
+    }
+
+    .input:focus + .label,
+    .input:not(:placeholder-shown) + .label,
+    .input:-webkit-autofill + .label {
+        font-size: 12px;
+    }
+
+    .passwordToggle {
+        font-size: 1.4em; /* Adjust icon size for mobile */
+    }
+
+    .forgotPassword {
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+
+    .loginButton {
+        padding: 16px; /* Adjust button padding for mobile */
+        font-size: 18px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    .googleButton {
+        padding: 16px; /* Adjust button padding for mobile */
+        font-size: 18px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+
+    .googleIcon {
+        width: 25px; /* Even smaller Google icon for mobile */
+        height: auto;
+        margin-left: 8px;
+    }
+
+    .registerLink {
+        font-size: 14px;
+    }
 }

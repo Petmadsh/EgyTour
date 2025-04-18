@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth, db } from "./firebase";
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate, Link } from "react-router-dom";
-import styles from "./RegisterPage.module.css"; 
+import styles from "./RegisterPage.module.css";
 import logo from "./assets/Egyptian_Pyramids_with_Sphinx.png";
-import { toast } from 'react-toastify'; 
+import { toast } from 'react-toastify';
 
 const RegisterPage = () => {
     const [form, setForm] = useState({ first: "", last: "", email: "", password: "", confirm: "" });
@@ -13,6 +13,19 @@ const RegisterPage = () => {
     const navigate = useNavigate();
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // Example breakpoint
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768); // Adjust breakpoint as needed
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -111,7 +124,7 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className={styles.container}>
+        <div className={`${styles.container} ${isMobile ? styles.mobileContainer : ''}`}>
             <div className={styles.logoContainer}>
                 <img src={logo} alt="Your Logo" className={styles.logo} />
             </div>

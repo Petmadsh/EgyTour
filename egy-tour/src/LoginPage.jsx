@@ -1,18 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth, googleProvider, db } from "./firebase";
-import { signInWithEmailAndPassword, signInWithPopup, fetchSignInMethodsForEmail } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./LoginPage.module.css";
 import logo from "./assets/Egyptian_Pyramids_with_Sphinx.png";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { toast } from 'react-toastify';
 
-
 const LoginPage = () => {
     const [form, setForm] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({ email: "", password: "" });
     const navigate = useNavigate();
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // Example breakpoint
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768); // Adjust breakpoint as needed
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -130,7 +142,7 @@ const LoginPage = () => {
     };
 
     return (
-        <div className={styles.container}>
+        <div className={`${styles.container} ${isMobile ? styles.mobileContainer : ''}`}>
             <div className={styles.logoContainer}>
                 <img src={logo} alt="Your Logo" className={styles.logo} />
             </div>
@@ -140,7 +152,7 @@ const LoginPage = () => {
                     type="email"
                     name="email"
                     id="email"
-                    placeholder=" " 
+                    placeholder=" "
                     value={form.email}
                     onChange={handleChange}
                     className={styles.input}
@@ -153,7 +165,7 @@ const LoginPage = () => {
                     type={passwordVisible ? "text" : "password"}
                     name="password"
                     id="password"
-                    placeholder=" " 
+                    placeholder=" "
                     value={form.password}
                     onChange={handleChange}
                     className={styles.input}
@@ -173,7 +185,6 @@ const LoginPage = () => {
             <button onClick={loginWithGoogle} className={styles.googleButton}>
                 Or Login With Google
                 <img src="/assets/Google_Logo.png" alt="Google Logo" className={styles.googleIcon} />
-
             </button>
             <div className={styles.registerLink}>
                 Don't have an account? <Link to="/register" className={styles.registerText}>Register</Link>
