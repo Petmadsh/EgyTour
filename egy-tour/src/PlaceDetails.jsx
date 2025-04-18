@@ -8,6 +8,9 @@ import { db, auth } from './firebase';
 import { collection, query, where, getDocs, addDoc, serverTimestamp, doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
@@ -670,13 +673,16 @@ const PlaceDetails = () => {
                                 
                                 <div className="form-group">
                                     <label htmlFor="bookingDate" className="booking-label">Date:</label>
-                                    <input
-                                        type="date"
-                                        id="bookingDate"
-                                        value={bookingDate}
-                                        onChange={handleDateChange}
-                                        className="booking-input"
-                                    />
+                                            <DatePicker
+                                                id="bookingDate"
+                                                selected={bookingDate ? new Date(bookingDate) : null}
+                                                onChange={(date) => setBookingDate(date ? date.toISOString().split('T')[0] : '')}
+                                                dateFormat="yyyy-MM-dd"
+                                                placeholderText="Please select a date"
+                                                minDate={new Date()}
+                                                className="booking-input"
+                                            />
+
                                 </div>
                                 <div className="form-group">
                                     <label className="booking-label">Visitor Type:</label>
