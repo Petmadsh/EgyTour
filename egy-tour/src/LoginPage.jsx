@@ -3,9 +3,12 @@ import { auth, googleProvider, db } from "./firebase";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./LoginPage.module.css";
+import modalStyles from "./ModalStyles.module.css"; // Import modal styles
 import logo from "./assets/Egyptian_Pyramids_with_Sphinx.png";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { toast } from 'react-toastify';
+import Modal from 'react-modal'; // Import Modal
+
+Modal.setAppElement('#root'); // Ensure this is set
 
 const LoginPage = () => {
     const [form, setForm] = useState({ email: "", password: "" });
@@ -13,6 +16,11 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // Example breakpoint
+    const [showVerificationModal, setShowVerificationModal] = useState(false);
+    const [showLoginFailedModal, setShowLoginFailedModal] = useState(false);
+    const [loginFailedMessage, setLoginFailedMessage] = useState("");
+    const [showGoogleLoginFailedModal, setShowGoogleLoginFailedModal] = useState(false);
+    const [googleLoginFailedMessage, setGoogleLoginFailedMessage] = useState("");
 
     useEffect(() => {
         const handleResize = () => {
@@ -55,16 +63,7 @@ const LoginPage = () => {
             const userCredential = await signInWithEmailAndPassword(auth, form.email, form.password);
             const user = userCredential.user;
             if (!user.emailVerified) {
-                toast.error("Please verify your email address before logging in.", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                setShowVerificationModal(true);
                 return;
             }
             navigate("/welcome");
@@ -79,16 +78,8 @@ const LoginPage = () => {
             } else if (err.code === 'auth/network-request-failed') {
                 errorMessage = 'Network error. Please check your internet connection.';
             }
-            toast.error(errorMessage, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            setLoginFailedMessage(errorMessage);
+            setShowLoginFailedModal(true);
         }
     };
 
@@ -124,21 +115,21 @@ const LoginPage = () => {
             } else if (err.code === 'auth/account-exists-with-different-credential') {
                 errorMessage = 'An account with the same email already exists with different credentials.';
             }
-            toast.error(errorMessage, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            setGoogleLoginFailedMessage(errorMessage);
+            setShowGoogleLoginFailedModal(true);
         }
     };
 
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
+    };
+
+    const closeModal = () => {
+        setShowVerificationModal(false);
+        setShowLoginFailedModal(false);
+        setShowGoogleLoginFailedModal(false);
+        setLoginFailedMessage("");
+        setGoogleLoginFailedMessage("");
     };
 
     return (
@@ -189,6 +180,45 @@ const LoginPage = () => {
             <div className={styles.registerLink}>
                 Don't have an account? <Link to="/register" className={styles.registerText}>Register</Link>
             </div>
+
+            {/* Email Verification Modal */}
+            <Modal
+                isOpen={showVerificationModal}
+                onRequestClose={closeModal}
+                className={modalStyles.modalContent}
+                overlayClassName={modalStyles.modalOverlay}
+                contentLabel="Email Verification Required"
+            >
+                <h2 className={`${modalStyles.modalTitle} ${modalStyles.warningTitle}`}>Verify Your Email</h2>
+                <p className={modalStyles.modalMessage}>Please verify your email address before logging in.</p>
+                <button onClick={closeModal} className={modalStyles.confirmButton}>Okay</button>
+            </Modal>
+
+            {/* Login Failed Modal */}
+            <Modal
+                isOpen={showLoginFailedModal}
+                onRequestClose={closeModal}
+                className={modalStyles.modalContent}
+                overlayClassName={modalStyles.modalOverlay}
+                contentLabel="Login Failed"
+            >
+                <h2 className={`${modalStyles.modalTitle} ${modalStyles.errorTitle}`}>Login Failed</h2>
+                <p className={modalStyles.modalMessage}>{loginFailedMessage}</p>
+                <button onClick={closeModal} className={modalStyles.confirmButton}>Okay</button>
+            </Modal>
+
+            {/* Google Login Failed Modal */}
+            <Modal
+                isOpen={showGoogleLoginFailedModal}
+                onRequestClose={closeModal}
+                className={modalStyles.modalContent}
+                overlayClassName={modalStyles.modalOverlay}
+                contentLabel="Google Login Failed"
+            >
+                <h2 className={`${modalStyles.modalTitle} ${modalStyles.errorTitle}`}>Google Login Failed</h2>
+                <p className={modalStyles.modalMessage}>{googleLoginFailedMessage}</p>
+                <button onClick={closeModal} className={modalStyles.confirmButton}>Okay</button>
+            </Modal>
         </div>
     );
 };

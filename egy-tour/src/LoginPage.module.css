@@ -96,7 +96,7 @@
 
 .loginButton {
     width: 100%;
-     max-width: 450px;
+    max-width: 450px;
     padding: 18px; /* Increase padding */
     background-color: #D8532A;
     color: white;
@@ -114,7 +114,7 @@
 
 .googleButton {
     width: 100%;
-     max-width: 450px;
+    max-width: 450px;
     padding: 18px; /* Increase padding */
     background-color: black;
     color: white;

@@ -4,8 +4,11 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./RegisterPage.module.css";
+import modalStyles from "./ModalStyles.module.css"; // Import modal styles
 import logo from "./assets/Egyptian_Pyramids_with_Sphinx.png";
-import { toast } from 'react-toastify';
+import Modal from 'react-modal'; // Import Modal
+
+Modal.setAppElement('#root'); // Ensure this is set
 
 const RegisterPage = () => {
     const [form, setForm] = useState({ first: "", last: "", email: "", password: "", confirm: "" });
@@ -14,6 +17,9 @@ const RegisterPage = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // Example breakpoint
+    const [showVerificationModal, setShowVerificationModal] = useState(false);
+    const [showRegisterFailedModal, setShowRegisterFailedModal] = useState(false);
+    const [registerFailedMessage, setRegisterFailedMessage] = useState("");
 
     useEffect(() => {
         const handleResize = () => {
@@ -78,19 +84,7 @@ const RegisterPage = () => {
             });
 
             await sendEmailVerification(user);
-            toast.success("Verification email sent! Please check your inbox and verify your email address.", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                onClose: () => {
-                    navigate("/login");
-                }
-            });
+            setShowVerificationModal(true);
         } catch (err) {
             let errorMessage = "Registration failed.";
             if (err.code === 'auth/email-already-in-use') {
@@ -102,16 +96,8 @@ const RegisterPage = () => {
             } else if (err.code === 'auth/network-request-failed') {
                 errorMessage = 'Network error. Please check your internet connection.';
             }
-            toast.error(errorMessage, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            setRegisterFailedMessage(errorMessage);
+            setShowRegisterFailedModal(true);
         }
     };
 
@@ -121,6 +107,15 @@ const RegisterPage = () => {
 
     const toggleConfirmPasswordVisibility = () => {
         setConfirmPasswordVisible(!confirmPasswordVisible);
+    };
+
+    const closeModal = () => {
+        setShowVerificationModal(false);
+        setShowRegisterFailedModal(false);
+        setRegisterFailedMessage("");
+        if (showVerificationModal) {
+            navigate("/login");
+        }
     };
 
     return (
@@ -206,6 +201,32 @@ const RegisterPage = () => {
             <div className={styles.loginLink}>
                 Already have an account? <Link to="/login" className={styles.loginText}>Login</Link>
             </div>
+
+            {/* Email Verification Modal */}
+            <Modal
+                isOpen={showVerificationModal}
+                onRequestClose={closeModal}
+                className={modalStyles.modalContent}
+                overlayClassName={modalStyles.modalOverlay}
+                contentLabel="Email Verification Required"
+            >
+                <h2 className={`${modalStyles.modalTitle} ${modalStyles.successTitle}`}>Verification Email Sent</h2>
+                <p className={modalStyles.modalMessage}>Please check your inbox and verify your email address.</p>
+                <button onClick={closeModal} className={modalStyles.confirmButton}>Okay</button>
+            </Modal>
+
+            {/* Register Failed Modal */}
+            <Modal
+                isOpen={showRegisterFailedModal}
+                onRequestClose={closeModal}
+                className={modalStyles.modalContent}
+                overlayClassName={modalStyles.modalOverlay}
+                contentLabel="Registration Failed"
+            >
+                <h2 className={`${modalStyles.modalTitle} ${modalStyles.errorTitle}`}>Registration Failed</h2>
+                <p className={modalStyles.modalMessage}>{registerFailedMessage}</p>
+                <button onClick={closeModal} className={modalStyles.confirmButton}>Okay</button>
+            </Modal>
         </div>
     );
 };
