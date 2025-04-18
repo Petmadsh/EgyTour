@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { auth, db } from './firebase';
 import { collection, query, where, getDocs, orderBy, deleteDoc, doc } from 'firebase/firestore';
 import QRCodeGenerator from 'qrcode';
 import styles from './MyTicketsPage.module.css';
-import { toast } from 'react-toastify';
 
 const MyTicketsPage = () => {
     const [userTickets, setUserTickets] = useState([]);
@@ -11,7 +10,6 @@ const MyTicketsPage = () => {
     const [error, setError] = useState(null);
     const [qrCodes, setQrCodes] = useState({});
     const [isDeleting, setIsDeleting] = useState(false);
-    const activeToastId = useRef(null);
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
     useEffect(() => {
@@ -34,78 +32,6 @@ const MyTicketsPage = () => {
         } else {
             return 'repeat(1, 1fr)'; // 1 column for small screens
         }
-    };
-
-    const DeleteConfirmation = ({ ticketId, closeToast }) => {
-        const confirmationRef = useRef(null);
-
-        useEffect(() => {
-            const handleClickOutside = (event) => {
-                if (confirmationRef.current && !confirmationRef.current.contains(event.target)) {
-                    closeToast();
-                }
-            };
-
-            document.addEventListener('mousedown', handleClickOutside);
-
-            return () => {
-                document.removeEventListener('mousedown', handleClickOutside);
-            };
-        }, [closeToast]);
-
-        const confirmDelete = async () => {
-            closeToast();
-            if (isDeleting) return;
-            setIsDeleting(true);
-            try {
-                await deleteDoc(doc(db, 'bookings', ticketId));
-                setUserTickets(prevTickets => prevTickets.filter(ticket => ticket.id !== ticketId));
-                setQrCodes(prevQrCodes => {
-                    const newQrCodes = { ...prevQrCodes };
-                    delete newQrCodes[ticketId];
-                    return newQrCodes;
-                });
-                toast.success('Ticket deleted successfully!', {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
-            } catch (error) {
-                console.error("Error deleting ticket:", error);
-                toast.error('Failed to delete ticket. Please try again.', {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
-            } finally {
-                setIsDeleting(false);
-                activeToastId.current = null;
-            }
-        };
-
-        return (
-            <div className={styles.deleteConfirmation} ref={confirmationRef}>
-                <p>Are you sure you want to delete this ticket?</p>
-                <div className={styles.deleteButtons}>
-                    <button onClick={confirmDelete} className={styles.deleteYesButton} disabled={isDeleting}>
-                        {isDeleting ? 'Deleting...' : 'Yes, Delete'}
-                    </button>
-                    <button onClick={closeToast} className={styles.deleteNoButton}>
-                        No
-                    </button>
-                </div>
-            </div>
-        );
     };
 
     const fetchUserTickets = async () => {
@@ -185,23 +111,26 @@ const MyTicketsPage = () => {
         return () => unsubscribe();
     }, []);
 
-    const askToDeleteConfirmation = (ticketId) => {
-        if (activeToastId.current) {
-            toast.dismiss(activeToastId.current);
-        }
-
-        activeToastId.current = toast(<DeleteConfirmation ticketId={ticketId} closeToast={() => toast.dismiss(activeToastId.current)} />, {
-            position: "top-center",
-            closeOnClick: false,
-            draggable: false,
-            closeButton: false,
-            autoClose: false,
-            hideProgressBar: true,
-            className: styles.deleteToast,
-            onClose: () => {
-                activeToastId.current = null;
+    const handleDeleteTicket = async (ticketId) => {
+        if (window.confirm('Are you sure you want to delete this ticket?')) {
+            if (isDeleting) return;
+            setIsDeleting(true);
+            try {
+                await deleteDoc(doc(db, 'bookings', ticketId));
+                setUserTickets(prevTickets => prevTickets.filter(ticket => ticket.id !== ticketId));
+                setQrCodes(prevQrCodes => {
+                    const newQrCodes = { ...prevQrCodes };
+                    delete newQrCodes[ticketId];
+                    return newQrCodes;
+                });
+                alert('Ticket deleted successfully!');
+            } catch (error) {
+                console.error("Error deleting ticket:", error);
+                alert('Failed to delete ticket. Please try again.');
+            } finally {
+                setIsDeleting(false);
             }
-        });
+        }
     };
 
     if (loading) return (
@@ -228,7 +157,7 @@ const MyTicketsPage = () => {
                                 )}
                             </div>
                             <button
-                                onClick={() => askToDeleteConfirmation(ticket.id)}
+                                onClick={() => handleDeleteTicket(ticket.id)}
                                 className={styles.deleteButton}
                                 disabled={isDeleting}
                             >
