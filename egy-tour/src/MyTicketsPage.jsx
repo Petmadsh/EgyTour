@@ -3,6 +3,9 @@ import { auth, db } from './firebase';
 import { collection, query, where, getDocs, orderBy, deleteDoc, doc } from 'firebase/firestore';
 import QRCodeGenerator from 'qrcode';
 import styles from './MyTicketsPage.module.css';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 const MyTicketsPage = () => {
     const [userTickets, setUserTickets] = useState([]);
@@ -11,6 +14,9 @@ const MyTicketsPage = () => {
     const [qrCodes, setQrCodes] = useState({});
     const [isDeleting, setIsDeleting] = useState(false);
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [ticketToDelete, setTicketToDelete] = useState(null);
 
     useEffect(() => {
         const handleResize = () => {
@@ -26,11 +32,11 @@ const MyTicketsPage = () => {
 
     const getGridColumns = () => {
         if (screenWidth >= 1200) {
-            return 'repeat(3, 1fr)'; // 3 columns for large screens
+            return 'repeat(3, 1fr)';
         } else if (screenWidth >= 768) {
-            return 'repeat(2, 1fr)'; // 2 columns for medium screens
+            return 'repeat(2, 1fr)';
         } else {
-            return 'repeat(1, 1fr)'; // 1 column for small screens
+            return 'repeat(1, 1fr)';
         }
     };
 
@@ -111,25 +117,39 @@ const MyTicketsPage = () => {
         return () => unsubscribe();
     }, []);
 
-    const handleDeleteTicket = async (ticketId) => {
-        if (window.confirm('Are you sure you want to delete this ticket?')) {
-            if (isDeleting) return;
-            setIsDeleting(true);
-            try {
-                await deleteDoc(doc(db, 'bookings', ticketId));
-                setUserTickets(prevTickets => prevTickets.filter(ticket => ticket.id !== ticketId));
-                setQrCodes(prevQrCodes => {
-                    const newQrCodes = { ...prevQrCodes };
-                    delete newQrCodes[ticketId];
-                    return newQrCodes;
-                });
-                alert('Ticket deleted successfully!');
-            } catch (error) {
-                console.error("Error deleting ticket:", error);
-                alert('Failed to delete ticket. Please try again.');
-            } finally {
-                setIsDeleting(false);
-            }
+    const initiateDelete = (ticketId) => {
+        setTicketToDelete(ticketId);
+        setShowConfirmationModal(true);
+    };
+
+    const closeConfirmationModal = () => {
+        setShowConfirmationModal(false);
+        setTicketToDelete(null);
+    };
+
+    const closeSuccessModal = () => {
+        setShowSuccessModal(false);
+    };
+
+    const confirmDeleteTicket = async () => {
+        if (!ticketToDelete || isDeleting) return;
+        setIsDeleting(true);
+        setShowConfirmationModal(false);
+        try {
+            await deleteDoc(doc(db, 'bookings', ticketToDelete));
+            setUserTickets(prevTickets => prevTickets.filter(ticket => ticket.id !== ticketToDelete));
+            setQrCodes(prevQrCodes => {
+                const newQrCodes = { ...prevQrCodes };
+                delete newQrCodes[ticketToDelete];
+                return newQrCodes;
+            });
+            setShowSuccessModal(true);
+        } catch (error) {
+            console.error("Error deleting ticket:", error);
+            alert('Failed to delete ticket. Please try again.');
+        } finally {
+            setIsDeleting(false);
+            setTicketToDelete(null);
         }
     };
 
@@ -143,10 +163,61 @@ const MyTicketsPage = () => {
     return (
         <div className={styles.myTicketsContainer}>
             <h1>My Tickets</h1>
+
+            {/* Confirmation Modal */}
+            <Modal
+                isOpen={showConfirmationModal}
+                onRequestClose={closeConfirmationModal}
+                style={{
+                    overlay: { backgroundColor: 'rgba(0, 0, 0, 0.6)' },
+                    content: {
+                        top: '50%', left: '50%', right: 'auto', bottom: 'auto',
+                        marginRight: '-50%', transform: 'translate(-50%, -50%)',
+                        padding: '20px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+                        maxWidth: '400px', width: '90%',
+                    }
+                }}
+                contentLabel="Confirm Delete Ticket"
+            >
+                <h2>Confirm Delete</h2>
+                <p>Are you sure you want to delete this ticket?</p>
+                <div className={styles.modalButtons}>
+                    <button onClick={confirmDeleteTicket} disabled={isDeleting} className={styles.confirmButton}>
+                        Yes, Delete
+                    </button>
+                    <button onClick={closeConfirmationModal} className={styles.cancelButton}>
+                        Cancel
+                    </button>
+                </div>
+            </Modal>
+
+            {/* Success Modal */}
+            <Modal
+                isOpen={showSuccessModal}
+                onRequestClose={closeSuccessModal}
+                style={{
+                    overlay: { backgroundColor: 'rgba(0, 0, 0, 0.6)' },
+                    content: {
+                        top: '50%', left: '50%', right: 'auto', bottom: 'auto',
+                        marginRight: '-50%', transform: 'translate(-50%, -50%)',
+                        padding: '20px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+                        maxWidth: '400px', width: '90%',
+                        textAlign: 'center',
+                    }
+                }}
+                contentLabel="Ticket Deleted Successfully"
+            >
+                <h2>Success!</h2>
+                <p>The ticket has been deleted successfully.</p>
+                <button onClick={closeSuccessModal} className={styles.confirmButton}>
+                    Okay
+                </button>
+            </Modal>
+
             {userTickets.length === 0 ? (
                 <p style={{ fontSize: '1.3rem' }}>You don't have any tickets yet</p>
             ) : (
-                <div className={styles.ticketsList} style={{ gridTemplateColumns: getGridColumns() }}> {/* Apply dynamic grid columns */}
+                <div className={styles.ticketsList} style={{ gridTemplateColumns: getGridColumns() }}>
                     {userTickets.map((ticket) => (
                         <div key={ticket.id} className={styles.ticketCard}>
                             <div className={styles.ticketDetails}>
@@ -157,7 +228,7 @@ const MyTicketsPage = () => {
                                 )}
                             </div>
                             <button
-                                onClick={() => handleDeleteTicket(ticket.id)}
+                                onClick={() => initiateDelete(ticket.id)}
                                 className={styles.deleteButton}
                                 disabled={isDeleting}
                             >

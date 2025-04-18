@@ -1,4 +1,3 @@
-// NavigationBar.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import logo from "../assets/Egyptian_Pyramids_with_Sphinx.png";
@@ -7,7 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faUserCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
-import { toast } from 'react-toastify';
+import Modal from 'react-modal'; // Import Modal
+
+Modal.setAppElement('#root'); // Ensure this is set
 
 const NavigationBar = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -20,72 +21,38 @@ const NavigationBar = () => {
     const profileIconRef = useRef(null);
     const navigate = useNavigate();
     const location = useLocation();
-    const activeToastId = useRef(null);
+    const [showSignOutConfirmationModal, setShowSignOutConfirmationModal] = useState(false);
+    const [showSignOutSuccessModal, setShowSignOutSuccessModal] = useState(false);
 
-    const SignOutConfirmation = ({ closeToast }) => {
-        const confirmationRef = useRef(null);
+    const openSignOutConfirmationModal = () => {
+        setShowSignOutConfirmationModal(true);
+        closeProfileMenu();
+        closeMobileMenu();
+    };
 
-        useEffect(() => {
-            const handleClickOutside = (event) => {
-                if (confirmationRef.current && !confirmationRef.current.contains(event.target)) {
-                    closeToast();
-                }
-            };
+    const closeSignOutConfirmationModal = () => {
+        setShowSignOutConfirmationModal(false);
+    };
 
-            document.addEventListener('mousedown', handleClickOutside);
+    const openSignOutSuccessModal = () => {
+        setShowSignOutSuccessModal(true);
+    };
 
-            return () => {
-                document.removeEventListener('mousedown', handleClickOutside);
-            };
-        }, [closeToast]);
+    const closeSignOutSuccessModal = () => {
+        setShowSignOutSuccessModal(false);
+        navigate('/login');
+    };
 
-        return (
-            <div className={styles.signOutConfirmation} ref={confirmationRef}>
-                <p>Are you sure you want to sign out?</p>
-                <div className={styles.signOutButtons}>
-                    <button
-                        onClick={async () => {
-                            try {
-                                await signOut(auth);
-                                navigate('/login');
-                                toast.success('Successfully signed out!', {
-                                    position: "top-right",
-                                    autoClose: 3000,
-                                    hideProgressBar: false,
-                                    closeOnClick: true,
-                                    pauseOnHover: true,
-                                    draggable: true,
-                                    progress: undefined,
-                                    theme: "light",
-                                });
-                            } catch (error) {
-                                toast.error('Error signing out. Please try again.', {
-                                    position: "top-right",
-                                    autoClose: 3000,
-                                    hideProgressBar: false,
-                                    closeOnClick: true,
-                                    pauseOnHover: true,
-                                    draggable: true,
-                                    progress: undefined,
-                                    theme: "light",
-                                });
-                            } finally {
-                                closeProfileMenu();
-                                closeMobileMenu();
-                                closeToast();
-                                activeToastId.current = null;
-                            }
-                        }}
-                        className={styles.signOutYesButton}
-                    >
-                        Yes, Sign Out
-                    </button>
-                    <button onClick={closeToast} className={styles.signOutNoButton}>
-                        No
-                    </button>
-                </div>
-            </div>
-        );
+    const handleActualSignOut = async () => {
+        try {
+            await signOut(auth);
+            openSignOutSuccessModal();
+        } catch (error) {
+            console.error('Error signing out:', error);
+            alert('Error signing out. Please try again.'); // Fallback error message
+        } finally {
+            closeSignOutConfirmationModal();
+        }
     };
 
     useEffect(() => {
@@ -179,25 +146,6 @@ const NavigationBar = () => {
     const handleProfileOptionClick = (path) => {
         closeProfileMenu();
         navigate(path);
-    };
-
-    const handleSignOut = () => {
-        if (activeToastId.current) {
-            toast.dismiss(activeToastId.current);
-        }
-
-        activeToastId.current = toast(<SignOutConfirmation closeToast={() => toast.dismiss(activeToastId.current)} />, {
-            position: "top-center",
-            closeOnClick: false, // Prevent default close on click outside
-            draggable: false,
-            closeButton: false,
-            autoClose: false,
-            hideProgressBar: true,
-            className: styles.signOutToast,
-            onClose: () => {
-                activeToastId.current = null;
-            }
-        });
     };
 
     useEffect(() => {
@@ -312,7 +260,7 @@ const NavigationBar = () => {
                 {profileMenuVisible && (
                     <ul className={styles.profileDropdown}>
                         <li onClick={() => handleProfileOptionClick('/profile')}>My Profile</li>
-                        <li onClick={handleSignOut}>
+                        <li onClick={openSignOutConfirmationModal}>
                             <FontAwesomeIcon icon={faSignOutAlt} className={styles.signOutIcon} /> Sign Out
                         </li>
                     </ul>
@@ -370,11 +318,60 @@ const NavigationBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <button onClick={handleSignOut} className={styles.navLink}>
+                    <button onClick={openSignOutConfirmationModal} className={styles.navLink}>
                         <FontAwesomeIcon icon={faSignOutAlt} className={styles.signOutIcon} /> Sign Out
                     </button>
                 </li>
             </ul>
+
+            {/* Sign Out Confirmation Modal */}
+            <Modal
+                isOpen={showSignOutConfirmationModal}
+                onRequestClose={closeSignOutConfirmationModal}
+                style={{
+                    overlay: { backgroundColor: 'rgba(0, 0, 0, 0.6)' },
+                    content: {
+                        top: '50%', left: '50%', right: 'auto', bottom: 'auto',
+                        marginRight: '-50%', transform: 'translate(-50%, -50%)',
+                        padding: '20px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+                        maxWidth: '400px', width: '90%', textAlign: 'center',
+                    }
+                }}
+                contentLabel="Sign Out Confirmation"
+            >
+                <h2>Confirm Sign Out</h2>
+                <p>Are you sure you want to sign out?</p>
+                <div className={styles.modalButtons}>
+                    <button onClick={handleActualSignOut} className={styles.signOutYesButton}>
+                        Yes, Sign Out
+                    </button>
+                    <button onClick={closeSignOutConfirmationModal} className={styles.signOutNoButton}>
+                        No
+                    </button>
+                </div>
+            </Modal>
+
+            {/* Sign Out Success Modal */}
+            <Modal
+                isOpen={showSignOutSuccessModal}
+                onRequestClose={closeSignOutSuccessModal}
+                style={{
+                    overlay: { backgroundColor: 'rgba(0, 0, 0, 0.6)' },
+                    content: {
+                        top: '50%', left: '50%', right: 'auto', bottom: 'auto',
+                        marginRight: '-50%', transform: 'translate(-50%, -50%)',
+                        padding: '20px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+                        maxWidth: '400px', width: '90%', textAlign: 'center',
+                    }
+                }}
+                contentLabel="Sign Out Successful"
+            >
+                <h2>Signed Out</h2>
+                <p>You have been successfully signed out.</p>
+                <button onClick={closeSignOutSuccessModal} className={styles.confirmButton}>
+                    Okay
+                </button>
+            </Modal>
         </nav>
     );
 };

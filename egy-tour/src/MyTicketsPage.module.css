@@ -87,17 +87,14 @@
     gap: 10px;
 }
 
-.deleteYesButton {
+.confirmButton {
     background-color: #c62828;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
+
 }
 
-.deleteYesButton:hover {background-color:rgb(187, 8, 8);}
+.confirmButton:hover {background-color:rgb(187, 8, 8);}
 
 .deleteYesButton:disabled {
     opacity: 0.6;
