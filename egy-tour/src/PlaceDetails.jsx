@@ -300,7 +300,6 @@ const PlaceDetails = () => {
             placeName: displayedPlaceName,
             bookingDate: bookingDate,
             visitorType: visitorType,
-            timestamp: serverTimestamp(),
         };
 
         try {
