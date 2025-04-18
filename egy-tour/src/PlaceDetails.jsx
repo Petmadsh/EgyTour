@@ -6,11 +6,13 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import './styles.css';
 import { db, auth } from './firebase';
 import { collection, query, where, getDocs, addDoc, serverTimestamp, doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Modal from 'react-modal';
+import modalStyles from './ModalStyles.module.css';
 
+// Initialize modal
+Modal.setAppElement('#root');
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
@@ -39,7 +41,18 @@ const PlaceDetails = () => {
 
     const [isBooking, setIsBooking] = useState(false);
     const [bookingDate, setBookingDate] = useState('');
-    const [visitorType, setVisitorType] = useState('adult'); // Default to adult
+    const [visitorType, setVisitorType] = useState('adult');
+
+    // Modal states
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showWarningModal, setShowWarningModal] = useState(false);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [modalContent, setModalContent] = useState({
+        title: '',
+        message: '',
+        onConfirm: null
+    });
 
     const placeId = placeName;
     const autoScrollInterval = 3000;
@@ -47,6 +60,46 @@ const PlaceDetails = () => {
     const resumeDelay = 2000;
     const mapContainer = useRef(null);
     const map = useRef(null);
+
+    // Helper function to show modals
+    const showModal = (type, title, message, onConfirm = null) => {
+        setModalContent({ title, message, onConfirm });
+        switch (type) {
+            case 'error':
+                setShowErrorModal(true);
+                break;
+            case 'success':
+                setShowSuccessModal(true);
+                break;
+            case 'warning':
+                setShowWarningModal(true);
+                break;
+            case 'confirmation':
+                setShowConfirmationModal(true);
+                break;
+            default:
+                break;
+        }
+    };
+
+    const closeModal = (type) => {
+        switch (type) {
+            case 'error':
+                setShowErrorModal(false);
+                break;
+            case 'success':
+                setShowSuccessModal(false);
+                break;
+            case 'warning':
+                setShowWarningModal(false);
+                break;
+            case 'confirmation':
+                setShowConfirmationModal(false);
+                break;
+            default:
+                break;
+        }
+    };
 
  
 
@@ -123,11 +176,11 @@ const PlaceDetails = () => {
     const handleReviewSubmit = async (e) => {
         e.preventDefault();
         if (!user) {
-            toast.error('You must be logged in to leave a review.');
+            showModal('error', 'Authentication Required', 'You must be logged in to leave a review.');
             return;
         }
         if (newRating === 0 || newComment.trim() === '') {
-            toast.warning('Please provide a rating and a comment.');
+            showModal('warning', 'Incomplete Review', 'Please provide a rating and a comment.');
             return;
         }
 
@@ -136,7 +189,7 @@ const PlaceDetails = () => {
             rating: newRating,
             comment: newComment,
             placeId: placeId,
-            userId: user.uid, // Add user ID to the review
+            userId: user.uid,
             timestamp: serverTimestamp(),
             date: new Date().toLocaleDateString(),
         };
@@ -147,10 +200,10 @@ const PlaceDetails = () => {
             setUserReview({ id: docRef.id, ...newReview });
             setNewRating(0);
             setNewComment('');
-            toast.success('Review submitted successfully!');
+            showModal('success', 'Success', 'Review submitted successfully!');
         } catch (err) {
             console.error('Error adding review:', err);
-            toast.error('Failed to submit review.');
+            showModal('error', 'Error', 'Failed to submit review.');
         }
     };
 
@@ -167,7 +220,7 @@ const PlaceDetails = () => {
     const handleSaveEdit = async () => {
         if (!userReview?.id) return;
         if (editRating === 0 || editComment.trim() === '') {
-            toast.error('Please provide a rating and a comment.');
+            showModal('warning', 'Incomplete Review', 'Please provide a rating and a comment.');
             return;
         }
         try {
@@ -185,45 +238,48 @@ const PlaceDetails = () => {
                 ).sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0))
             );
             setIsEditing(false);
-            toast.success('Review updated successfully!');
+            showModal('success', 'Success', 'Review updated successfully!');
         } catch (error) {
             console.error('Error updating review:', error);
-            toast.error('Failed to update review.');
+            showModal('error', 'Error', 'Failed to update review.');
         }
     };
 
     const handleRemoveReview = async () => {
         if (!userReview?.id) return;
-        if (window.confirm('Are you sure you want to remove your review?')) { // This is the line to change
-            try {
-                const reviewDocRef = doc(db, 'reviews', userReview.id);
-                await deleteDoc(reviewDocRef);
-                setReviews(prevReviews => prevReviews.filter(review => review.id !== userReview.id));
-                setUserReview(null);
-                setIsEditing(false);
-                toast.success('Review removed successfully!');
-            } catch (error) {
-                console.error('Error removing review:', error);
-                toast.error('Failed to remove review.');
+        showModal('confirmation',
+            'Confirm Removal',
+            'Are you sure you want to remove your review?',
+            async () => {
+                try {
+                    const reviewDocRef = doc(db, 'reviews', userReview.id);
+                    await deleteDoc(reviewDocRef);
+                    setReviews(prevReviews => prevReviews.filter(review => review.id !== userReview.id));
+                    setUserReview(null);
+                    setIsEditing(false);
+                    showModal('success', 'Success', 'Review removed successfully!');
+                } catch (error) {
+                    console.error('Error removing review:', error);
+                    showModal('error', 'Error', 'Failed to remove review.');
+                }
             }
-        }
+        );
     };
 
     const handleBookingSubmit = async () => {
         if (!user) {
-            toast.error('You must be logged in to book a ticket.');
+            showModal('error', 'Authentication Required', 'You must be logged in to book a ticket.');
             return;
         }
         if (!bookingDate) {
-            toast.warning('Please select a booking date.');
+            showModal('warning', 'Missing Information', 'Please select a booking date.');
             return;
         }
         if (!visitorType) {
-            toast.warning('Please select a visitor type.');
+            showModal('warning', 'Missing Information', 'Please select a visitor type.');
             return;
         }
 
-        // Check for existing booking
         const q = query(
             collection(db, 'bookings'),
             where('userId', '==', user.uid),
@@ -234,9 +290,10 @@ const PlaceDetails = () => {
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-            toast.error('You already have a booking for this place on this date.');
+            showModal('error', 'Booking Exists', 'You already have a booking for this place on this date.');
             return;
         }
+
         const newBooking = {
             userId: user.uid,
             userName: userName,
@@ -247,21 +304,22 @@ const PlaceDetails = () => {
         };
 
         try {
-            const toastPromise = toast.success('Booking successful! You will be redirected to your tickets page');
             await addDoc(collection(db, 'bookings'), newBooking);
-            await toastPromise; // Wait for the toast to resolve
-            setIsBooking(false);
-            setBookingDate('');
-            setVisitorType('adult'); // Reset visitor type
-            setTimeout(() => {
-                navigate('/tickets');
-            }, 3000);
+            showModal('success',
+                'Booking Successful',
+                'Booking successful! You will be redirected to your tickets page.',
+                () => {
+                    setIsBooking(false);
+                    setBookingDate('');
+                    setVisitorType('adult');
+                    navigate('/tickets');
+                }
+            );
         } catch (error) {
             console.error('Error adding booking:', error);
-            toast.error('Failed to book ticket.');
+            showModal('error', 'Error', 'Failed to book ticket.');
         }
     };
-
     useEffect(() => {
         const fetchPlaceData = async () => {
             try {
@@ -396,7 +454,91 @@ const PlaceDetails = () => {
 
     return (
         <div style={{ padding: '30px' }}>
-            <ToastContainer position="top-center" autoClose={3000} />
+            {/* Error Modal */}
+            <Modal
+                isOpen={showErrorModal}
+                onRequestClose={() => closeModal('error')}
+                className={modalStyles.modalContent}
+                overlayClassName={modalStyles.modalOverlay}
+                contentLabel="Error Modal"
+            >
+                <h2 className={`${modalStyles.modalTitle} ${modalStyles.errorTitle}`}>{modalContent.title}</h2>
+                <p className={modalStyles.modalMessage}>{modalContent.message}</p>
+                <button
+                    onClick={() => closeModal('error')}
+                    className={`${modalStyles.modalButton} ${modalStyles.errorButton}`}
+                >
+                    OK
+                </button>
+            </Modal>
+
+            {/* Success Modal */}
+            <Modal
+                isOpen={showSuccessModal}
+                onRequestClose={() => closeModal('success')}
+                className={modalStyles.modalContent}
+                overlayClassName={modalStyles.modalOverlay}
+                contentLabel="Success Modal"
+            >
+                <h2 className={`${modalStyles.modalTitle} ${modalStyles.successTitle}`}>{modalContent.title}</h2>
+                <p className={modalStyles.modalMessage}>{modalContent.message}</p>
+                <button
+                    onClick={() => {
+                        closeModal('success');
+                        modalContent.onConfirm && modalContent.onConfirm();
+                    }}
+                    className={`${modalStyles.modalButton} ${modalStyles.successButton}`}
+                >
+                    OK
+                </button>
+            </Modal>
+
+            {/* Warning Modal */}
+            <Modal
+                isOpen={showWarningModal}
+                onRequestClose={() => closeModal('warning')}
+                className={modalStyles.modalContent}
+                overlayClassName={modalStyles.modalOverlay}
+                contentLabel="Warning Modal"
+            >
+                <h2 className={`${modalStyles.modalTitle} ${modalStyles.warningTitle}`}>{modalContent.title}</h2>
+                <p className={modalStyles.modalMessage}>{modalContent.message}</p>
+                <button
+                    onClick={() => closeModal('warning')}
+                    className={`${modalStyles.modalButton} ${modalStyles.warningButton}`}
+                >
+                    OK
+                </button>
+            </Modal>
+
+            {/* Confirmation Modal */}
+            <Modal
+                isOpen={showConfirmationModal}
+                onRequestClose={() => closeModal('confirmation')}
+                className={modalStyles.modalContent}
+                overlayClassName={modalStyles.modalOverlay}
+                contentLabel="Confirmation Modal"
+            >
+                <h2 className={modalStyles.modalTitle}>{modalContent.title}</h2>
+                <p className={modalStyles.modalMessage}>{modalContent.message}</p>
+                <div className={modalStyles.modalButtons}>
+                    <button
+                        onClick={() => {
+                            modalContent.onConfirm && modalContent.onConfirm();
+                            closeModal('confirmation');
+                        }}
+                        className={`${modalStyles.modalButton} ${modalStyles.cancelButton}`}
+                    >
+                        Confirm
+                    </button>
+                    <button
+                        onClick={() => closeModal('confirmation')}
+                        className={`${modalStyles.modalButton} ${modalStyles.confirmButton}`}
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </Modal>
             <h2 style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '30px' }}>
                 {displayedPlaceName} in {cityName}
             </h2>
