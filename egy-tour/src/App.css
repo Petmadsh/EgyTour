@@ -41,3 +41,9 @@
   color: #888;
 }
 
+@font-face {
+  font-family: 'Throne Of Egypt'; 
+       url('/assets/fonts/throneofegypt.ttf') format('truetype'); /* Optional fallback */
+  font-weight: normal; /* Or specify if the font has different weights */
+  font-style: normal;  /* Or specify if the font has different styles (e.g., italic) */
+}
