@@ -288,7 +288,7 @@
 @media (max-width: 480px) {
   .navbar { padding: 10px 10px; gap: 8px;}
   .logo { height: 40px; margin-right: 8px; }
-  .searchBar { max-width: 220px; }
+  .searchBar { max-width: 200px; }
   .searchInput { min-width: 40px; } /* Further reduced min-width */
   .burgerMenuIcon { font-size: 26px; }
   .mobileIcons { margin-left: 8px; } /* Adjust spacing for very small screens */
