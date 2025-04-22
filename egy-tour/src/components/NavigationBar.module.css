@@ -225,63 +225,50 @@
 @media (max-width: 768px) {
   .navbar {
     padding: 10px 15px;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: row; /* Ensure items are in a row */
+    justify-content: space-between; /* Distribute space */
+    align-items: center; /* Vertically align items */
     gap: 10px;
   }
-
+  .signOutIcon {
+    margin-right: 10px; /* Adjust spacing for mobile if needed */
+  }
   .desktopItems {
     display: none;
   }
-
   .mobileIcons {
-    display: flex;
-    order: 3;
-    margin-left: auto; /* Push burger menu to the right */
+    display: flex; /* Ensure it's visible */
+    order: 3; /* Position burger menu */
+    margin-left: 10px; /* Add some spacing from the search bar */
   }
-
   .searchBar {
-    order: 2;
-    flex-grow: 1; /* Take available space */
-    max-width: none; /* Remove fixed max-width */
-    margin-left: 10px; /* Space from logo */
+    order: 2; /* Position search bar */
+    flex-grow: 1; /* Allow it to take available space */
+    max-width: none; /* Remove max width */
+    margin-left: 10px; /* Some space from logo */
   }
-
   .searchInput {
-    padding: 8px 10px;
-    font-size: 14px;
-    min-width: 60px; /* Smaller minimum width */
+    padding: 8px 10px; font-size: 13px; min-width: 60px; /* Reduced min-width */
   }
-
   .searchButton {
-    padding: 8px 10px;
+    padding: 8px 10px; min-width: 36px; width: auto;
   }
-
-
-
+  .searchButtonText { display: none; }
   .spacer {
-    display: none;
+    display: none; /* Hide spacer on mobile */
   }
-
   .logoContainer {
     order: 1;
-    margin-right: 10px;
+    margin-right: 10px; /* Add some space between logo and search */
   }
-
-  .logo {
-    height: 45px;
-  }
-
+  .logo { height: 45px; }
   .profileIconContainer {
     order: 4;
-    margin-left: 10px;
+    margin-left: 10px; /* Adjust spacing for mobile */
   }
-
   .profileIcon {
     font-size: 24px;
   }
-
   .profileDropdown {
     top: calc(100% + 2px);
     right: 0;
@@ -289,58 +276,28 @@
     font-size: 14px;
     padding: 8px 0;
   }
-
   .profileDropdown li {
     padding: 8px 12px;
   }
-
   .burgerMenuIcon {
-    margin-right: 10px;
+    margin-right: 10px; /* Adjust right margin for burger icon on mobile */
   }
 }
 
-/* Very small screens (up to 480px) */
+/* Optional: Very small screens */
 @media (max-width: 480px) {
-  .navbar {
-    padding: 10px 10px;
-    gap: 8px;
-  }
-
-  .logo {
-    height: 40px;
-    margin-right: 8px;
-  }
-
-  .searchBar {
-    flex-grow: 2; /* Take even more space */
-    margin-left: 8px;
-  }
-
-  .searchInput {
-    min-width: 40px;
-    font-size: 13px;
-  }
-
-  .searchButtonText {
-    display: none; /* Hide text on very small screens */
-  }
-
-  .burgerMenuIcon {
-    font-size: 26px;
-  }
-
-  .mobileIcons {
-    margin-left: auto; /* Keep burger right */
-  }
-
+  .navbar { padding: 10px 10px; gap: 8px;}
+  .logo { height: 40px; margin-right: 8px; }
+  .searchBar { max-width: 200px; }
+  .searchInput { min-width: 40px; } /* Further reduced min-width */
+  .burgerMenuIcon { font-size: 26px; }
+  .mobileIcons { margin-left: 8px; } /* Adjust spacing for very small screens */
   .profileIconContainer {
     margin-left: 8px;
   }
-
   .profileIcon {
     font-size: 22px;
   }
-
   .profileDropdown {
     font-size: 13px;
   }
