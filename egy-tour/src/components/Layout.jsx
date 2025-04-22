@@ -1,15 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import NavigationBar from './NavigationBar';
-import styles from './Layout.module.css'; // You can create a CSS module for the layout if needed
+import styles from './Layout.module.css'; 
+import { FaArrowCircleUp } from 'react-icons/fa'; 
 
 const Layout = ({ children }) => {
+    const [showScrollTop, setShowScrollTop] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            
+            if (window.scrollY > 300) {
+                setShowScrollTop(true);
+            } else {
+                setShowScrollTop(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
+
     return (
         <div className={styles.container}>
             <NavigationBar />
             <main className={styles.mainContent}>
-                {children} {/* This is where the content of each specific page will be rendered */}
+                {children}
             </main>
-            {/* You could also add a common footer here if needed */}
+            {showScrollTop && (
+                <button
+                    onClick={scrollToTop}
+                    className={styles.scrollTopButton}
+                    aria-label="Go to top"
+                >
+                    <FaArrowCircleUp size={40} />
+                </button>
+            )}
+            
         </div>
     );
 };

@@ -59,10 +59,6 @@ button:hover {
   background-color: #e9ecef; /* Slightly darker background on hover */
 }
 
-button:focus,
-button:focus-visible {
-  outline: 2px solid #007bff; /* More visible focus outline */
-  outline-offset: 2px;
-}
+
 
 /* Remove the media query for prefers-color-scheme: light as we are forcing light mode */

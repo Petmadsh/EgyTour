@@ -12,3 +12,27 @@
     /* Alternatively, you could use margin-top: 80px; */
     /* Add any other global styling for your main content area here */
 }
+
+.scrollTopButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 10;
+  color: greay; /* Primary color for text */
+  text-decoration: none; /* Remove underline */
+  font-weight: bold; /* Make the text bold */
+   /* Adjust font size */
+  border-radius: 100%; /* Rounded corners */
+}
+
+.scrollTopButton:hover {
+  opacity: 1;
+  background-color: transparent;
+  border: none;
+   
+}
