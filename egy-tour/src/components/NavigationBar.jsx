@@ -229,7 +229,7 @@ const NavigationBar = () => {
                     />
                     <button type="submit" className={styles.searchButton}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchButtonIcon} />
-                        <span className={styles.searchButtonText}>Search</span>
+                        
                     </button>
                 </form>
                 {isDropdownVisible && (
