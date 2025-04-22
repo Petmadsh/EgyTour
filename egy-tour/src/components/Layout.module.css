@@ -1,16 +1,16 @@
 /* Layout.module.css */
 .container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Ensure the layout takes at least the full viewport height */
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the layout takes at least the full viewport height */
+  width: 100%;
 }
 
 .mainContent {
-    flex-grow: 1; /* Allows the main content to take up remaining vertical space */
-    padding-top: 80px; /* Add padding at the top, adjust the value as needed */
-    /* Alternatively, you could use margin-top: 80px; */
-    /* Add any other global styling for your main content area here */
+  flex-grow: 1; /* Allows the main content to take up remaining vertical space */
+  padding-top: 80px; /* Add padding at the top, adjust the value as needed */
+  /* Alternatively, you could use margin-top: 80px; */
+  /* Add any other global styling for your main content area here */
 }
 
 .scrollTopButton {
@@ -26,7 +26,7 @@
   color: #D8532A; /* Primary color for text */
   text-decoration: none; /* Remove underline */
   font-weight: bold; /* Make the text bold */
-   /* Adjust font size */
+  /* Adjust font size */
   border-radius: 100%; /* Rounded corners */
 }
 
@@ -34,5 +34,22 @@
   opacity: 1;
   background-color: transparent;
   border: none;
-   
+}
+
+/* Media query for smaller screen widths */
+@media (max-width: 768px) { /* Adjust the breakpoint as needed */
+  .scrollTopButton {
+    right: 15px; /* Slightly reduce right margin */
+    bottom: 15px; /* Slightly reduce bottom margin */
+    /* You might also want to adjust the font size or padding here */
+  }
+}
+
+@media (max-width: 576px) { /* Even smaller screens */
+  .scrollTopButton {
+    right: 10px; /* Further reduce right margin */
+    bottom: 10px; /* Further reduce bottom margin */
+    font-size: 0.9em; /* Slightly reduce font size */
+    padding: 8px; /* Adjust padding */
+  }
 }
