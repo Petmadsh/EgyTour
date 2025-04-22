@@ -34,7 +34,7 @@ const CitiesPage = () => {
     }
 
     return (
-        <div>
+        <div style={{ marginLeft: '20px' }}> {/* Added marginLeft here */}
             <h2 style={{ marginTop: '30px' }}>Discover vibrant cities and plan your next escape</h2>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
                 {cities.map((city) => (
