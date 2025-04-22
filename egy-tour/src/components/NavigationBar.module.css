@@ -1,105 +1,106 @@
 /* NavigationBar.module.css */
 
 .navbar {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 15px 40px;
-    background-color: #f8f8f8;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    position: fixed; /* Make the navbar fixed */
-    top: 0; /* Stick it to the top */
-    left: 0; /* Extend to the left edge */
-    z-index: 100; /* Ensure it's above other content */
-    justify-content: space-between; /* Distribute space between logo and links/search */
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 40px;
+  background-color: #f8f8f8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  position: fixed; /* Make the navbar fixed */
+  top: 0; /* Stick it to the top */
+  left: 0; /* Extend to the left edge */
+  z-index: 100; /* Ensure it's above other content */
+  justify-content: space-between; /* Distribute space between logo and links/search */
 }
 
 /* Logo */
 .logoContainer {
-    order: 1;
-    flex-shrink: 0; /* Prevent logo from shrinking */
+  order: 1;
+  flex-shrink: 0; /* Prevent logo from shrinking */
+  margin-left: 20px; /* Add margin to the left of the logo */
 }
 .logoLink { text-decoration: none; display: block; }
 .logo { height: 60px; width: auto; display: block; }
 
 /* Spacer - Hidden on Desktop */
 .spacer {
-    display: none;
-    flex-grow: 1; /* Occupies available space on mobile */
+  display: none;
+  flex-grow: 1; /* Occupies available space on mobile */
 }
 
 /* Desktop Nav Links Container */
 .desktopItems {
-    order: 2;
-    display: flex;
-    align-items: center;
+  order: 2;
+  display: flex;
+  align-items: center;
 }
 .navLinks {
-    list-style: none;
-    display: flex;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-    gap: 25px; /* Space between nav links */
+  list-style: none;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  gap: 25px; /* Space between nav links */
 }
 .navLinks li { margin: 0; }
 .navLink {
-    text-decoration: none;
-    color: #555;
-    font-weight: 500;
-    font-size: 17px;
-    padding: 10px 15px;
-    border-radius: 5px;
-    transition: color 0.3s ease, background-color 0.3s ease;
-    white-space: nowrap;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  font-size: 17px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  white-space: nowrap;
 }
 .navLink:hover, .navLink.activeNavLink { /* Apply hover style also to active link */
-    color: white;
-    background-color: #D8532A;
+  color: white;
+  background-color: #D8532A;
 }
 
 /* Active Nav Link Style */
 .navLink.activeNavLink {
-    color: white;
-    background-color: #D8532A;
+  color: white;
+  background-color: #D8532A;
 }
 
 .signOutIcon {
-    margin-right: 8px; /* Add some space between the icon and text */
+  margin-right: 8px; /* Add some space between the icon and text */
 }
 
 /* Search Bar - Default (Desktop) Styling */
 .searchBar {
-    order: 3;
-    display: flex;
-    align-items: center;
-    max-width: 300px;
-    width: 100%;
-    margin-left: 30px; /* Space between links and search bar */
-    flex-shrink: 1; /* Allow search bar to shrink */
-    position: relative; /* For dropdown positioning */
+  order: 3;
+  display: flex;
+  align-items: center;
+  max-width: 550px; /* Increased max-width for a little wider search bar */
+  width: 100%;
+  margin-left: 30px; /* Space between links and search bar */
+  flex-shrink: 1; /* Allow search bar to shrink */
+  position: relative; /* For dropdown positioning */
 }
 .searchBar form { display: flex; width: 100%; }
 .searchInput {
-    flex: 1;
-    padding: 12px 18px;
-    border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
-    font-size: 15px;
-    outline: none;
+  flex: 1;
+  padding: 12px 18px;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
+  font-size: 15px;
+  outline: none;
 }
 .searchButton {
-    padding: 12px 18px;
-    background-color: #D8532A;
-    color: white;
-    border: none;
-    border-radius: 0 5px 5px 0;
-    font-size: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    display: inline-flex;
-    align-items: center;
+  padding: 12px 18px;
+  background-color: #D8532A;
+  color: white;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
 }
 .searchButton:hover { background-color: rgba(255, 89, 0, 0.85); }
 .searchButtonText { display: none; }
@@ -108,109 +109,110 @@
 
 /* Search Results Dropdown */
 .searchResultsDropdown {
-    position: absolute;
-    top: calc(100% + 2px);
-    left: 0;
-    width: 100%;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-top: none;
-    border-radius: 0 0 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    max-height: 200px;
-    overflow-y: auto;
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .searchResultItem {
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 15px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 15px;
 }
 
 .searchResultItem:hover {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 
 /* Profile Icon */
 .profileIconContainer {
-    order: 4;
-    margin-left: 20px;
-    position: relative;
-    cursor: pointer;
-    flex-shrink: 0;
+  order: 4;
+  margin-left: 20px;
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 .profileIcon {
-    font-size: 36px;
-    color: #555;
-    transition: color 0.3s ease;
+  font-size: 36px;
+  color: #555;
+  transition: color 0.3s ease;
 }
 .profileIcon:hover {
-    color: #D8532A;
+  color: #D8532A;
 }
 
 /* Profile Dropdown */
 .profileDropdown {
-    position: absolute;
-    top: calc(100% + 5px);
-    right: 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-    list-style: none;
-    padding: 10px 0;
-    margin: 0;
-    min-width: 120px;
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  list-style: none;
+  padding: 10px 0;
+  margin: 0;
+  min-width: 120px;
 }
 .profileDropdown li {
-    padding: 10px 15px;
-    font-size: 15px;
-    cursor: pointer;
-    color: #333;
-    transition: background-color 0.3s ease;
-    text-align: left;
+  padding: 10px 15px;
+  font-size: 15px;
+  cursor: pointer;
+  color: #333;
+  transition: background-color 0.3s ease;
+  text-align: left;
 }
 .profileDropdown li:hover {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 
 .mobileIcons {
-    display: none;
-    order: 5;
-    flex-shrink: 0; /* Prevent burger menu from shrinking */
-    margin-left: 15px;
+  display: none;
+  order: 5;
+  flex-shrink: 0; /* Prevent burger menu from shrinking */
+  margin-left: 15px;
 }
 .burgerMenuIcon {
-    background: none; border: none;
-    font-size: 28px; cursor: pointer; color: #333; padding: 0 5px;
+  background: none; border: none;
+  font-size: 28px; cursor: pointer; color: #333; padding: 0 5px;
+  margin-right: 20px; /* Add margin to the right of the burger menu */
 }
 
 /* Mobile Menu */
 .mobileMenu {
-    display: none; list-style: none; padding: 0; margin: 0;
-    position: absolute; top: 100%; left: 0; right: 0;
-    background-color: #fff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000; border-top: 1px solid #eee;
+  display: none; list-style: none; padding: 0; margin: 0;
+  position: absolute; top: 100%; left: 0; right: 0;
+  background-color: #fff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000; border-top: 1px solid #eee;
 }
 .mobileMenu.visible { display: block; }
 .mobileMenu .navLink {
-    display: block; padding: 15px 20px; text-align: left;
-    color: #333; font-weight: 500; border-bottom: 1px solid #eee;
-    background-color: transparent;
+  display: block; padding: 15px 20px; text-align: left;
+  color: #333; font-weight: 500; border-bottom: 1px solid #eee;
+  background-color: transparent;
 }
 .mobileMenu .navLink:hover,
 .mobileMenu .navLink.activeNavLink { /* Apply hover style also to active link in mobile menu */
-    background-color: #D8532A;
-    color: white;
+  background-color: #D8532A;
+  color: white;
 }
 .mobileMenu .navLink.activeNavLink {
-    background-color: #D8532A;
-    color: white;
+  background-color: #D8532A;
+  color: white;
 }
 .mobileMenu li:last-child .navLink { border-bottom: none; }
 
@@ -221,79 +223,82 @@
 
 /* Mobile View */
 @media (max-width: 768px) {
-    .navbar {
-        padding: 10px 15px;
-        flex-direction: row; /* Ensure items are in a row */
-        justify-content: space-between; /* Distribute space */
-        align-items: center; /* Vertically align items */
-        gap: 10px;
-    }
-    .signOutIcon {
-        margin-right: 10px; /* Adjust spacing for mobile if needed */
-    }
-    .desktopItems {
-        display: none;
-    }
-    .mobileIcons {
-        display: flex; /* Ensure it's visible */
-        order: 3; /* Position burger menu */
-        margin-left: 10px; /* Add some spacing from the search bar */
-    }
-    .searchBar {
-        order: 2; /* Position search bar */
-        flex-grow: 1; /* Allow it to take available space */
-        max-width: none; /* Remove max width */
-        margin-left: 10px; /* Some space from logo */
-    }
-    .searchInput {
-        padding: 8px 10px; font-size: 13px; min-width: 60px; /* Reduced min-width */
-    }
-    .searchButton {
-        padding: 8px 10px; min-width: 36px; width: auto;
-    }
-    .searchButtonText { display: none; }
-    .spacer {
-        display: none; /* Hide spacer on mobile */
-    }
-    .logoContainer {
-        order: 1;
-        margin-right: 10px; /* Add some space between logo and search */
-    }
-    .logo { height: 45px; }
-    .profileIconContainer {
-        order: 4;
-        margin-left: 10px; /* Adjust spacing for mobile */
-    }
-    .profileIcon {
-        font-size: 24px;
-    }
-    .profileDropdown {
-        top: calc(100% + 2px);
-        right: 0;
-        min-width: 100px;
-        font-size: 14px;
-        padding: 8px 0;
-    }
-    .profileDropdown li {
-        padding: 8px 12px;
-    }
+  .navbar {
+    padding: 10px 15px;
+    flex-direction: row; /* Ensure items are in a row */
+    justify-content: space-between; /* Distribute space */
+    align-items: center; /* Vertically align items */
+    gap: 10px;
+  }
+  .signOutIcon {
+    margin-right: 10px; /* Adjust spacing for mobile if needed */
+  }
+  .desktopItems {
+    display: none;
+  }
+  .mobileIcons {
+    display: flex; /* Ensure it's visible */
+    order: 3; /* Position burger menu */
+    margin-left: 10px; /* Add some spacing from the search bar */
+  }
+  .searchBar {
+    order: 2; /* Position search bar */
+    flex-grow: 1; /* Allow it to take available space */
+    max-width: none; /* Remove max width */
+    margin-left: 10px; /* Some space from logo */
+  }
+  .searchInput {
+    padding: 8px 10px; font-size: 13px; min-width: 60px; /* Reduced min-width */
+  }
+  .searchButton {
+    padding: 8px 10px; min-width: 36px; width: auto;
+  }
+  .searchButtonText { display: none; }
+  .spacer {
+    display: none; /* Hide spacer on mobile */
+  }
+  .logoContainer {
+    order: 1;
+    margin-right: 10px; /* Add some space between logo and search */
+  }
+  .logo { height: 45px; }
+  .profileIconContainer {
+    order: 4;
+    margin-left: 10px; /* Adjust spacing for mobile */
+  }
+  .profileIcon {
+    font-size: 24px;
+  }
+  .profileDropdown {
+    top: calc(100% + 2px);
+    right: 0;
+    min-width: 100px;
+    font-size: 14px;
+    padding: 8px 0;
+  }
+  .profileDropdown li {
+    padding: 8px 12px;
+  }
+  .burgerMenuIcon {
+    margin-right: 10px; /* Adjust right margin for burger icon on mobile */
+  }
 }
 
 /* Optional: Very small screens */
 @media (max-width: 480px) {
-    .navbar { padding: 10px 10px; gap: 8px;}
-    .logo { height: 40px; margin-right: 8px; }
-    .searchBar { max-width: 120px; }
-    .searchInput { min-width: 40px; } /* Further reduced min-width */
-    .burgerMenuIcon { font-size: 26px; }
-    .mobileIcons { margin-left: 8px; } /* Adjust spacing for very small screens */
-    .profileIconContainer {
-        margin-left: 8px;
-    }
-    .profileIcon {
-        font-size: 22px;
-    }
-    .profileDropdown {
-        font-size: 13px;
-    }
+  .navbar { padding: 10px 10px; gap: 8px;}
+  .logo { height: 40px; margin-right: 8px; }
+  .searchBar { max-width: 120px; }
+  .searchInput { min-width: 40px; } /* Further reduced min-width */
+  .burgerMenuIcon { font-size: 26px; margin-right: 8px; }
+  .mobileIcons { margin-left: 8px; } /* Adjust spacing for very small screens */
+  .profileIconContainer {
+    margin-left: 8px;
+  }
+  .profileIcon {
+    font-size: 22px;
+  }
+  .profileDropdown {
+    font-size: 13px;
+  }
 }
