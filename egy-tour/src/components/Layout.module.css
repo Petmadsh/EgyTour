@@ -23,7 +23,7 @@
   opacity: 0.7;
   transition: opacity 0.3s ease-in-out;
   z-index: 10;
-  color: greay; /* Primary color for text */
+  color: #D8532A; /* Primary color for text */
   text-decoration: none; /* Remove underline */
   font-weight: bold; /* Make the text bold */
    /* Adjust font size */
