@@ -1,4 +1,4 @@
-/* ModalStyles.module.css */
+
 
 .modalOverlay {
     background-color: rgba(0, 0, 0, 0.6);
@@ -58,7 +58,7 @@
 
 /* Confirmation Specific Styles */
 .confirmButton {
-    background-color: #4CAF50; /* Green for positive action */
+    background-color: #4CAF50; 
     color: white;
 }
 
@@ -68,7 +68,7 @@
 }
 
 .cancelButton {
-    background-color: #f44336; /* Red for negative action */
+    background-color: #f44336; 
     color: white;
 }
 
@@ -83,7 +83,7 @@
 }
 
 .successButton {
-    background-color: #007bff; /* Blue for okay/dismiss */
+    background-color: #007bff; /* Blue for success */
     color: white;
 }
 

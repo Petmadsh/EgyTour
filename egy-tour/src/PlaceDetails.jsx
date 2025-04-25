@@ -170,7 +170,6 @@ const PlaceDetails = () => {
     const handleCommentChange = (e) => setNewComment(e.target.value);
     const handleEditRatingChange = (rating) => setEditRating(rating);
     const handleEditCommentChange = (e) => setEditComment(e.target.value);
-    const handleDateChange = (e) => setBookingDate(e.target.value);
     const handleVisitorTypeChange = (e) => setVisitorType(e.target.value);
 
     const handleReviewSubmit = async (e) => {
@@ -752,7 +751,7 @@ const PlaceDetails = () => {
                                                 rows="5"
                                                 value={editComment}
                                                 onChange={handleEditCommentChange}
-                                                className="styled-textarea" // Apply the new class
+                                                className="styled-textarea" 
                                             />
                                         </div>
                                         <div className="edit-buttons">
@@ -788,7 +787,7 @@ const PlaceDetails = () => {
                                     placeholder="Write your review here..."
                                     value={newComment}
                                     onChange={handleCommentChange}
-                                    className="styled-textarea" // Apply the new class
+                                    className="styled-textarea" 
 
                                 />
                             </div>

@@ -3,7 +3,7 @@ import { auth, db } from './firebase';
 import { collection, query, where, getDocs, orderBy, deleteDoc, doc } from 'firebase/firestore';
 import QRCodeGenerator from 'qrcode';
 import styles from './MyTicketsPage.module.css';
-import modalStyles from './ModalStyles.module.css'; // Import modal styles
+import modalStyles from './ModalStyles.module.css'; 
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');

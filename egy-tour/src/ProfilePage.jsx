@@ -1,11 +1,13 @@
-// ProfilePage.js
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { auth, db } from './firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { sendEmailVerification, updateEmail, updatePassword, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import styles from './ProfilePage.module.css';
+import modalStyles from './ModalStyles.module.css';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root'); 
 
 const ProfilePage = () => {
     const [userData, setUserData] = useState({ email: '', firstName: '', lastName: '' });
@@ -17,36 +19,17 @@ const ProfilePage = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const user = auth.currentUser;
-    const activeToastId = useRef(null);
+    const [modal, setModal] = useState({ show: false, message: "", title: "", type: "", onConfirm: null, onClose: null });
 
-    const ConfirmationToast = ({ message, onConfirm, closeToast }) => {
-        const confirmationRef = useRef(null);
+    const showModal = (title, message, type, onConfirm = null, onClose = null) => {
+        setModal({ show: true, title, message, type, onConfirm, onClose });
+    };
 
-        useEffect(() => {
-            const handleClickOutside = (event) => {
-                if (confirmationRef.current && !confirmationRef.current.contains(event.target)) {
-                    closeToast();
-                }
-            };
-            document.addEventListener('mousedown', handleClickOutside);
-            return () => {
-                document.removeEventListener('mousedown', handleClickOutside);
-            };
-        }, [closeToast]);
-
-        return (
-            <div className={styles.confirmationToast} ref={confirmationRef}>
-                <p>{message}</p>
-                <div className={styles.confirmationButtons}>
-                    <button onClick={() => { onConfirm(); closeToast(); }} className={styles.confirmButton}>
-                        Yes
-                    </button>
-                    <button onClick={closeToast} className={styles.cancelButton}>
-                        No
-                    </button>
-                </div>
-            </div>
-        );
+    const closeModal = () => {
+        setModal({ ...modal, show: false });
+        if (modal.onClose) {
+            modal.onClose();
+        }
     };
 
     useEffect(() => {
@@ -59,10 +42,10 @@ const ProfilePage = () => {
                         setUserData(docSnap.data());
                         setEditForm(docSnap.data());
                     } else {
-                        toast.error('Could not retrieve profile data.', { position: 'top-right' });
+                        showModal("Error", "Could not retrieve profile data.", "error");
                     }
                 } catch (error) {
-                    toast.error('Error fetching profile data.', { position: 'top-right' });
+                    showModal("Error", "Error fetching profile data.", "error");
                 } finally {
                     setLoading(false);
                 }
@@ -82,7 +65,7 @@ const ProfilePage = () => {
 
     const handleSubmit = async () => {
         if (!user) {
-            toast.error('No user logged in.', { position: 'top-right' });
+            showModal("Error", "No user logged in.", "error");
             return;
         }
 
@@ -93,47 +76,34 @@ const ProfilePage = () => {
         if (editForm.lastName !== userData.lastName) updates.lastName = editForm.lastName;
 
         if (editForm.email !== userData.email) {
-            if (activeToastId.current) toast.dismiss(activeToastId.current);
-
-            activeToastId.current = toast(
-                <ConfirmationToast
-                    message="Are you sure you want to change your email? You will need to verify the new email address and will be logged out."
-                    onConfirm={async () => {
-                        try {
-                            await updateEmail(user, editForm.email);
-                            await sendEmailVerification(user);
-                            toast.success(
-                                'Email updated! Please verify your new email address and log in again.',
-                                { position: 'top-right', onClose: () => navigate('/login') }
-                            );
-                        } catch (error) {
-                            let errorMessage = 'Failed to update email.';
-                            if (error.code === 'auth/invalid-email') {
-                                errorMessage = 'Invalid email address.';
-                            } else if (error.code === 'auth/email-already-in-use') {
-                                errorMessage = 'This email address is already in use.';
-                            } else if (error.code === 'auth/requires-recent-login') {
-                                errorMessage = 'For security reasons, you need to log in again before changing your email.';
-                                toast.error(errorMessage, { position: 'top-right', onClose: () => navigate('/login') });
-                                return;
-                            }
-                            toast.error(errorMessage, { position: 'top-right' });
-                        } finally {
-                            activeToastId.current = null;
+            showModal(
+                "Confirmation",
+                "Are you sure you want to change your email? You will need to verify the new email address and will be logged out.",
+                "warning",
+                async () => {
+                    try {
+                        await updateEmail(user, editForm.email);
+                        await sendEmailVerification(user);
+                        showModal(
+                            "Success",
+                            "Email updated! Please verify your new email address and log in again.",
+                            "success",
+                            () => navigate('/login')
+                        );
+                    } catch (error) {
+                        let errorMessage = 'Failed to update email.';
+                        if (error.code === 'auth/invalid-email') {
+                            errorMessage = 'Invalid email address.';
+                        } else if (error.code === 'auth/email-already-in-use') {
+                            errorMessage = 'This email address is already in use.';
+                        } else if (error.code === 'auth/requires-recent-login') {
+                            errorMessage = 'For security reasons, you need to log in again before changing your email.';
+                            showModal("Error", errorMessage, "error", () => navigate('/login'));
+                            return;
                         }
-                    }}
-                    closeToast={() => toast.dismiss(activeToastId.current)}
-                />,
-                {
-                    position: 'top-center',
-                    closeOnClick: false,
-                    draggable: false,
-                    closeButton: false,
-                    autoClose: false,
-                    hideProgressBar: true,
-                    className: styles.confirmationToastContainer,
-                    onClose: () => { activeToastId.current = null; }
-                }
+                        showModal("Error", errorMessage, "error");
+                    }
+                },
             );
             return;
         }
@@ -144,9 +114,9 @@ const ProfilePage = () => {
                 setUserData({ ...userData, ...updates });
                 setEditForm({ ...editForm, ...updates });
                 setIsEditing(false);
-                toast.success('Profile updated successfully!', { position: 'top-right' });
+                showModal("Success", "Profile updated successfully!", "success");
             } catch (error) {
-                toast.error('Failed to update profile.', { position: 'top-right' });
+                showModal("Error", "Failed to update profile.", "error");
             }
         } else {
             setIsEditing(false);
@@ -185,18 +155,17 @@ const ProfilePage = () => {
 
     const performPasswordUpdate = async () => {
         if (!user) {
-            toast.error('No user logged in.', { position: 'top-right' });
+            showModal("Error", "No user logged in.", "error");
             return;
         }
 
         try {
             await updatePassword(user, passwordForm.newPassword);
-            toast.success(
-                'Password updated! Please log in again.',
-                {
-                    position: 'top-right',
-                    onClose: () => navigate('/login')
-                }
+            showModal(
+                "Success",
+                "Password updated! Please log in again.",
+                "success",
+                () => navigate('/login')
             );
             setIsChangingPassword(false);
             setPasswordForm({ newPassword: '', confirmNewPassword: '' });
@@ -207,35 +176,21 @@ const ProfilePage = () => {
                 errorMessage = 'Password should be at least 6 characters.';
             } else if (error.code === 'auth/requires-recent-login') {
                 errorMessage = 'For security reasons, you need to log in again before changing your password.';
-                toast.error(errorMessage, { position: 'top-right', onClose: () => navigate('/login') });
+                showModal("Error", errorMessage, "error", () => navigate('/login'));
                 return;
             }
-            toast.error(errorMessage, { position: 'top-right' });
+            showModal("Error", errorMessage, "error");
         }
     };
-
 
     const handlePasswordSubmit = () => {
         if (!validatePasswordChange()) return;
 
-        if (activeToastId.current) toast.dismiss(activeToastId.current);
-
-        activeToastId.current = toast(
-            <ConfirmationToast
-                message="Are you sure you want to change your password?"
-                onConfirm={performPasswordUpdate}
-                closeToast={() => toast.dismiss(activeToastId.current)}
-            />,
-            {
-                position: 'top-center',
-                closeOnClick: false,
-                draggable: false,
-                closeButton: false,
-                autoClose: false,
-                hideProgressBar: true,
-                className: styles.confirmationToastContainer,
-                onClose: () => { activeToastId.current = null; }
-            }
+        showModal(
+            "Confirmation",
+            "Are you sure you want to change your password?",
+            "warning",
+            performPasswordUpdate
         );
     };
 
@@ -291,6 +246,95 @@ const ProfilePage = () => {
                     </div>
                 </div>
             )}
+
+            <Modal
+                isOpen={modal.show}
+                onRequestClose={closeModal}
+                className={`${modalStyles.modalContent}`}
+                overlayClassName={modalStyles.modalOverlay}
+                contentLabel={modal.title}
+            >
+                {modal.type === "success" && (
+                    <h2 className={`${modalStyles.modalTitle} ${modalStyles.successTitle}`}>
+                        {modal.title}
+                    </h2>
+                )}
+                {modal.type === "error" && (
+                    <h2 className={`${modalStyles.modalTitle} ${modalStyles.errorTitle}`}>
+                        {modal.title}
+                    </h2>
+                )}
+                {modal.type === "warning" && (
+                    <h2 className={`${modalStyles.modalTitle} ${modalStyles.warningTitle}`}>
+                        {modal.title}
+                    </h2>
+                )}
+                {modal.type !== "success" &&
+                    modal.type !== "error" &&
+                    modal.type !== "warning" &&
+                    (<h2 className={modalStyles.modalTitle}>{modal.title}</h2>)}
+
+                <p className={modalStyles.modalMessage}>{modal.message}</p>
+
+                <div className={modalStyles.modalButtons}>
+                    {modal.type === "success" && (
+                        <button
+                            className={`${modalStyles.confirmButton} ${modalStyles.successButton}`}
+                            onClick={closeModal}
+                        >
+                            Okay
+                        </button>
+                    )}
+                    {modal.type === "error" && (
+                        <button
+                            className={`${modalStyles.errorButton} ${modalStyles.confirmButton}`}
+                            onClick={closeModal}
+                        >
+                            Okay
+                        </button>
+                    )}
+                    {modal.type === "warning" && (
+                        <>
+                            <button
+                                className={`${modalStyles.confirmButton}`}
+                                onClick={() => {
+                                    if (modal.onConfirm) {
+                                        modal.onConfirm();
+                                    }
+                                    closeModal();
+                                }}
+                            >
+                                Yes
+                            </button>
+                            <button
+                                className={modalStyles.cancelButton}
+                                onClick={closeModal}
+                            >
+                                No
+                            </button>
+                        </>
+                    )}
+                    {modal.type !== "success" &&
+                        modal.type !== "error" &&
+                        modal.type !== "warning" &&
+                        (
+                            <>
+                                <button
+                                    className={`${modalStyles.confirmButton}`}
+                                    onClick={closeModal}
+                                >
+                                    Yes
+                                </button>
+                                <button
+                                    className={modalStyles.cancelButton}
+                                    onClick={closeModal}
+                                >
+                                    No
+                                </button>
+                            </>
+                        )}
+                </div>
+            </Modal>
         </div>
     );
 };

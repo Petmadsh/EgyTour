@@ -3,19 +3,19 @@ import { auth, googleProvider, db } from "./firebase";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./LoginPage.module.css";
-import modalStyles from "./ModalStyles.module.css"; // Import modal styles
+import modalStyles from "./ModalStyles.module.css"; 
 import logo from "./assets/Egyptian_Pyramids_with_Sphinx.png";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import Modal from 'react-modal'; // Import Modal
+import Modal from 'react-modal'; 
 
-Modal.setAppElement('#root'); // Ensure this is set
+Modal.setAppElement('#root'); 
 
 const LoginPage = () => {
     const [form, setForm] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({ email: "", password: "" });
     const navigate = useNavigate();
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // Example breakpoint
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); 
     const [showVerificationModal, setShowVerificationModal] = useState(false);
     const [showLoginFailedModal, setShowLoginFailedModal] = useState(false);
     const [loginFailedMessage, setLoginFailedMessage] = useState("");
@@ -24,7 +24,7 @@ const LoginPage = () => {
 
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768); // Adjust breakpoint as needed
+            setIsMobile(window.innerWidth <= 768);
         };
 
         window.addEventListener('resize', handleResize);

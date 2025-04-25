@@ -8,14 +8,14 @@ import AboutEgyptPage from './AboutEgyptPage';
 import CitiesPage from './CitiesPage';
 import CityDetails from './CityDetails';
 import PlaceDetails from './PlaceDetails';
-import MyTicketsPage from './MyTicketsPage'; // Import the MyTicketsPage component
+import MyTicketsPage from './MyTicketsPage'; 
 import ProfilePage from './ProfilePage';
 
 import Layout from './components/Layout';
 import 'react-toastify/dist/ReactToastify.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { ToastContainer } from 'react-toastify';
-import './styles.css'; // Import the global styles
+import './styles.css'; 
 
 
 function App() {
@@ -34,28 +34,26 @@ function App() {
         theme="light"
       />
       <Routes>
-        {/* Route for the initial login page */}
+    
         <Route path="/" element={<LoginPage />} />
 
-        {/* Other authentication routes */}
-        <Route path="/login" element={<Navigate to="/" />} /> {/* Redirect /login to / */}
+     
+        <Route path="/login" element={<Navigate to="/" />} /> 
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-        {/* Protected routes that use the Layout */}
-        <Route path="/welcome" element={<Layout><Welcome /></Layout>} /> {/* Renamed to /welcome */}
+        
+
+
+        <Route path="/welcome" element={<Layout><Welcome /></Layout>} /> 
         <Route path="/about" element={<Layout><AboutEgyptPage /></Layout>} />
         <Route path="/cities" element={<Layout><CitiesPage /></Layout>} />
-        {/* Add the new route for CityDetails */}
         <Route path="/city/:cityName" element={<Layout><CityDetails /></Layout>} />
-        {/* Add the new route for PlaceDetails */}
         <Route path="/city/:cityName/place/:placeName" element={<Layout><PlaceDetails /></Layout>} />
-        { /* <Route path="/book/:cityName/:placeName" element={<Layout><BookPage /></Layout>} />*/}
-        {/* Changed the route for categories to my-tickets */}
         <Route path="/tickets" element={<Layout><MyTicketsPage /></Layout>} />
         <Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
 
-        {/* You can have other routes that don't use the layout */}
+       
       </Routes>
     </Router>
   );

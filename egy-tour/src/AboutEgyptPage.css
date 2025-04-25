@@ -4,7 +4,6 @@
 }
 
 .about-page h1 {
-    //font-family: 'Throne Of Egypt', sans-serif;
     font-size: 3.5rem;
 }
 
@@ -38,7 +37,7 @@
     margin-bottom: 10px;
 }
 
-/* Color themes to match the screenshot style */
+
 .bg-1 {
     background-color: #fef1d1;
 }

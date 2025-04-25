@@ -1,4 +1,4 @@
-/* BookPage.css */
+
 
 .book-page {
     padding: 30px;
@@ -71,7 +71,7 @@
     background-color: #0056b3;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 600px) {
     .booking-form {
         padding: 20px;

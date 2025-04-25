@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import './styles.css'; // Import your CSS file
+import './styles.css'; 
 
 const CityDetails = () => {
     const { cityName } = useParams();
@@ -91,11 +91,11 @@ const CityDetails = () => {
     }
 
     return (
-        <div style={{ padding: '20px' }}> {/* Keep basic page padding if needed */}
+        <div style={{ padding: '20px' }}> 
             <h2>{cityDetails.name} Details</h2>
 
             {/* City Data Section with Image Carousel */}
-            <div style={{ marginBottom: '30px' }}> {/* Keep for spacing */}
+            <div style={{ marginBottom: '30px' }}> 
                 <h3>Discover {cityDetails.name}</h3>
                 {cityDetails.citydata && (
                     <>
@@ -141,7 +141,7 @@ const CityDetails = () => {
             <div>
                 <h3>Must-See Spots in {cityDetails.name}</h3>
                 {cityDetails.places && cityDetails.places.length > 0 ? (
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}> {/* Basic flex layout */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}> 
                         {cityDetails.places.map((place) => (
                             <div
                                 key={place.name}

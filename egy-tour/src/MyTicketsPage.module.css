@@ -1,4 +1,4 @@
-/* MyTicketsPage.module.css */
+
 
 .myTicketsContainer {
     padding: 20px;
@@ -7,20 +7,20 @@
 .ticketsList {
     margin-top: 20px;
     display: grid;
-    gap: 20px; /* Adjust gap as needed */
-    /* grid-template-columns will be set dynamically in the component */
+    gap: 20px; 
+   
 }
 
 .ticketCard {
     border: 1px solid #ccc;
     padding: 20px;
-    position: relative; /* For absolute positioning of the delete button */
+    position: relative; 
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 250px; /* Adjust min-height as needed */
+    min-height: 250px; 
 }
 
 .ticketDetails {
@@ -39,8 +39,8 @@
 }
 
 .qrCodeImage {
-    width: 100%; /* Make QR code responsive within its container */
-    max-width: 350px; /* Set a maximum width if needed */
+    width: 100%; 
+    max-width: 350px; 
     height: auto;
     align-self: center;
     margin-top: 10px;
@@ -94,7 +94,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     border: none;
-    background-color: #007bff; /* Example success color */
+    background-color: #007bff; 
     color: white;
 }
 
@@ -117,16 +117,14 @@
     font-size: 0.9rem;
 }
 
-.deleteToast {
-    /* Style for the toast container if needed */
-}
+
 
 .loadingContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 50px; /* Add margin top as requested */
+    margin-top: 50px; 
 }
 
 .loadingText {
@@ -135,4 +133,3 @@
     color: #555;
 }
 
-/* Removed modal button styles from here as they are now in ModalStyles.module.css */

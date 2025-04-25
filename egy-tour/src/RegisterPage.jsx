@@ -4,11 +4,11 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./RegisterPage.module.css";
-import modalStyles from "./ModalStyles.module.css"; // Import modal styles
+import modalStyles from "./ModalStyles.module.css"; 
 import logo from "./assets/Egyptian_Pyramids_with_Sphinx.png";
-import Modal from 'react-modal'; // Import Modal
+import Modal from 'react-modal'; 
 
-Modal.setAppElement('#root'); // Ensure this is set
+Modal.setAppElement('#root'); 
 
 const RegisterPage = () => {
     const [form, setForm] = useState({ first: "", last: "", email: "", password: "", confirm: "" });
@@ -16,14 +16,14 @@ const RegisterPage = () => {
     const navigate = useNavigate();
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // Example breakpoint
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); 
     const [showVerificationModal, setShowVerificationModal] = useState(false);
     const [showRegisterFailedModal, setShowRegisterFailedModal] = useState(false);
     const [registerFailedMessage, setRegisterFailedMessage] = useState("");
 
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768); // Adjust breakpoint as needed
+            setIsMobile(window.innerWidth <= 768); 
         };
 
         window.addEventListener('resize', handleResize);
