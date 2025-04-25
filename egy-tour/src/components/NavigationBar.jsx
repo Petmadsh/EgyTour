@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import logo from "../assets/Egyptian_Pyramids_with_Sphinx.png";
 import styles from './NavigationBar.module.css';
-import modalStyles from '/src/ModalStyles.module.css'; 
+import modalStyles from '/src/ModalStyles.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faUserCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
-import Modal from 'react-modal'; 
+import Modal from 'react-modal';
 
-Modal.setAppElement('#root'); 
+Modal.setAppElement('#root');
 
 const NavigationBar = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -50,7 +50,7 @@ const NavigationBar = () => {
             openSignOutSuccessModal();
         } catch (error) {
             console.error('Error signing out:', error);
-            alert('Error signing out. Please try again.'); 
+            alert('Error signing out. Please try again.');
         } finally {
             closeSignOutConfirmationModal();
         }
@@ -121,6 +121,7 @@ const NavigationBar = () => {
         setSearchResults([]);
         setIsDropdownVisible(false);
         closeMobileMenu();
+        window.scrollTo(0, 0); 
         if (result.type === 'city') {
             navigate(`/city/${result.name.replace(/ /g, '-')}`);
         } else if (result.type === 'place') {
@@ -213,7 +214,7 @@ const NavigationBar = () => {
                 </ul>
             </div>
 
-           
+
             <div className={styles.spacer}></div>
 
             {/* Search Bar */}
@@ -229,7 +230,7 @@ const NavigationBar = () => {
                     />
                     <button type="submit" className={styles.searchButton}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchButtonIcon} />
-                        
+
                     </button>
                 </form>
                 {isDropdownVisible && (
